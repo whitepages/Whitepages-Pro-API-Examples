@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="personlookup.aspx.cs" Inherits="Whitepaper.personlookup" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="personlookup.aspx.cs" Inherits="WhitePages.personlookup" %>
 
 
 <!DOCTYPE html>

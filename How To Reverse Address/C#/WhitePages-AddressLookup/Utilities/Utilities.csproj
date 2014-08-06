@@ -42,7 +42,7 @@
     <Compile Include="RequestData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerApis.cs" />
-    <Compile Include="WhitepapersConstants.cs" />
+    <Compile Include="WhitePagesConstants.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

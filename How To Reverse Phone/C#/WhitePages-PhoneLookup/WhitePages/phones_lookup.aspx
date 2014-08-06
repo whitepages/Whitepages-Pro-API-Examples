@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="phones_lookup.aspx.cs" Inherits="Whitepaper.phones_lookup" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="phones_lookup.aspx.cs" Inherits="WhitePages.phones_lookup" %>
 
 <!DOCTYPE html>
 
@@ -43,7 +43,7 @@
                         <asp:Literal ID="LiteralDndStatus" runat="server"></asp:Literal>
                     </p>
                     <p>
-                        <span>SPAN Score:</span>
+                        <span>Spam Score:</span>
                         <asp:Literal ID="LiteralSpanScore" runat="server"></asp:Literal>
                     </p>
                 </div>

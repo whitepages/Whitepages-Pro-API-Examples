@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Whitepaper {
+namespace WhitePages {
     
     
-    public partial class phones_lookup {
+    public partial class address_lookup {
         
         /// <summary>
         /// form1 control.
@@ -22,13 +22,22 @@ namespace Whitepaper {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// textBoxPhoneNumber control.
+        /// textBoxStreetLine1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textBoxPhoneNumber;
+        protected global::System.Web.UI.WebControls.TextBox textBoxStreetLine1;
+        
+        /// <summary>
+        /// textBoxCity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox textBoxCity;
         
         /// <summary>
         /// ButtonFind control.
@@ -67,66 +76,57 @@ namespace Whitepaper {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ResultDiv;
         
         /// <summary>
-        /// LitralPhoneNumber control.
+        /// LitralAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal LitralPhoneNumber;
+        protected global::System.Web.UI.WebControls.Literal LitralAddress;
         
         /// <summary>
-        /// LiteralPhoneCarrier control.
+        /// LiteralReceivingMail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal LiteralPhoneCarrier;
+        protected global::System.Web.UI.WebControls.Literal LiteralReceivingMail;
         
         /// <summary>
-        /// LiteralPhoneType control.
+        /// LiteralUsage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal LiteralPhoneType;
+        protected global::System.Web.UI.WebControls.Literal LiteralUsage;
         
         /// <summary>
-        /// LiteralDndStatus control.
+        /// LiteralDeliveryPoint control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal LiteralDndStatus;
+        protected global::System.Web.UI.WebControls.Literal LiteralDeliveryPoint;
         
         /// <summary>
-        /// LiteralSpanScore control.
+        /// LiteralPersonCount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal LiteralSpanScore;
+        protected global::System.Web.UI.WebControls.Literal LiteralPersonCount;
         
         /// <summary>
-        /// LiteralPeopleDetails control.
+        /// LiteralPersonDetails control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal LiteralPeopleDetails;
-        
-        /// <summary>
-        /// LiteralLocationDetails control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal LiteralLocationDetails;
+        protected global::System.Web.UI.WebControls.Literal LiteralPersonDetails;
     }
 }

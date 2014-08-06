@@ -14,31 +14,26 @@ namespace Utilities
         private const string PostRequest = "POST";
 
         /// <summary>
-        /// This method get learn ipc request based on ipc request.
+        /// This method get WhitePages API request Url.
         /// </summary>
-        /// <param name="ipcRequest"></param>
-        /// <param name="requestType"></param>
-        /// <returns></returns>
-        public string GetLeranIpcRequest(RequestApi requestApi, ref string requestType)
+        /// <param name="requestType">API Request Type will return as a ref parameter</param>
+        /// <returns>returns WhitePages request Url</returns>
+        public string GetWhitePagesRequest(ref string requestType)
         {
-            string ipcRequestUrl = string.Empty;
+            string whitePagesRequestUrl = string.Empty;
 
-            switch (requestApi)
-            {
-                case RequestApi.Person:
-                    ipcRequestUrl = ServerApis.WhitePapersPersonApi;
-                    requestType = GetRequest;
-                    break;
-            }
+            whitePagesRequestUrl = ServerApis.WhitePagesPersonApi;
+            requestType = GetRequest;
 
-            return ipcRequestUrl;
+            return whitePagesRequestUrl;
         }
 
         /// <summary>
         /// This method get request data for GET/POST requestType.
         /// </summary>
-        /// <param name="nameValues">nameValues</param>
-        /// <returns>requestData for GET/POST request.</returns>
+        /// <param name="requestType">requestType i.e GET/POST</param>
+        /// <param name="nameValues">Parameters NameValueCollection</param>
+        /// <returns>requestData for Get/Post</returns>
         public string GetRequestData(string requestType, NameValueCollection nameValues)
         {
             string requestData = string.Empty;

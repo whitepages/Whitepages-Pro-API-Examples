@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Utilities
 {
-    public class WhitepapersConstants
+    public class WhitePagesConstants
     {
+        // Need to specify the API key to access data from WhatPages API. This is mandatory. 
         public const string ApiKey = "";
 
         public const string ageSection = "<p><span>Age:</span> :AGE</p>";

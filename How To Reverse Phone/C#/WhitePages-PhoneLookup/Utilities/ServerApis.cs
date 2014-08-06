@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace Utilities
 {
-    public enum RequestApi
-    {
-        Phone
-    }
-
     public class ServerApis
     {
-        // DataService Apis
-        public const string WhitePapersPhoneApi = "http://proapi.whitepages.com/2.0/phone.json";
+        // WhitePages phone API
+        public const string WhitePagesPhoneApi = "http://proapi.whitepages.com/2.0/phone.json";
     }
 }

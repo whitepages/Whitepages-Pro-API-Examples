@@ -10,7 +10,7 @@ using System.Web.UI.WebControls;
 using Utilities;
 using WebService;
 
-namespace Whitepaper
+namespace WhitePages
 {
     public partial class address_lookup : System.Web.UI.Page
     {
@@ -58,15 +58,18 @@ namespace Whitepaper
 
                 nameValues["street_line_1"] = textBoxStreetLine1.Text;
                 nameValues["city"] = textBoxCity.Text;
-                nameValues["api_key"] = WhitepapersConstants.ApiKey;
+                nameValues["api_key"] = WhitePagesConstants.ApiKey;
 
-                WhitePapersWebService webService = new WhitePapersWebService();
-                Stream responseStream = webService.ExecuteWebRequest(RequestApi.Address, nameValues, out statusCode, out description, out errorMessage);
+                WhitePagesWebService webService = new WhitePagesWebService();
+                Stream responseStream = webService.ExecuteWebRequest(nameValues, ref statusCode, ref description, ref errorMessage);
 
                 if (statusCode == 200 && responseStream != null)
                 {
                     StreamReader reader = new StreamReader(responseStream);
                     string responseInJson = reader.ReadToEnd();
+
+                    // Dispose response stream
+                    responseStream.Dispose();
 
                     dynamic jsonObject = JsonConvert.DeserializeObject(responseInJson);
                     dynamic dictionaryObj = jsonObject.dictionary;
@@ -126,7 +129,7 @@ namespace Whitepaper
 
                                 foreach (string personKey in personKeyList)
                                 {
-                                    string personDataTemplates = WhitepapersConstants.PersonDataTemplates;
+                                    string personDataTemplates = WhitePagesConstants.PersonDataTemplates;
 
                                     dynamic personKeyObject = dictionaryObj[personKey];
 

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="address_lookup.aspx.cs" Inherits="Whitepaper.address_lookup" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="address_lookup.aspx.cs" Inherits="WhitePages.address_lookup" %>
 
 <!DOCTYPE html>
 

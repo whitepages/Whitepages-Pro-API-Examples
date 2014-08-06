@@ -10,17 +10,19 @@ using Utilities;
 
 namespace WebService
 {
-    public class WhitePapersWebService
+    public class WhitePagesWebService
     {
-        ///// <summary>
-        ///// This method execute web request to get response.
-        ///// </summary>
-        ///// <param name="request">request string to execute.</param>
-        ///// <returns>Response stream</returns>
-        public Stream ExecuteWebRequest(RequestApi requestApi, NameValueCollection requestDataNameValues, out int statusCode, out string statusDescription, out string errorMessage)
+        /// <summary>
+        /// This method execute web request to get response.
+        /// </summary>
+        /// <param name="requestDataNameValues">requestDataNameValues</param>
+        /// <param name="statusCode">statusCode</param>
+        /// <param name="statusDescription">statusDescription</param>
+        /// <param name="errorMessage">errorMessage</param>
+        /// <returns>responseStream</returns>
+        public Stream ExecuteWebRequest(NameValueCollection requestDataNameValues, ref int statusCode, ref string statusDescription, ref string errorMessage)
         {
             Stream responseStream = null;
-            statusCode = 1000;
             statusDescription = "Unknown";
             errorMessage = "Unknown error has occured.";
             try
@@ -31,7 +33,7 @@ namespace WebService
                 string authorization = requestDataNameValues["authorization"];
                 requestDataNameValues.Remove("authorization");
 
-                string request = requestData.GetLeranIpcRequest(requestApi, ref requestType);
+                string request = requestData.GetWhitePagesRequest(ref requestType);
                 string requestDataString = requestData.GetRequestData(requestType, requestDataNameValues);
 
                 HttpWebRequest httpRequest = null;
@@ -81,9 +83,6 @@ namespace WebService
 
                 // Get response stream
                 responseStream = response.GetResponseStream();
-
-                // Dispose the response stream.
-                //responseStream.Dispose();
             }
             catch (WebException webException)
             {
@@ -110,14 +109,12 @@ namespace WebService
                 }
                 catch (Exception ex)
                 {
-                    statusCode = 1008;
                     statusDescription = "ExceptionOccurred";
                     errorMessage = ex.Message;
                 }
             }
             catch (Exception ex)
             {
-                statusCode = 1008;
                 statusDescription = "ExceptionOccurred";
                 errorMessage = ex.Message;
             }

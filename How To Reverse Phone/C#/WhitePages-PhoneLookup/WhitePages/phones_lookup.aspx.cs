@@ -11,7 +11,7 @@ using System.Web.UI.WebControls;
 using Utilities;
 using WebService;
 
-namespace Whitepaper
+namespace WhitePages
 {
     public partial class phones_lookup : System.Web.UI.Page
     {
@@ -46,10 +46,10 @@ namespace Whitepaper
                     NameValueCollection nameValues = new NameValueCollection();
 
                     nameValues["phone"] = textBoxPhoneNumber.Text;
-                    nameValues["api_key"] = WhitepapersConstants.ApiKey;
+                    nameValues["api_key"] = WhitePagesConstants.ApiKey;
 
-                    WhitePapersWebService webService = new WhitePapersWebService();
-                    Stream responseStream = webService.ExecuteWebRequest(RequestApi.Phone, nameValues, out statusCode, out description, out errorMessage);
+                    WhitePagesWebService webService = new WhitePagesWebService();
+                    Stream responseStream = webService.ExecuteWebRequest(nameValues, ref statusCode, ref description, ref errorMessage);
 
                     if (statusCode == 200 && responseStream != null)
                     {
@@ -57,6 +57,10 @@ namespace Whitepaper
                         string responseInJson = reader.ReadToEnd();
 
                         dynamic jsonObject = JsonConvert.DeserializeObject(responseInJson);
+
+                        // Dispose response stream
+                        responseStream.Dispose();
+
                         dynamic dictionaryObj = jsonObject.dictionary;
                         string phoneKey = string.Empty;
 
@@ -75,7 +79,10 @@ namespace Whitepaper
                             string countryCallingCode = (string)phoneKeyObject["country_calling_code"];
                             string carrier = (string)phoneKeyObject["carrier"];
                             bool doNotCall = (bool)phoneKeyObject["do_not_call"];
-                            string reputation = (string)phoneKeyObject["reputation"];
+
+                            dynamic spamScoreObj = phoneKeyObject.reputation;
+
+                            string spamScore = (string)spamScoreObj["spam_score"];
 
                             phoneNumber = countryCallingCode + phoneNumber;
                             string formatedPhoneNumber = String.Format("{0:#-###-###-####}", Convert.ToInt64(phoneNumber));
@@ -95,9 +102,9 @@ namespace Whitepaper
 
                             ResultDiv.Visible = true;
 
-                            if (!string.IsNullOrEmpty(reputation))
+                            if (!string.IsNullOrEmpty(spamScore))
                             {
-                                LiteralSpanScore.Text = reputation + "%";
+                                LiteralSpanScore.Text = spamScore + "%";
                             }
                             else
                             {
@@ -131,7 +138,7 @@ namespace Whitepaper
 
                                 foreach (string personKey in personKeyListFromBelongsTo)
                                 {
-                                    string peopleData = WhitepapersConstants.PeopleDataTemplates;
+                                    string peopleData = WhitePagesConstants.PeopleDataTemplates;
 
                                     personKeyObject = dictionaryObj[personKey];
 
@@ -208,7 +215,7 @@ namespace Whitepaper
                                     string locationDetails = string.Empty;
                                     foreach (string locationKey in locationKeyList)
                                     {
-                                        string locationDataTemplate = WhitepapersConstants.LocationDataTemplates;
+                                        string locationDataTemplate = WhitePagesConstants.LocationDataTemplates;
 
                                         dynamic locationKeyObject = dictionaryObj[locationKey];
 
@@ -245,18 +252,21 @@ namespace Whitepaper
                     }
                     else
                     {
+                        ResultDiv.Visible = false;
                         errorBox.Visible = true;
                         LiteralErrorMessage.Text = errorMessage;
                     }
                 }
                 else
                 {
+                    ResultDiv.Visible = false;
                     errorBox.Visible = true;
                     LiteralErrorMessage.Text = "please enter phone number";
                 }
             }
             catch (Exception ex)
             {
+                ResultDiv.Visible = false;
                 errorBox.Visible = true;
                 LiteralErrorMessage.Text = ex.Message;
             }

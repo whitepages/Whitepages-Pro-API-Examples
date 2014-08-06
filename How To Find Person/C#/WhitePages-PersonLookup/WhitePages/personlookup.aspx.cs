@@ -10,7 +10,7 @@ using System.Web.UI.WebControls;
 using Utilities;
 using WebService;
 
-namespace Whitepaper
+namespace WhitePages
 {
     public partial class personlookup : System.Web.UI.Page
     {
@@ -65,15 +65,18 @@ namespace Whitepaper
                 nameValues["first_name"] = person_first_name.Text;
                 nameValues["last_name"] = person_last_name.Text;
                 nameValues["address"] = person_where.Text;
-                nameValues["api_key"] = WhitepapersConstants.ApiKey;
+                nameValues["api_key"] = WhitePagesConstants.ApiKey;
 
-                WhitePapersWebService webService = new WhitePapersWebService();
-                Stream responseStream = webService.ExecuteWebRequest(RequestApi.Person, nameValues, out statusCode, out description, out errorMessage);
+                WhitePagesWebService webService = new WhitePagesWebService();
+                Stream responseStream = webService.ExecuteWebRequest(nameValues, ref statusCode, ref description, ref errorMessage);
 
                 if (statusCode == 200 && responseStream != null)
                 {
                     StreamReader reader = new StreamReader(responseStream);
                     string responseInJson = reader.ReadToEnd();
+
+                    // Dispose the response stream.
+                    responseStream.Dispose();
 
                     dynamic jsonObject = JsonConvert.DeserializeObject(responseInJson);
                     dynamic dictionaryObj = jsonObject.dictionary;
@@ -90,8 +93,8 @@ namespace Whitepaper
                     {
                         foreach (string personKey in personKeyList)
                         {
-                            string personDataTemplates = WhitepapersConstants.PersonDataTemplates;
-                            string ageSection = WhitepapersConstants.ageSection;
+                            string personDataTemplates = WhitePagesConstants.PersonDataTemplates;
+                            string ageSection = WhitePagesConstants.ageSection;
 
                             dynamic personKeyObject = dictionaryObj[personKey];
 
@@ -170,6 +173,12 @@ namespace Whitepaper
 
                         LiteralPersonResult.Text = personData;
                     }
+                }
+                else
+                {
+                    personResult.Visible = false;
+                    errorDiv.Visible = true;
+                    LitralErrorMessage.Text = errorMessage;
                 }
             }
             catch (Exception ex)
