@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhitePagesIdentityScore", "WhitePagesIdentityScore\WhitePagesIdentityScore.csproj", "{AAE0DBBF-6318-4286-BD55-52B6A992AFA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService", "WebService\WebService.csproj", "{B08CFF98-55A7-4FF1-83B2-36C517E0B667}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{B4A26D8C-B4CB-4106-AD41-DCEB7B80D425}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AAE0DBBF-6318-4286-BD55-52B6A992AFA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAE0DBBF-6318-4286-BD55-52B6A992AFA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAE0DBBF-6318-4286-BD55-52B6A992AFA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAE0DBBF-6318-4286-BD55-52B6A992AFA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B08CFF98-55A7-4FF1-83B2-36C517E0B667}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B08CFF98-55A7-4FF1-83B2-36C517E0B667}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B08CFF98-55A7-4FF1-83B2-36C517E0B667}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B08CFF98-55A7-4FF1-83B2-36C517E0B667}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4A26D8C-B4CB-4106-AD41-DCEB7B80D425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4A26D8C-B4CB-4106-AD41-DCEB7B80D425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4A26D8C-B4CB-4106-AD41-DCEB7B80D425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4A26D8C-B4CB-4106-AD41-DCEB7B80D425}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
