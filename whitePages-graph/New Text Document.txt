@@ -1,0 +1,47 @@
+<div class="wrapper">
+            <div class="search_sec"> 
+                <p>Find by Phone</p>  
+                <form method="post" action="">  
+                    <input type="text" name="phone" placeholder="Phone number" value="<?php echo $req_phone_number ?>" id="phone" class="inputbox" > 
+                    <input type="Submit" name="submit" value="Find" class="find_btn" > 
+                    <input type="button" name="clear" value="Clear" class="find_btn"  onclick="clearData();"> 
+                </form> 
+            </div> 
+
+            <?php if (!empty($error)) { ?>
+                <div class="error_box">
+                    <?php echo $error; ?> 
+                </div>
+            <?php } ?>
+
+            <?php if (empty($error) && $data_type) { ?>
+
+                <div class="detail_wrapper">
+                    <div class="detail_box">
+                        <h1>Phone</h1>
+                        <p>+<?php echo $phone_country_calling_code ?>-<?php echo substr($phone_phone_number, 0, 3) . "-" . substr($phone_phone_number, 3, 3) . "-" . substr($phone_phone_number, 6); ?></p>
+                        <p><span>Carrier:</span> <?php echo $phone_carrier ?> </p>
+                        <p><span>Phone Type:</span> <?php echo $phone_line_type ?> </p>
+                        <p><span>Do not Call registry:</span> <?php echo $phone_do_not_call ?></p>
+                        <p><span>SPAN Score:</span> <?php echo $phone_spam_score ?>%</p>
+                    </div>
+                    <div class="detail_box">
+                        <h1>People</h1>
+                        <p><?php echo $person_names_best_name ?></p>
+                        <p><span>Type:</span> <?php echo $contact_type ?></p>  
+                    </div>
+                    <div class="detail_box">
+                        <h1>Location</h1>
+                        <p>
+                            <?php echo $location_address ?>  
+                        </p>
+                        <p><span>Receiving mail:</span> <?php echo $is_receiving_mail ?></p>
+                        <p><span>Usage:</span> <?php echo $usage ?></p>
+                        <p><span>Delivery Point:</span> <?php echo $delivery_point ?></p> 
+                    </div>
+                    <br />
+
+                    <br />
+                </div> 
+            <?php } ?>
+        </div>   

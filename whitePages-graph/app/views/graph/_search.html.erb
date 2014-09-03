@@ -1,0 +1,32 @@
+
+<div id="wp_graph">
+    <div class="result_box"></div>
+  <% unless @response.to_s == "No records found" %>
+    <div class="wrapper_graph">
+      <div id="svg"></div>
+    </div>
+  <script type="text/javascript">
+      $(document).ready( function() {
+          $("#svg").svg({
+                  onLoad: function()
+                  {
+                      var svg = $("#svg").svg('get');
+                      svg.load('/graph_search.svg', {addTo: true,  changeSize: true});
+                  },
+                  settings: {}}
+          );
+
+          $("#overlay").hide();
+          var hd_width = $("svg").width();
+          if (hd_width)  {
+             // $(".header").width($("svg").width()+30);
+          }
+      });
+  </script>
+
+   <% end %>
+</div>
+
+
+
+

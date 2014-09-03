@@ -1,0 +1,27 @@
+<div class="wrapper_graph">
+
+  <% if  @post && @error.blank? %>
+      <!--<div class="result_box">-->
+        <%#=@results_size%> <!-- result found for <span><%#=@standard_address_line1%>  <%#=@standard_address_location%></span> -->
+      <!--</div>-->
+      <div id="svgload"></div>
+
+  <% end %>
+
+  <script type="text/javascript">
+      $(document).ready( function() {
+
+          $("#svgload").svg({
+                  onLoad: function()
+                  {
+                      var svg = $("#svgload").svg('get');
+                      svg.load('/whitepages-address.svg', {addTo: true,  changeSize: true});
+                  },
+                  settings: {}}
+          );
+
+
+      });
+  </script>
+
+</div>

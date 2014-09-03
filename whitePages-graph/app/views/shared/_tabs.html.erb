@@ -1,0 +1,110 @@
+<div class="container">
+  <div id="tab-container">
+    <ul class="tab-menu">
+      <li id="fnumber" <% if params["action"] == "index" || @search_for == "phone"%>class="active" <% else %> class=""<% end%>><%= link_to "Find by Phone Number", graph_phones_path  %></li>
+      <li id="faddress" <% if params["action"] == "address" || @search_for == "location"%>class="active" <% else %> class=""<% end%>><%= link_to "Find by Address", graph_address_path  %></li>
+      <li id="fperson" <% if params["action"] == "person" || @search_for == "person"%>class="active" <% else %> class=""<% end%>><%= link_to "Find Person", graph_person_path  %></li>
+      <li id="fbusiness" <% if params["action"] == "find_business" || @search_for == "business"%>class="active" <% else %> class=""<% end%>><%= link_to "Find Business", graph_business_path  %></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="tab-top-border"></div>
+
+    <div id="fnumber-tab" class="tab-content <% if params["action"] == "index" || @search_for == "phone"%>active<% end%>">
+      <div class="search_sec">
+        <%= form_tag("phone", method: "post", :id=>'gp') do %>
+            <%= text_field_tag :api_key, @api_key,:placeholder => "API KEY" ,:class=>'inputbox'%>
+            <%= text_field_tag :phone_number, @phone_number,:placeholder => "Phone Number" ,:class=>'inputbox'%>
+            <%= submit_tag "Find" ,:class=>'find_btn' %> &nbsp;   <input type="button" value="Clear" id="clear_phone_btn" class='clear_btn'>
+
+        <% end %>
+      </div>
+
+    </div>
+
+
+    <div id="faddress-tab" class="tab-content <% if params["action"] == "address" || @search_for == "location"%>active<% end%>">
+      <div class="search_sec">
+        <%= form_tag("address", method: "post") do %>
+            <%= text_field_tag :api_key, @api_key,:placeholder => "API KEY" ,:class=>'inputbox'%>
+            <%= text_field_tag :address_street_line_1 , @standard_address_line1 ,:placeholder => "Street Address or name" ,:class=>'inputbox' %>
+            <%= text_field_tag :address_city , @standard_address_location ,:placeholder => "City and State or Zip" ,:class=>'inputbox' %>
+            <%= submit_tag "Find"  ,:class=>'find_btn'%>   &nbsp;   <input type="button" value="Clear" id="clear_address_btn"  class='clear_btn'>
+        <% end %>
+      </div>
+    </div>
+
+    <div id="fperson-tab" class="tab-content <% if params["action"] == "person" || @search_for == "person"%>active<% end%>">
+      <div class="search_sec">
+        <%= form_tag("person", method: "post") do %>
+            <%= text_field_tag :api_key, @api_key,:placeholder => "API KEY" ,:class=>'inputbox'%>
+            <%= text_field_tag :person_first_name , @first_name ,:placeholder => "First Name" ,:class=>'inputbox' %>
+            <%= text_field_tag :person_last_name , @last_name ,:placeholder => "Last Name" ,:class=>'inputbox' %>
+            <%= text_field_tag :person_where , @address ,:placeholder => "City, State, ZIP or Address" ,:class=>'inputbox'%>
+            <%= submit_tag "Find"  ,:class=>'find_btn'%> &nbsp;   <input type="button" value="Clear" id="clear_person_btn"  class='clear_btn'>
+        <% end %>
+      </div>
+    </div>
+
+    <div id="fbusiness-tab" class="tab-content <% if params["action"] == "find_business" || @search_for == "business"%>active<% end%>">
+      <div class="search_sec">
+        <%= form_tag("business", method: "post") do %>
+            <%= text_field_tag :api_key, @api_key,:placeholder => "API KEY" ,:class=>'inputbox'%>
+            <%= text_field_tag :business_name ,@business_name,:placeholder => "Business Name" ,:class=>'inputbox' %>
+            <%= text_field_tag :city , @city  ,:placeholder => "city" ,:class=>'inputbox'%>
+            <%= text_field_tag :state , @state_code ,:placeholder => "State" ,:class=>'inputbox'%>
+            <%= submit_tag "Find"  ,:class=>'find_btn'%> &nbsp;   <input type="button" value="Clear" id="clear_business_btn" class='clear_btn'>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="result_error_sec">
+  <div class="result_box">
+    <% unless @error.blank? %>
+        <%= render "shared/error" %>
+    <% else %>
+        <%= render "shared/results" %>
+    <% end %>
+
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        $('#clear_phone_btn').click(function() {
+            $("input#api_key").val("");
+            $("input#phone_number").val("");
+        });
+
+        $('#clear_address_btn').click(function() {
+            $("input#api_key").val("");
+            $("input#address_street_line_1").val("");
+            $("input#address_city").val("");
+        });
+
+        $('#clear_person_btn').click(function() {
+            $("input#api_key").val("");
+            $("input#person_first_name").val("");
+            $("input#person_last_name").val("");
+            $("input#person_where").val("");
+        });
+
+        $('#clear_business_btn').click(function() {
+            $("input#api_key").val("");
+            $("input#business_name").val("");
+            $("input#city").val("");
+            $("input#state").val("");
+        });
+
+
+
+    });
+
+
+</script>

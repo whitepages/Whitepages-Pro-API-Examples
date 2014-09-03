@@ -1,0 +1,24 @@
+<% if @search_for%>
+<% unless @response.to_s == "No records found" %>
+<%=@results_size%>  result found for <span>
+      <% if  @search_for == "phone" %>
+      <%=@phone_number%>
+      <% elsif @search_for == "location"%>
+      <%=@standard_address_line1%>  <%=@standard_address_location%>
+      <% elsif @search_for == "person"%>
+      <%=@first_name%>  <%=@last_name %> <%=@address%>
+       <% elsif @search_for == "business"%>
+      <%=@business_name%>  <%=@city %>  <%=@state_code%>
+      <% end %>
+    </span>
+
+<%else%>
+    <div class="error_box"> No records found</div>
+    <script type="text/javascript">
+        $(document).ready( function() {
+            $("#overlay").hide();
+        });
+    </script>
+<%end%>
+
+<% end %>

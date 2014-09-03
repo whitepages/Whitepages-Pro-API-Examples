@@ -1,0 +1,17 @@
+<html>
+<head>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script>
+    $( document ).ready(function() {
+       $.get( "http://proapi.whitepages.com/2.0/phone.json?phone=206-973-5100&api_key=6b5a968507f728b72bac005321001c28", function( data ) {
+  $( ".result" ).html( data );
+  alert( "Load was performed." );
+});
+    });
+  
+    </script>
+</head>
+<body>
+     <div class="result"></div>
+</body>
+</html>

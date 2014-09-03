@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WhitePages</title>
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+  <script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    var  graphSearch =  "<%=search_path%>";
+</script>
+
+<div id="overlay" style="display: none;">Loading...</div>
+
+<div class="wrapper">
+<div class="header"> <img src="/assets/logo.png" width="185" height="54" border="0"></div>
+</div>
+
+
+<div id="wp_tabs">
+    <%= render "shared/tabs"%>
+</div>
+
+
+
+
+
+<div id="wp_graph" style="text-align: center;">
+  <%= yield %>
+</div>
+</body>
+</html>

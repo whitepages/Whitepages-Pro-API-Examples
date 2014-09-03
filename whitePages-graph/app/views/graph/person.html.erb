@@ -1,0 +1,23 @@
+<div class="wrapper_graph">
+  <% if  @post && @error.blank? %>
+
+      <div id="svgload"></div>
+
+  <% end %>
+
+<script type="text/javascript">
+    $(document).ready( function() {
+        $("#svgload").svg({
+                onLoad: function()
+                {
+                    var svg = $("#svgload").svg('get');
+                    svg.load('/whitepages-person.svg', {addTo: true,  changeSize: true});
+                },
+                settings: {}}
+        );
+
+
+    });
+</script>
+
+</div>
