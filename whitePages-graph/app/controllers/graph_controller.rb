@@ -293,10 +293,8 @@ class GraphController < ApplicationController
                 # Added metadata for phone in title attribute 
                 node_title = "Name: " + value["best_name"].to_s + "&#10;"  if value["best_name"]
                 node_title = node_title + "Type: " + value["id"]["type"].to_s + "&#10;"  if value["id"]["type"]
-                node_title = node_title + "Age: " + value["age_range"]["start"].to_s + " - " + value["age_range"]["end"].to_s + "&#10;"  if value["age_range"]
-                node_text << "\n" << value["id"]["type"] << "\n" << value["id"]["durability"]
-                node_text = value["best_name"]
-                node_text << "\n" << value["id"]["type"] << "\n" << value["id"]["durability"]
+                node_title = node_title + "Age: " + value["age_range"]["start"].to_s + " - " + value["age_range"]["end"].to_s + "&#10;"  if value["age_range"] 
+                node_text = value["best_name"] 
               when "Phone"
                 country_calling_code = ""
                 if value["country_calling_code"]
@@ -319,8 +317,7 @@ class GraphController < ApplicationController
                   spam_score = "0".to_s + "%"
                 end
                 node_title = node_title + "Spam Score: " + spam_score + "&#10;"
-                node_text = value["phone_number"]
-                node_text << "\n" << value["id"]["type"] << "\n" << value["id"]["durability"]
+                node_text = value["phone_number"] 
               when "Location"
                 node_title = ""
                 receiving_mail = "No"
@@ -344,16 +341,10 @@ class GraphController < ApplicationController
                     node_text << '\n' unless node_text.length.zero?
                     node_text << v
                   end
-                end
-                node_text << "\n" << value["id"]["type"] << "\n" << value["id"]["durability"]
-                node_text <<  '\n' << "Receiving Mail: " + receiving_mail   if value["is_receiving_mail"]
-                node_text <<  '\n' << "Usage: " + value["usage"].to_s   if value["usage"]
-                node_text <<  '\n' << "Delivery Point: " + value["delivery_point"].to_s.split('Unit').first.to_s + " Unit"   if value["delivery_point"]
-
+                end 
               when "Business"
                 node_title = "Business Name: " + value["name"].to_s + "&#10;"  if value["name"]
-                node_text = value["name"]
-                node_text << "\n" << value["id"]["type"] << "\n" << value["id"]["durability"]
+                node_text = value["name"] 
               else
                 node_text = "unknown"
             end
@@ -361,6 +352,8 @@ class GraphController < ApplicationController
             unless dictionary[results[0]]["associated_locations"].blank?
               associated_locations_url = dictionary[results[0]]["associated_locations"][0]["id"]["url"]
             end 
+
+            node_text << "\n" << value["id"]["type"] << "\n" << value["id"]["durability"]
 
             if value["id"]["type"] == "Person"
               node_color = "#8dbd40"
@@ -373,7 +366,7 @@ class GraphController < ApplicationController
             end
 
             # build the nodes 
-            value["node"] = g.add_nodes(node_text, { "tooltip" => node_title,shape: "record",color:node_color }.merge(DEFAULT_FORMAT).merge(NODE_ATTRIBUTES))
+            value["node"] = g.add_nodes(node_text, { "tooltip" => node_title, color:node_color }.merge(DEFAULT_FORMAT).merge(NODE_ATTRIBUTES))
             value["node"]["URL"] = "##{value["id"]["url"].nil? ? associated_locations_url : value["id"]["url"]}"
           end
 
@@ -419,8 +412,7 @@ class GraphController < ApplicationController
             v["fillcolor"] = "#cccccc"
             v["color"] = "#cccccc"
             v["shape"] = "circle"
-            v["width"] = '0.60'
-            v["width"] = '0.60'
+            v["width"] = '0.70' 
             v["fixedsize"] = 'true'
             v["label"] = k.to_s.split('.').first.capitalize
             v["tooltip"] = k.to_s.split('.').first.capitalize
