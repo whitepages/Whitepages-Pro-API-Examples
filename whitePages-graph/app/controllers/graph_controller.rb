@@ -5,10 +5,10 @@ require 'uri'
 
 DEFAULT_FORMAT = { :fontsize=>8 , :fontname=>"monaco" }
 NODE_ATTRIBUTES = {
- :shape => "Mrecord",
+ :shape => "rectangle",
  :fontsize => 8,
  :fontname => "Arial",
- :margin => "0.07,0.05",
+ :margin => "0.35,0.10",
  :penwidth => 1.0
 }
 
@@ -272,7 +272,7 @@ class GraphController < ApplicationController
       # make a request to whitepages
       response = HTTParty.get(request)
       # Create a new graph
-      g = GraphViz::new( "whitePages" ,:use => "dot" )
+      g = GraphViz::new( "#" ,:use => "dot" )
       { labelloc: "t" }.merge(DEFAULT_FORMAT).each { |k, v| g[k] = v }
 
       dictionary = response["dictionary"]
@@ -294,7 +294,9 @@ class GraphController < ApplicationController
                 node_title = "Name: " + value["best_name"].to_s + "&#10;"  if value["best_name"]
                 node_title = node_title + "Type: " + value["id"]["type"].to_s + "&#10;"  if value["id"]["type"]
                 node_title = node_title + "Age: " + value["age_range"]["start"].to_s + " - " + value["age_range"]["end"].to_s + "&#10;"  if value["age_range"]
+                node_text << "\n" << value["id"]["type"] << "\n" << value["id"]["durability"]
                 node_text = value["best_name"]
+                node_text << "\n" << value["id"]["type"] << "\n" << value["id"]["durability"]
               when "Phone"
                 country_calling_code = ""
                 if value["country_calling_code"]
@@ -318,6 +320,7 @@ class GraphController < ApplicationController
                 end
                 node_title = node_title + "Spam Score: " + spam_score + "&#10;"
                 node_text = value["phone_number"]
+                node_text << "\n" << value["id"]["type"] << "\n" << value["id"]["durability"]
               when "Location"
                 node_title = ""
                 receiving_mail = "No"
@@ -329,8 +332,8 @@ class GraphController < ApplicationController
                   usage =  value["usage"].to_s
                 end
                 delivery_point = "Not defined"
-                if value["usage"]
-                  delivery_point =  value["delivery_point"].to_s
+                if value["delivery_point"]
+                  delivery_point =  value["delivery_point"].to_s.split('Unit').first.to_s + " Unit"
                 end
                 node_title = "Usage: " + usage + "&#10;"
                 node_title =  node_title + "Receiving Mail: " + receiving_mail.to_s + "&#10;"
@@ -342,18 +345,22 @@ class GraphController < ApplicationController
                     node_text << v
                   end
                 end
+                node_text << "\n" << value["id"]["type"] << "\n" << value["id"]["durability"]
+                node_text <<  '\n' << "Receiving Mail: " + receiving_mail   if value["is_receiving_mail"]
+                node_text <<  '\n' << "Usage: " + value["usage"].to_s   if value["usage"]
+                node_text <<  '\n' << "Delivery Point: " + value["delivery_point"].to_s.split('Unit').first.to_s + " Unit"   if value["delivery_point"]
+
               when "Business"
                 node_title = "Business Name: " + value["name"].to_s + "&#10;"  if value["name"]
                 node_text = value["name"]
+                node_text << "\n" << value["id"]["type"] << "\n" << value["id"]["durability"]
               else
                 node_text = "unknown"
             end
             associated_locations_url = "#"
             unless dictionary[results[0]]["associated_locations"].blank?
               associated_locations_url = dictionary[results[0]]["associated_locations"][0]["id"]["url"]
-            end
-
-            node_text << "\n" << value["id"]["type"] << "\n" << value["id"]["uuid"][0...27] << "\n" << value["id"]["durability"]
+            end 
 
             if value["id"]["type"] == "Person"
               node_color = "#8dbd40"
@@ -376,9 +383,9 @@ class GraphController < ApplicationController
             edge_sets = [{edges: (value["locations"] || []).select{|x| x["is_historical"] == true} , descr: "historical"},
              {edges: (value["locations"] || []).select{|x| x["is_historical"] == false}, descr: "location"},
              {edges: value["phones"] || [], descr: "phone"},
-             {edges: value["legal_entities_at"] || [], descr: "legal\nentity at"},
+             {edges: value["legal_entities_at"] || [], descr: "legal&#10;entity at"},
              {edges: value["belongs_to"] || [], descr: "belongs to"},
-             {edges: value["associated_locations"] || [], descr: "associated\nlocation"},
+             {edges: value["associated_locations"] || [], descr: "associated&#10;location"},
             ]
 
             edge_sets.each do |edge_set|
@@ -386,9 +393,9 @@ class GraphController < ApplicationController
                 url = edge["id"]["url"].nil? ? "#" : edge["id"]["url"]
                 destination_node = (dictionary[edge["id"]["key"]] && dictionary[edge["id"]["key"]]["node"]) ||
                  unfulfilled_nodes[edge["id"]["key"]] ||
-                 unfulfilled_nodes[edge["id"]["key"]] = g.add_nodes(edge["id"]["key"], {"URL" => "##{url}" ,"tooltip" => "#88888"}.merge(GRAPH_ATTRIBUTES))
+                 unfulfilled_nodes[edge["id"]["key"]] = g.add_nodes(edge["id"]["key"], {"URL" => "##{url}" ,"tooltip" => "#"}.merge(GRAPH_ATTRIBUTES))
 
-                e = g.add_edges( value["node"], destination_node, { label: edge_set[:descr] }.merge(EDGE_ATTRIBUTES) )
+                e = g.add_edges( value["node"], destination_node, { label: edge_set[:descr], tooltip: edge_set[:descr]}.merge(EDGE_ATTRIBUTES) )
               end
             end
           end
@@ -400,8 +407,10 @@ class GraphController < ApplicationController
             dictionary[key]["node"]["style"] = "filled"
             dictionary[key]["node"]["fillcolor"] = "#46a3cc"
             dictionary[key]["node"]["color"] = "#46a3cc"
-            dictionary[key]["node"]["shape"] = "poly"
+            dictionary[key]["node"]["shape"] = "rectangle"
             dictionary[key]["node"]["fontcolor"] = "white"
+            dictionary[key]["node"]["margin"] = "0.35,0.10"
+
           end
 
           # gray the unfulfilled nodes style and shape
@@ -410,10 +419,11 @@ class GraphController < ApplicationController
             v["fillcolor"] = "#cccccc"
             v["color"] = "#cccccc"
             v["shape"] = "circle"
-            v["width"] = '0.45'
-            v["width"] = '0.45'
+            v["width"] = '0.60'
+            v["width"] = '0.60'
             v["fixedsize"] = 'true'
-            v["label"] = k.to_s.split('.').first.downcase
+            v["label"] = k.to_s.split('.').first.capitalize
+            v["tooltip"] = k.to_s.split('.').first.capitalize
           end
 
           # output as SVG 
