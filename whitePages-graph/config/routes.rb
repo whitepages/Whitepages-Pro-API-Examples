@@ -1,5 +1,6 @@
 WhitePages::Application.routes.draw do
   get "graph/index"
+  match 'graph' => "graph#index", :as => :graph_phones, :via => :get
 
   match 'graph/phone' => "graph#index", :as => :graph_phones, :via => :get
   match 'graph/phone' => "graph#index", :as => :graph_phones, :via => :post
@@ -15,11 +16,7 @@ WhitePages::Application.routes.draw do
   match 'graph/address' => "graph#address", :as => :graph_address, :via => :post
   match 'graph/search' => "graph#search", :as => :search, :via => :post
 
-  match 'graph/search_graph' => "graph#search_graph", :as => :search_graph, :via => :get
-
-
-
-
+ 
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

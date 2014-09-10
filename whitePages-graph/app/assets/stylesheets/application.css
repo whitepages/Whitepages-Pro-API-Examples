@@ -28,14 +28,16 @@
 }
 
 .header{
-    width:80%;
-    margin:0 auto;
+    position: relative;
+    height: 60px;
     padding:10px 0;
 }
 
-.header img{
-
+.header img{ 
     margin:0;
+    /*position: absolute;*/
+    /*left: 130px;*/
+    /*top: 15px;*/
 }
 
 .container{

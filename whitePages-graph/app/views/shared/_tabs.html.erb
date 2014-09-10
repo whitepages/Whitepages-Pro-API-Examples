@@ -1,5 +1,5 @@
 <div class="container">
-  <div id="tab-container">
+  <div id="tab-container"> <img src="/assets/logo.png" width="185" height="54" border="0" style="display: inline-block; position: absolute; margin-top: -92px;" >
     <ul class="tab-menu">
       <li id="fnumber" <% if params["action"] == "index" || @search_for == "phone"%>class="active" <% else %> class=""<% end%>><%= link_to "Find by Phone Number", graph_phones_path  %></li>
       <li id="faddress" <% if params["action"] == "address" || @search_for == "location"%>class="active" <% else %> class=""<% end%>><%= link_to "Find by Address", graph_address_path  %></li>
@@ -11,16 +11,13 @@
 
     <div id="fnumber-tab" class="tab-content <% if params["action"] == "index" || @search_for == "phone"%>active<% end%>">
       <div class="search_sec">
-        <%= form_tag("phone", method: "post", :id=>'gp') do %>
+        <%= form_tag(graph_phones_path, method: "post", :id=>'gp') do %>
             <%= text_field_tag :api_key, @api_key,:placeholder => "API KEY" ,:class=>'inputbox'%>
             <%= text_field_tag :phone_number, @phone_number,:placeholder => "Phone Number" ,:class=>'inputbox'%>
             <%= submit_tag "Find" ,:class=>'find_btn' %> &nbsp;   <input type="button" value="Clear" id="clear_phone_btn" class='clear_btn'>
-
         <% end %>
       </div>
-
     </div>
-
 
     <div id="faddress-tab" class="tab-content <% if params["action"] == "address" || @search_for == "location"%>active<% end%>">
       <div class="search_sec">
@@ -56,10 +53,8 @@
         <% end %>
       </div>
     </div>
-
   </div>
 </div>
-
 
 <div class="result_error_sec">
   <div class="result_box">
@@ -68,15 +63,11 @@
     <% else %>
         <%= render "shared/results" %>
     <% end %>
-
   </div>
 </div>
 
-
 <script type="text/javascript">
-
     $(document).ready(function() {
-
         $('#clear_phone_btn').click(function() {
             $("input#api_key").val("");
             $("input#phone_number").val("");
@@ -101,10 +92,5 @@
             $("input#city").val("");
             $("input#state").val("");
         });
-
-
-
     });
-
-
 </script>

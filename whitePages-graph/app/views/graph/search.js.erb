@@ -1,20 +1,14 @@
 <% if  @flag == true%>
-
-//$(".tab-menu li").removeClass('active');
-
-$('#wp_graph').replaceWith("<%= escape_javascript render(:partial => 'graph/search',:locals => {:response => @response}) %>");
-$('#wp_tabs').html("<%= escape_javascript render(:partial => 'shared/tabs',:locals => {:search_for => @search_for}) %>");
-//$('.result_box').html("<%#= escape_javascript render(:partial => 'shared/results',:locals => {:search_for => @search_for,:response => @response}) %>");
-
-$(".tab-content").hide();
-<% if @search_for == "location"%>
-$("#faddress-tab").show();
-<% elsif @search_for == "phone"%>
-$("#fnumber-tab").show();
-<% elsif @search_for == "person"%>
-$("#fperson-tab").show();
-<% elsif @search_for == "business"%>
-$("#fbusiness-tab").show();
-<% end %>
-
+    $('#wp_graph').replaceWith("<%= escape_javascript render(:partial => 'graph/search',:locals => {:response => @response,:error=> @error}) %>");
+    $('#wp_tabs').html("<%= escape_javascript render(:partial => 'shared/tabs',:locals => {:search_for => @search_for}) %>");
+    $(".tab-content").hide();
+    <% if @search_for == "location"%>
+        $("#faddress-tab").show();
+    <% elsif @search_for == "phone"%>
+        $("#fnumber-tab").show();
+    <% elsif @search_for == "person"%>
+        $("#fperson-tab").show();
+    <% elsif @search_for == "business"%>
+        $("#fbusiness-tab").show();
+    <% end %>
 <% end %>

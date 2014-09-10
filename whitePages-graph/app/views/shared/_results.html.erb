@@ -1,6 +1,7 @@
 <% if @search_for%>
-<% unless @response.to_s == "No records found" %>
-<%=@results_size%>  result found for <span>
+    <% unless @results_size.to_s == "No records found" %>
+        <% if @results_size %>
+            <%=@results_size%>  result found for <span>
       <% if  @search_for == "phone" %>
       <%=@phone_number%>
       <% elsif @search_for == "location"%>
@@ -11,14 +12,13 @@
       <%=@business_name%>  <%=@city %>  <%=@state_code%>
       <% end %>
     </span>
-
-<%else%>
-    <div class="error_box"> No records found</div>
-    <script type="text/javascript">
-        $(document).ready( function() {
-            $("#overlay").hide();
-        });
-    </script>
-<%end%>
-
+        <%end%>
+    <%else%>
+        <div class="error_box"> No records found</div>
+        <script type="text/javascript">
+            $(document).ready( function() {
+                $("#overlay").hide();
+            });
+        </script>
+    <%end%>
 <% end %>

@@ -15,58 +15,20 @@
 //= require_tree .
 
 $(document).ready(function() {
-
-
-
-
-
-//    var activeTabIndex = -1;
-//    var tabNames = ["fnumber","faddress","fperson", "fbusiness"];
-//
-//    $(".tab-menu > li").click(function(e){
-//        for(var i=0;i<tabNames.length;i++) {
-//            if(e.target.id == tabNames[i]) {
-//                activeTabIndex = i;
-//            } else {
-//                $("#"+tabNames[i]).removeClass("active");
-//                $("#"+tabNames[i]+"-tab").css("display", "none");
-//            }
-//        }
-//        $("#"+tabNames[activeTabIndex]+"-tab").fadeIn();
-//        $("#"+tabNames[activeTabIndex]).addClass("active");
-//        //return false;
-//    });
-
-
-
-
-
-
-    $(document).on('click','svg a',function(){
-
-        var req_url = $(this).attr('xlink:href');
-        req_url =  req_url.substring(1);
-        if (req_url != "#"){
+    // When the back button triggers
+    $(window).on("popstate", function() {
+        var req_url = location.href;
+        if (req_url.indexOf("#") > -1) {
+            var url =   req_url.split('#')[1];
             $("#overlay").show();
-
-            var phone_number =  $("#phone_number").val();
-            $.post(graphSearch,{ url: req_url,phone:phone_number} ,function(result){
-                // $("#svgload").html(result);
-            });
-
+            $.post(graphSearch,{ url: url} ,function(result){ });
+        }else{
+            window.location =  location.href;
         }
-
     });
-
 
     $(".tab-menu li").click(function(e){
         $("div#search_form").hide();
     });
-
-    $(".find_btn").live( "click", function() {
-        $("#overlay").show();
-    });
-
-
 
 });
