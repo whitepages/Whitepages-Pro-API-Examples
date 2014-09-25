@@ -10,7 +10,7 @@
                       onLoad: function()
                       {
                           var svg = $("#svg").svg('get');
-                          svg.load('/graph_search.svg', {addTo: true,  changeSize: true, onLoad: header_width});
+                          svg.load('/graph/graph_search_<%=session[:encrypt_key]%>.svg', {addTo: true,  changeSize: true, onLoad: header_width});
                       },
                       settings: {}}
               );

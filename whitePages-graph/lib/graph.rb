@@ -181,10 +181,11 @@ module Graph
           # output as SVG
           g.output(:svg => ARGV[1])
           fileName =  File.join(Rails.root, '/'+ARGV[1])
-
+          dir = './public/graph'
+          Dir.mkdir(dir) unless File.exists?(dir)
           if File::exist?( fileName)
             File.chmod(0777, fileName)
-            FileUtils.mv(fileName,'./public')
+            FileUtils.mv(fileName,dir)
           end
           return results_size
         else

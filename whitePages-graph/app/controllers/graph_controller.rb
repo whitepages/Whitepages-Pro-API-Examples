@@ -3,6 +3,7 @@ require 'httparty'
 require 'json'
 require 'uri'
 require 'graph'
+require 'cipher'
 require "white_pages_api"
 
 class GraphController < ApplicationController
@@ -16,6 +17,7 @@ class GraphController < ApplicationController
       @phone_number.strip!
       unless params[:api_key].blank?
         unless params[:phone_number].blank?
+          encrypt(@api_key)
           wp_obj = WhitePagesApi.new(@api_key)
           wp_obj.phone = @phone_number
           @graph_url = wp_obj.get_phone_url
@@ -40,6 +42,7 @@ class GraphController < ApplicationController
       unless params[:api_key].blank?
         unless params[:address_street_line_1].blank?
           unless params[:address_city].blank?
+            encrypt(@api_key)
             wp_obj = WhitePagesApi.new(@api_key)
             wp_obj.street_line_1 = @standard_address_line1
             wp_obj.city = @standard_address_location
@@ -71,6 +74,7 @@ class GraphController < ApplicationController
         unless params[:person_first_name].blank?
           unless params[:person_last_name].blank?
             unless params[:person_where].blank?
+              encrypt(@api_key)
               searchString = searchString + "first_name=#{@first_name}"  + "&last_name=#{@last_name}"  + "&address=#{@address}"
               wp_obj = WhitePagesApi.new(@api_key)
               wp_obj.first_name = @first_name
@@ -106,6 +110,7 @@ class GraphController < ApplicationController
         unless params[:business_name].blank?
           unless params[:city].blank?
             unless params[:state].blank?
+              encrypt(@api_key)
               wp_obj = WhitePagesApi.new(@api_key)
               wp_obj.business_name = @business_name
               wp_obj.city = @city
@@ -218,7 +223,9 @@ class GraphController < ApplicationController
         wp_obj.state = @state_code
         request_query_string = wp_obj.get_business_url
       end
-      @results_size = Graph.create_svg(URI.unescape(request_query_string),'graph_search.svg')  if request_query_string
+      encrypt(api_key)
+      graph_name = "graph_search_" + session[:encrypt_key] +  ".svg"
+      @results_size = Graph.create_svg(URI.unescape(request_query_string),graph_name)  if request_query_string
     end
   end
 
@@ -230,12 +237,14 @@ class GraphController < ApplicationController
       location_params = str_params.to_s.split('&')
       @standard_address_line1 =  URI.unescape(location_params[0].to_s.split('=').last)
       @standard_address_location =  URI.unescape(location_params[1].to_s.split('=').last)
+      api_key =  URI.unescape(location_params[2].to_s.split('=').last)
       @flag = true
       @search_for = "location"
     elsif url.include? "phone"
       str_params = url.to_s.split('json?').last
       phone_params = str_params.to_s.split('&')
       @phone_number =   URI.unescape(phone_params[0].to_s.split('=').last)
+      api_key =  URI.unescape(phone_params[1].to_s.split('=').last)
       @flag = true
       @search_for = "phone"
     elsif  url.include? "person"
@@ -246,6 +255,7 @@ class GraphController < ApplicationController
       @first_name = URI.unescape(person_params[0].to_s.split('=').last)
       @last_name =  URI.unescape(person_params[1].to_s.split('=').last)
       @address =  URI.unescape(person_params[2].to_s.split('=').last)
+      api_key =  URI.unescape(person_params[3].to_s.split('=').last)
     elsif url.include? "business"
       @flag = true
       @search_for = "business"
@@ -254,8 +264,24 @@ class GraphController < ApplicationController
       @business_name = URI.unescape(business_params[0].to_s.split('=').last)
       @city  =  URI.unescape(business_params[1].to_s.split('=').last)
       @state_code =  URI.unescape(business_params[2].to_s.split('=').last)
+      api_key =  URI.unescape(business_params[3].to_s.split('=').last)
     end
-    @results_size = Graph.create_svg(URI.unescape(url),'graph_search.svg')
+    encrypt(api_key)
+    graph_name = "graph_search_" + session[:encrypt_key] +  ".svg"
+    @results_size = Graph.create_svg(URI.unescape(url),graph_name)
+  end
+
+
+  def encrypt(api_key)
+    cipher = Cipher.new()
+    encrypt_key = cipher.encrypt api_key
+    unless session[:encrypt_key].blank?
+      unless encrypt_key == session[:encrypt_key]
+        session[:encrypt_key] =  encrypt_key
+      end
+    else
+      session[:encrypt_key] = encrypt_key
+    end 
   end
 
 end
