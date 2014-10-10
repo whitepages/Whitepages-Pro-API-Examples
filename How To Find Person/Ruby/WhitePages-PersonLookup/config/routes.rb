@@ -1,6 +1,7 @@
 ReversePerson::Application.routes.draw do
-  match 'person' => "reverse_person#index", :as => :reverse_person, :via => :get
-  match 'person' => "reverse_person#index", :as => :reverse_person, :via => :post
+  match 'person' => "find_persons#index", :as => :find_persons, :via => :get
+  match 'person' => "find_persons#index", :as => :find_persons, :via => :post
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -51,7 +52,7 @@ ReversePerson::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-   root :to => 'reverse_person#index'
+   root :to => 'find_persons#index'
 
   # See how all your routes lay out with "rake routes"
 
