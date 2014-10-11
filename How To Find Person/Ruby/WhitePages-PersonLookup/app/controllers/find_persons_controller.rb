@@ -1,4 +1,4 @@
-API_KEY = "6b5a968507f728b72bac005321001c28"
+API_KEY = ""
 require "api_response"
 require "parse_json_response"
 
