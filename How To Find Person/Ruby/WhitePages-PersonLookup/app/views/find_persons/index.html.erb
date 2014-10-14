@@ -1,62 +1,10 @@
-<div class="search_sec">
-  <p>Find Person</p>
-  <form method="post" action="/person">
-    <input type="text" name="first_name" placeholder="First Name" value="<%=params['first_name']%>" id="first_name" class="inputbox" >
-    <input type="text" name="last_name" placeholder="Last Name" value="<%=params['last_name']%>" id="last_name" class="inputbox" >
-    <input type="text" name="where" placeholder="City, State, ZIP or Address" value="<%=params['where']%>" id="where" class="inputbox" >
-    <input type="Submit" name="submit" value="Find" class="find_btn" >
-    <input type="button" name="clear" value="Clear" class="find_btn"  onclick="clearData();">
-  </form>
-</div>
-
-<% if @results %>
-    <% unless @results["error"].blank? %>
-        <div class="error_box">
-          <%=@results["error"]%>
-        </div>
-    <% else %>
-        <% unless @results["result"].blank? %>
-            <div class="detail_wrapper">
-              <div class="disp_result_box">
-                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <th align="left" width="30%">Who</th>
-                    <th align="left" width="30%">Where</th>
-                  </tr>
-                  <% @results["result"].each do |person_obj| %>
-                      <tr>
-                        <td> <div class="detail_boxin">
-                          <p class="bg_font14"><%=person_obj[:name]  %></p>
-                          <%  unless person_obj[:age].blank?%> <p><span class="bg_font12">Age:</span> &nbsp;<%=person_obj[:age]["start"]  %>+</p>  <% end %>
-                          <%  unless person_obj[:contact_type].blank?%><p><span class="bg_font12">Type:</span>&nbsp;<%=person_obj[:contact_type].first  %></p> <% end %>
-                        </div></td>
-                        <td>  <div class="detail_boxin">
-                          <% unless person_obj[:address].blank? %>
-                              <% unless person_obj[:address]["standard_address_line1"].blank? %> <%=person_obj[:address]["standard_address_line1"]  %> <br /> <%end %>
-                              <%unless person_obj[:address]["standard_address_line2"].blank? %> <%= person_obj[:address]["standard_address_line2"] %> <br /> <%end %>
-                              <% unless person_obj[:address]["standard_address_location"].blank? %>  <%=person_obj[:address]["standard_address_location"] %>  <%end %>
-                              <p><span class="bg_font12">Receiving Mail: </span> <%=person_obj[:address]["is_receiving_mail"] %>  </p>
-                              <% unless person_obj[:address]["usage"].blank? %><p><span class="bg_font12">Usage: </span><%=person_obj[:address]["usage"] %> </p> <%end %>
-                              <p><span class="bg_font12">Delivery Point: </span> <%=person_obj[:address]["delivery_point"].to_s[0..-5] + " Unit"%> </p>
-                          <% end %>
-                        </div>  </td>
-                      </tr>
-                  <% end %>
-                </table>
-              </div>
-            </div>
-        <% else %>
-            <div class="message_box">
-              no records found
-            </div>
-        <% end %>
-    <% end %>
+<%= render :partial => "form" %>
+<% unless @results.nil? %>
+  <% unless @results[:error].nil? %>
+    <%= render :partial => "error" %>
+  <% else %>
+    <%= render :partial => "person" %>
+  <% end %>
+<% else %>
+  <%= render :partial => "message" %>
 <% end %>
-
-<script type="text/javascript">
-    function clearData() {
-        $("#first_name").val("");
-        $("#last_name").val("");
-        $("#where").val("");
-    }
-</script>

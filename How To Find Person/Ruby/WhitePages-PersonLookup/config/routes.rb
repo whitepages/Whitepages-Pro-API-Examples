@@ -1,6 +1,6 @@
 ReversePerson::Application.routes.draw do
-  match 'person' => "find_persons#index", :as => :find_persons
-
+ match 'person' => 'find_persons#index', :as => :find_persons, :via => :get
+ match 'person' => 'find_persons#search', :as => :find_persons, :via => :post
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

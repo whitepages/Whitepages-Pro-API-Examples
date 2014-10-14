@@ -1,0 +1,5 @@
+development:
+  api_key: ''
+
+production:
+  api_key: ''

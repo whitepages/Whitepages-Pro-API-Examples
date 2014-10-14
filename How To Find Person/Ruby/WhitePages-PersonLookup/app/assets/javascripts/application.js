@@ -7,3 +7,11 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+$(function() {
+  $( "#clear_bt" ).click(function() {
+    $( "#first_name" ).val("");
+    $( "#last_name" ).val("");
+    $( "#where" ).val("");
+  });
+});
+

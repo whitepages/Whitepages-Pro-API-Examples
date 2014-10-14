@@ -1,0 +1,10 @@
+<div class="search_sec">
+  <p>Find Person</p>
+  <form method="post" action="/person">
+    <input type="text" name="first_name" placeholder="First Name" value="<%=params['first_name']%>" id="first_name" class="inputbox" >
+    <input type="text" name="last_name" placeholder="Last Name" value="<%=params['last_name']%>" id="last_name" class="inputbox" >
+    <input type="text" name="where" placeholder="City, State, ZIP or Address" value="<%=params['where']%>" id="where" class="inputbox" >
+    <input type="Submit" name="submit" value="Find" class="find_btn" >
+    <input type="button" name="clear" value="Clear" class="find_btn" id="clear_bt">
+  </form>
+</div>
