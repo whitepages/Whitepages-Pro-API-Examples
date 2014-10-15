@@ -22,8 +22,9 @@ end
 
 gem 'jquery-rails'
 gem 'json'
-gem 'ruby-graphviz'
-gem 'httparty','0.11.0'
+gem 'httparty', '0.11.0'
+#gem 'simplecov'
+gem 'rubocop', :require => false
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

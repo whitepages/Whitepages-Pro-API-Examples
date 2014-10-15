@@ -68,7 +68,7 @@
 
 .detail_box{
   float:left;
-  width:300px;
+  width:400px;
   margin:0px 30px 0px 0px;
   padding:10px;
   background:#f8f8f8;
@@ -222,14 +222,9 @@
 }
 
 .disp_result_box table td{
-  padding:10px 0px 10px 10px;
-  border-top:1px solid #ccc;
+  padding:10px 0px 10px 10px; 
 }
-
-/*.disp_result_box table tr:hover{*/
-/*background:#fff;*/
-/*}*/
-
+ 
 .disp_result_box table tr:first-child{
   background: none;
 }

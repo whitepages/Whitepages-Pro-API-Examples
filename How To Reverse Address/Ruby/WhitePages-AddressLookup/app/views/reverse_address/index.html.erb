@@ -1,60 +1,10 @@
-<div class="search_sec">
-  <p>Find by Address</p>
-  <form method="post" action="/address">
-    <input type="text" name="street" placeholder="Street Address or name" value="<%=params['street']%>" id="street" class="inputbox" >
-    <input type="text" name="city" placeholder="City and State or Zip" value="<%=params['city']%>" id="city" class="inputbox" >
-    <input type="Submit" name="submit" value="Find" class="find_btn" >
-    <input type="button" name="clear" value="Clear" class="find_btn"  onclick="clearData();">
-  </form>
-</div>
-
-<% unless @error.blank? %>
-  <div class="error_box">
-    <%=@error%>
-  </div>
-<% end %>
-
-<% unless @response.blank? %>
-  <% unless @response["results"].blank?%>
-    <div class="detail_wrapper">
-
-      <div class="detail_box">
-        <h1>Location</h1>
-
-        <div class="detail_boxin_phone" style="height: 75px;min-height: 70px;">
-          <p>
-            <% unless @standard_address_line1.blank? %> <%=@standard_address_line1 %> <br /> <% end %>
-            <% unless @standard_address_line2.blank? %> <%=@standard_address_line2 %> <br /> <% end %>
-            <% unless @standard_address_location.blank? %>  <%=@standard_address_location %>  <% end %>
-          </p>
-        </div>
-
-        <div class="detail_boxin_phone">
-          <p><span class="bg_font12">Receiving Mail:</span>&nbsp;<%=@is_receiving_mail %></p>
-          <% unless @usage.blank?%> <p><span class="bg_font12">Usage:</span>&nbsp;<%=@usage %></p><% end %>
-          <% unless @delivery_point.blank?%><p><span class="bg_font12">Delivery Point:</span>&nbsp;<%=@delivery_point.to_s[0..-5] + " Unit"%></p> <% end %>
-        </div>
-      </div>
-
-      <% unless @person_keys_array.blank? %>
-        <div class="detail_box">
-          <h1>People <span>(<%=@person_keys_array.length%>)</span></h1>
-          <% @person_keys_array.each_with_index do |person_obj,person_index| %>
-            <div class="detail_boxin" style="width: 275px;height: 95px;min-height: 90px;">
-              <p><span class="bg_font14"><%=@person_name_hash[person_index]%></span></p>
-              <% unless @person_age_start_hash[person_index].blank?%> <p><span class="bg_font12">Age:</span> <%=@person_age_start_hash[person_index]%>+</p>  <% end %>
-              <p><span class="bg_font12">Type:</span>&nbsp;<%=@person_type_hash[person_index]%></p>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
+<%= render :partial => "form" %>
+<% unless @results.nil? %>
+  <% unless @results[:error].nil? %>
+    <%= render :partial => "error" %>
+  <% else %>
+    <%= render :partial => "address" %>
   <% end %>
+<% else %>
+  <%= render :partial => "message" %>
 <% end %>
-
-<script type="text/javascript">
-  function clearData() {
-    $("#street").val("");
-    $("#city").val("");
-  }
-</script>

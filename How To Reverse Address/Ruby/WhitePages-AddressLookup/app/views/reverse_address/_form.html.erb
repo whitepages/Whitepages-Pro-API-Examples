@@ -1,0 +1,9 @@
+<div class="search_sec">
+  <p>Find by Address</p>
+  <form method="post" action="/address">
+    <input type="text" name="street" placeholder="Street Address or name" value="<%=params['street']%>" id="street" class="inputbox" >
+    <input type="text" name="city" placeholder="City and State or Zip" value="<%=params['city']%>" id="city" class="inputbox" >
+    <input type="Submit" name="submit" value="Find" class="find_btn" >
+    <input type="button" name="clear" value="Clear" class="find_btn" id="clear_bt">
+  </form>
+</div>

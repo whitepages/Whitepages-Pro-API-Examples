@@ -1,6 +1,6 @@
 ReverseAddress::Application.routes.draw do
-  match 'address' => "reverse_address#index", :as => :reverse_address, :via => :get
-  match 'address' => "reverse_address#index", :as => :reverse_address, :via => :post
+  match 'address' => 'reverse_address#index', :as => :reverse_address, :via => :get
+  match 'address' => 'reverse_address#search', :as => :reverse_address, :via => :post
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

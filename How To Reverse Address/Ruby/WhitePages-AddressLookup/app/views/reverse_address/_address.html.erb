@@ -1,0 +1,37 @@
+<% @results[:result].each do |address_obj| %>
+  <div class="detail_wrapper">
+    <div class="disp_result_box">
+      <table width="50%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td>
+            <div class="detail_box">
+              <h1>Location</h1>
+              <% unless address_obj[:address].blank? %>
+                <div class="detail_boxin" style="width: 378px;height: 125px;min-height: 90px;">
+                  <% unless address_obj[:address]["standard_address_line1"].blank? %> <%=address_obj[:address]["standard_address_line1"]  %> <br /><% end %>
+                  <% unless address_obj[:address]["standard_address_line2"].blank? %> <%= address_obj[:address]["standard_address_line2"] %> <br /><% end %>
+                  <% unless address_obj[:address]["standard_address_location"].blank? %> <%=address_obj[:address]["standard_address_location"] %><% end %>
+                  <p><span class="bg_font12">Receiving Mail: </span> <%=address_obj[:address]["is_receiving_mail"] %>  </p>
+                  <% unless address_obj[:address]["usage"].blank? %><p><span class="bg_font12">Usage: </span><%=address_obj[:address]["usage"] %> </p> <% end %>
+                  <% unless address_obj[:address]["delivery_point"].blank? %><p><span class="bg_font12">Delivery Point: </span> <%=address_obj[:address]["delivery_point"].to_s[0..-5] + " Unit"%> </p><% end %>
+                </div>
+              <% end %>
+            </div>
+          </td>
+          <% unless address_obj[:persons].blank? %>
+            <div class="detail_box" style="float: right;">
+              <h1>People <span>(<%=address_obj[:persons].length%>)</span></h1>
+              <% address_obj[:persons].each do |person_obj| %>
+                <div class="detail_boxin" style="width: 378px;height: 95px;min-height: 90px;">
+                  <p><span class="bg_font14"><%=person_obj[:name]  %></span></p>
+                  <%  unless person_obj[:age].blank?%> <p><span class="bg_font12">Age:</span> &nbsp;<%=person_obj[:age]["start"]  %>+</p>  <% end %>
+                  <%  unless person_obj[:contact_type].blank?%><p><span class="bg_font12">Type:</span>&nbsp;<%=person_obj[:contact_type].first  %></p> <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </tr>
+      </table>
+    </div>
+  </div>
+<% end %>

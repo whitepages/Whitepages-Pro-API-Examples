@@ -7,3 +7,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+$(function() {
+  $( "#clear_bt" ).click(function() {
+    $("#street").val("");
+    $("#city").val("");
+  });
+});
