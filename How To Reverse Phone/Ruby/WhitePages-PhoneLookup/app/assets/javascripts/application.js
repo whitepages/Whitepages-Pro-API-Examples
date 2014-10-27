@@ -7,3 +7,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+$(function() {
+  $( "#clear_bt" ).click(function() {
+    $("#phone").val("");
+  });
+});

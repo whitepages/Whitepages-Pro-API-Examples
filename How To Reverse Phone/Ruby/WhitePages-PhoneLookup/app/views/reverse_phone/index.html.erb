@@ -1,69 +1,10 @@
-<div class="search_sec">
-  <p>Find by Phone</p>
-  <form method="post" action="/phone">
-    <input type="text" name="phone" placeholder="Phone number" value="<%=@phone%>" id="phone" class="inputbox" >
-    <input type="Submit" name="submit" value="Find" class="find_btn" >
-    <input type="button" name="clear" value="Clear" class="find_btn"  onclick="clearData();">
-  </form>
-</div>
-
-<% unless @error.blank? %>
-  <div class="error_box">
-    <%=@error%>
-  </div>
-<% end %>
-
-<% unless @response.blank? %>
-  <% unless @response["results"].blank?%>
-    <div class="detail_wrapper">
-      <div class="detail_box">
-        <h1>Phone</h1>
-        <div class="detail_boxin_phone">
-          <p><%=number_to_phone(@phone_number, country_code: @country_calling_code) %></p>
-          <p><span class="bg_font12">Carrier:</span>  <%=@carrier%> </p>
-          <p><span class="bg_font12">Phone Type:</span> <%=@line_type%> </p>
-          <p><span class="bg_font12">Do not Call registry:</span>  <%=@do_not_call%></p>
-          <p><span class="bg_font12">SPAN Score:</span> <%=@reputation%>%</p>
-        </div>
-      </div>
-      <% unless @person_name_hash.blank?%>
-        <div class="detail_box">
-          <h1>People (<%=@person_name_hash.length%>)</h1>
-          <% @person_keys_array.each_with_index do |person_obj,person_index| %>
-            <div class="detail_boxin_phone" style="height: 75px;min-height: 70px;">
-              <p> <span class="bg_font14"><%=@person_name_hash[person_index]%></span> </p>
-              <p><span class="bg_font12">Type:</span>  <%=@person_type_hash[person_index]%> </p>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
-
-      <% unless @location_keys_hash.blank?%>
-        <div class="detail_box">
-          <h1>Location (<%=@location_keys_hash.length%>)</h1>
-          <% @location_keys_hash.each_with_index do |location_obj,location_index| %>
-            <div class="detail_boxin_phone" style="height: 122px;min-height: 105px;">
-              <p>
-                <%=@standard_address_location[location_index]%>
-              </p>
-              <p><span class="bg_font12">Receiving mail:</span>&nbsp;<%=@is_receiving_mail[location_index]%></p>
-              <% unless @usage[location_index].blank?%>
-                <p><span class="bg_font12">Usage:</span>&nbsp;<%=@usage[location_index]%> </p>
-              <% end %>
-              <% unless @delivery_point[location_index].blank?%>
-                <p><span class="bg_font12">Delivery Point:</span>&nbsp;<%=@delivery_point[location_index].to_s[0..-5] + " Unit"%>
-                </p>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
+<%= render :partial => "form" %>
+<% unless @results.nil? %>
+  <% unless @results[:error].nil? %>
+    <%= render :partial => "error" %>
+  <% else %>
+    <%= render :partial => "phone" %>
   <% end %>
+<% else %>
+  <%= render :partial => "message" %>
 <% end %>
-
-<script type="text/javascript">
-  function clearData() {
-    $("#phone").val("");
-  }
-</script>

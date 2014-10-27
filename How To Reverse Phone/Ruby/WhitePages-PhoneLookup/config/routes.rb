@@ -1,6 +1,6 @@
 ReversePhone::Application.routes.draw do
-  match 'phone' => "reverse_phone#index", :as => :reverse_phone, :via => :get
-  match 'phone' => "reverse_phone#index", :as => :reverse_phone, :via => :post
+  match 'phone' => 'reverse_phone#index', :as => :reverse_phone, :via => :get
+  match 'phone' => 'reverse_phone#search', :as => :reverse_phone, :via => :post
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
