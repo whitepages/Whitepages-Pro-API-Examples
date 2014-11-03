@@ -8,12 +8,12 @@
               <h1>Location</h1>
               <% unless address_obj[:address].blank? %>
                 <div class="detail_boxin" style="width: 378px;height: 125px;min-height: 90px;">
-                  <% unless address_obj[:address]["standard_address_line1"].blank? %> <%=address_obj[:address]["standard_address_line1"]  %> <br /><% end %>
-                  <% unless address_obj[:address]["standard_address_line2"].blank? %> <%= address_obj[:address]["standard_address_line2"] %> <br /><% end %>
-                  <% unless address_obj[:address]["standard_address_location"].blank? %> <%=address_obj[:address]["standard_address_location"] %><% end %>
-                  <p><span class="bg_font12">Receiving Mail: </span> <%=address_obj[:address]["is_receiving_mail"] %>  </p>
-                  <% unless address_obj[:address]["usage"].blank? %><p><span class="bg_font12">Usage: </span><%=address_obj[:address]["usage"] %> </p> <% end %>
-                  <% unless address_obj[:address]["delivery_point"].blank? %><p><span class="bg_font12">Delivery Point: </span> <%=address_obj[:address]["delivery_point"].to_s[0..-5] + " Unit"%> </p><% end %>
+                  <% unless address_obj[:address][:standard_address_line1].blank? %> <%=address_obj[:address][:standard_address_line1]  %> <br /><% end %>
+                  <% unless address_obj[:address][:standard_address_line2].blank? %> <%= address_obj[:address][:standard_address_line2] %> <br /><% end %>
+                  <% unless address_obj[:address][:city].blank? %> <%=address_obj[:address][:city] %><% end %>,&nbsp;<% unless address_obj[:address][:state_code].blank? %> <%=address_obj[:address][:state_code] %><% end %>
+                  <% unless address_obj[:address][:receiving_mail].blank? %> <p><span class="bg_font12">Receiving Mail: </span> <%=address_obj[:address][:receiving_mail] %></p> <% end %>
+                  <% unless address_obj[:address][:usage].blank? %><p><span class="bg_font12">Usage: </span><%=address_obj[:address][:usage] %> </p> <% end %>
+                  <% unless address_obj[:address][:delivery_point].blank? %><p><span class="bg_font12">Delivery Point: </span> <%=address_obj[:address][:delivery_point].to_s[0..-5] + " Unit"%> </p><% end %>
                 </div>
               <% end %>
             </div>

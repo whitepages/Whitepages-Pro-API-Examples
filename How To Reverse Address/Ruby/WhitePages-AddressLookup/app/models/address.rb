@@ -10,8 +10,57 @@ class Address
   end
 
   def best_location_id(id)
-    id['best_location']['id']['key'] if id && id['best_location'] && id['best_location']['id'] && id['id']['type'] == 'Person'
-    id['locations'].first['id']['key'] if id && id['locations'] && id['id']['type'] != 'Person'
+    if id['best_location'] && id['best_location']['id'] && id['id']['type'] == 'Person'
+      id['best_location']['id']['key']
+    elsif id['locations'] && id['id']['type'] != 'Person'
+      id['locations'].first['id']['key']
+    end
+  end
+
+  def standard_address_line1(entity)
+    entity['standard_address_line1']
+  end
+
+  def standard_address_line2(entity)
+    entity['standard_address_line2']
+  end
+
+  def receiving_mail(entity)
+    entity['is_receiving_mail']? 'Yes' : 'No'
+  end
+
+  def city(entity)
+    entity['city']
+  end
+
+  def state_code(entity)
+    entity['state_code']
+  end
+
+  def usage(entity)
+    entity['usage']
+  end
+
+  def delivery_point(entity)
+    entity['delivery_point']
+  end
+
+  # get location details
+  def location_details(entity)
+    {
+     standard_address_line1: standard_address_line1(entity),
+     standard_address_line2: standard_address_line2(entity),
+     receiving_mail: receiving_mail(entity),
+     usage: usage(entity),
+     delivery_point: delivery_point(entity),
+     city: city(entity),
+     state_code: state_code(entity)
+    }
+  end
+
+  def location(id)
+    location = retrieve_by_id(id)
+    location_details(location) if location
   end
 
   def person_name(id)
@@ -47,17 +96,12 @@ class Address
      contact_type: person_contact_type(entity)
     }
   end
-
-  def address_details(location)
-    entity = retrieve_by_id(location)
-    ParseJsonResponse.address_details(entity)  if entity
-  end
-
+ 
   # formatted output
   def formatted_result
     response['results'].map do |entity|
       {
-       address: address_details(entity),
+       address: location(entity),
        persons: persons(entity)
       }
     end.reject(&:empty?)
