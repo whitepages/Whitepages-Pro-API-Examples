@@ -4,14 +4,14 @@
         <p>
             <?php echo $value['location']['address_line1']?>
             <br />
-            <?php echo $value['location']['city'] .' '. $value['location']['state_code'] .' '. $value['location']['postal_code']//624 W Emerson St Apt B<br>Seattle WA 98119-1567 ?>
+            <?php echo $value['location']['city'] .' '. $value['location']['state_code'] .' '. $value['location']['postal_code']; ?>
         </p>
     </div>
     <div class="detail_boxin">
-        <p><span>Receiving Mail:</span> <?php echo $value['location']['is_receiving_mail'] != false ? "Yes" : "No";?></p>
+        <p><span>Receiving Mail:</span> <?php echo $value['location']['is_receiving_mail']; ?></p>
         <?php
         if (!empty($value['location']['usage'])) { ?>
-            <p><span>Usage:</span>  <?php echo $value['location']['usage'];?></p>
+            <p><span>Usage:</span>  <?php echo $value['location']['usage']; ?></p>
         <?php
         }
         ?>

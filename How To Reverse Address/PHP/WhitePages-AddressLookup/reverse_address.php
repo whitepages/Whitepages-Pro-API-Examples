@@ -7,7 +7,7 @@
     <script src="js/main.js"></script>
 </head>
 <body>
-<?php include 'parse_reverse_address.php'; ?>
+<?php include 'address_lookup.php'; ?>
 <div class="wrapper">
     <?php include 'form.php'; ?>
 </body>
