@@ -1,6 +1,6 @@
 <?php
 
-namespace Models;
+namespace Libraries;
 
 class Address
 {
@@ -16,18 +16,20 @@ class Address
     // for getting object id
     public function retrieveById($id)
     {
-        if (!empty($this->response) && !empty($this->response['dictionary']) && !empty($this->response['dictionary'][$id]))
+        if (!empty($this->response) && !empty($this->response['dictionary']) && !empty($this->response['dictionary'][$id])) {
             return $this->response['dictionary'][$id];
+        }
     }
 
     // for best location id
     public function getBestLocation($entity)
     {
         if (!empty($entity)) {
-            if (!empty($entity['best_location']) && !empty($entity['best_location']['id']) && $entity['id']['type'] == 'Person')
+            if (!empty($entity['best_location']) && !empty($entity['best_location']['id']) && $entity['id']['type'] == 'Person') {
                 return $entity['best_location']['id']['key'];
-            elseif (!empty($entity['locations']) && $entity['id']['type'] != 'Person')
+            } elseif (!empty($entity['locations']) && $entity['id']['type'] != 'Person') {
                 return $entity['locations'][0]['id']['key'];
+            }
         }
     }
 
@@ -35,18 +37,20 @@ class Address
     public function getName($id)
     {
         $entity =  $this->retrieveById($id);
-        if (!empty($entity['best_name']))
+        if (!empty($entity['best_name'])) {
             return $entity['best_name'];
-        elseif (!empty($entity['name']))
+        } elseif (!empty($entity['name'])) {
             return $entity['name'];
+        }
     }
 
     // for person age
     public function getAge($id)
     {
         $entity =  $this->retrieveById($id);
-        if (!empty($entity['age_range']))
+        if (!empty($entity['age_range'])) {
             return $entity['age_range'];
+        }
     }
 
     // for person contact type
@@ -65,14 +69,17 @@ class Address
         }
     }
 
+
+    // getting legal entities (people id)
     public function getPersons($id)
     {
         $entity =  $this->retrieveById($id);
         $personDetailArray = array();
         if (!empty($entity['legal_entities_at'])) {
             while (list(, $val) = each($entity['legal_entities_at'])) {
-                if (!empty($val['id']))
+                if (!empty($val['id'])) {
                     array_push($personDetailArray, $this->getPersonDetails($val['id']['key']));
+                }
             }
         }
         return $personDetailArray;
@@ -115,6 +122,7 @@ class Address
         while (list(, $val) = each($this->response['results'])) {
             array_push($this->resultData, $this->getResultData($val));
         }
+        return $this->resultData;
     }
 }
 

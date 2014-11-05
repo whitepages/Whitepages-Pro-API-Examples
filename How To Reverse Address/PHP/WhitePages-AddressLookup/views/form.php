@@ -7,4 +7,4 @@
         <input type="button" name="clear" value="Clear" class="find_btn"  onclick="clearData();">
     </form>
 </div>
-<?php include 'results.php'; 
+<?php include 'results.php';

@@ -1,6 +1,6 @@
 <?php
 
-namespace Models;
+namespace Libraries;
 
 class WhitepagesLib
 {
@@ -36,28 +36,29 @@ class WhitepagesLib
         $this->whitepages_api_url = 'http://proapi.whitepages.com';
     }
 
-
     /**
      * API Method to find a person
      */
-    public function find_address( $options = array() ) {
+    public function findAddress($options = array())
+    {
 
-        $this->_build('location',$options);
-        if($this->response)
+        $this->buildUrl('location', $options);
+        if($this->response) {
             return $this->response;
-
-        return FALSE;
+        }
+        return false;
     }
 
     /**
      * Build query string that will be requested by serialize parameters
      */
-    private function _build( $method, $param ) {
+    private function buildUrl($method, $param)
+    {
 
-        if(!isset($method) || !isset($param)) return FALSE;
+        if(!isset($method) || !isset($param)) return false;
 
         //Check if we have a query string sta yet
-        if( is_array($param) ){
+        if (is_array($param)) {
             //Build query string
             $this->url = $this->whitepages_api_url . '/' . $this->whitepages_api_version  .'/'. $method .'.json?';
             foreach ($param as $key => $value) {
@@ -66,14 +67,15 @@ class WhitepagesLib
             //Append API key & response type
             $this->url = $this->url . 'api_key='. $this->whitepages_api_key;
             //Fetch request
-            $this->_get($this->url);
+            $this->getResponse($this->url);
         }
     }
 
     /**
      * Fetch URL Request using cURL
      */
-    private function _get( $url ) {
+    private function getResponse($url)
+    {
 
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -86,7 +88,7 @@ class WhitepagesLib
 
         curl_close($curl);
         $this->response = json_decode($curl_response, true);
-        return TRUE;
+        return true;
     }
 }
 

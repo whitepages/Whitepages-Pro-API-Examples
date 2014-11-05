@@ -2,7 +2,7 @@
     <h1>Location</h1>
     <div class="detail_boxin">
         <p>
-            <?php echo $value['location']['address_line1']?>
+            <?php echo $value['location']['address_line1']; ?>
             <br />
             <?php echo $value['location']['city'] .' '. $value['location']['state_code'] .' '. $value['location']['postal_code']; ?>
         </p>
@@ -32,3 +32,4 @@
         ?>
     </div>
 </div>
+
