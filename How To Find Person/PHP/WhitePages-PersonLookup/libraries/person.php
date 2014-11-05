@@ -1,6 +1,6 @@
 <?php
 
-namespace Models;
+namespace Libraries;
 
 class Person
 {
@@ -16,15 +16,17 @@ class Person
     // for getting object id
     public function retrieveById($id)
     {
-        if (!empty($this->response) && !empty($this->response['dictionary']) && !empty($this->response['dictionary'][$id]))
+        if (!empty($this->response) && !empty($this->response['dictionary']) && !empty($this->response['dictionary'][$id])) {
             return $this->response['dictionary'][$id];
+        }
     }
 
     // for best location id
     public function getBestLocation($entity)
     {
-        if (!empty($entity['best_location']) && !empty($entity['best_location']['id']))
+        if (!empty($entity['best_location']) && !empty($entity['best_location']['id'])) {
             return $entity['best_location']['id']['key'];
+        }
     }
 
     // for best location id
@@ -37,20 +39,20 @@ class Person
     public function getName($id)
     {
         $entity =  $this->retrieveById($id);
-        if (!empty($entity['best_name']))
-            $name = $entity['best_name'];
-        elseif (!empty($entity['name']))
-            $name = $entity['name'];
-        return empty($name)? '' : $name;
+        if (!empty($entity['best_name'])) {
+            return $name = $entity['best_name'];
+        } elseif (!empty($entity['name'])) {
+            return $name = $entity['name'];
+        }
     }
 
     // for person age
     public function getAge($id)
     {
         $entity =  $this->retrieveById($id);
-        if (!empty($entity['age_range']))
-            $age = $entity['age_range'];
-        return empty($age)? '' : $age;
+        if (!empty($entity['age_range'])) {
+            return $entity['age_range'];
+        }
     }
 
     // for person contact type
@@ -61,13 +63,12 @@ class Person
             while (list(, $val) = each($entity['locations'])) {
                 if (!empty($val['id'])) {
                     if ($val['id']['key'] == $this->getBestLocation($entity)) {
-                        $contact_type = $val['contact_type'];
+                        return $contact_type = $val['contact_type'];
                         break;
                     }
                 }
             }
         }
-        return empty($contact_type)? '' : $contact_type;
     }
 
     public function addressLine1($entity)
@@ -152,6 +153,7 @@ class Person
         while (list(, $val) = each($this->response['results'])) {
             array_push($this->resultData, $this->getResultData($val));
         }
+        return $this->resultData;
     }
 }
 
