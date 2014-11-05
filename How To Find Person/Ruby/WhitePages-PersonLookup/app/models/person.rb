@@ -22,10 +22,60 @@ class Person
     entity['age_range']
   end
 
+  def standard_address_line1(entity)
+    entity['standard_address_line1']
+  end
+
+  def standard_address_line2(entity)
+    entity['standard_address_line2']
+  end
+
+  def receiving_mail(entity)
+    entity['is_receiving_mail']? 'Yes' : 'No'
+  end
+
+  def city(entity)
+    entity['city']
+  end
+
+  def postal_code(entity)
+    entity['postal_code']
+  end
+
+  def state_code(entity)
+    entity['state_code']
+  end
+
+  def usage(entity)
+    entity['usage']
+  end
+
+  def delivery_point(entity)
+    entity['delivery_point']
+  end
+
+  # get location details
+  def location_details(entity)
+    {
+     standard_address_line1: standard_address_line1(entity),
+     standard_address_line2: standard_address_line2(entity),
+     receiving_mail: receiving_mail(entity),
+     postal_code: postal_code(entity),
+     usage: usage(entity),
+     delivery_point: delivery_point(entity),
+     city: city(entity),
+     state_code: state_code(entity)
+    }
+  end
+
+  def location(id)
+    location = retrieve_by_id(id)
+    location_details(location) if location
+  end
+
   def person_address(id)
     best_location = retrieve_best_location_id(retrieve_by_id(id))
-    entity_location = retrieve_by_id(best_location) if best_location
-    ParseJsonResponse.address_details(entity_location)  if entity_location
+    location(best_location) if best_location 
   end
 
   def person_contact_type(id)

@@ -1,5 +1,4 @@
 require 'api_response'
-require 'parse_json_response'
 
 class FindPersonsController < ApplicationController
   def index

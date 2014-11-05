@@ -15,12 +15,14 @@
           <td>
             <div class="detail_boxin">
               <% unless person_obj[:address].blank? %>
-                <% unless person_obj[:address]["standard_address_line1"].blank? %> <%=person_obj[:address]["standard_address_line1"]  %> <br /> <% end %>
-                <% unless person_obj[:address]["standard_address_line2"].blank? %> <%= person_obj[:address]["standard_address_line2"] %> <br /> <% end %>
-                <% unless person_obj[:address]["standard_address_location"].blank? %>  <%=person_obj[:address]["standard_address_location"] %>  <% end %>
-                <p><span class="bg_font12">Receiving Mail: </span> <%=person_obj[:address]["is_receiving_mail"] %>  </p>
-                <% unless person_obj[:address]["usage"].blank? %><p><span class="bg_font12">Usage: </span><%=person_obj[:address]["usage"] %> </p> <% end %>
-                <p><span class="bg_font12">Delivery Point: </span> <%=person_obj[:address]["delivery_point"].to_s[0..-5] + " Unit"%> </p>
+                <% unless person_obj[:address][:standard_address_line1].blank? %> <%=person_obj[:address][:standard_address_line1]  %> <br /> <% end %>
+                <% unless person_obj[:address][:standard_address_line2].blank? %> <%=person_obj[:address][:standard_address_line2]  %> <br /> <% end %>
+                <% unless person_obj[:address][:city].blank? %>  <%=person_obj[:address][:city] %>  <% end %>
+                <% unless person_obj[:address][:state_code].blank? %>  <%=person_obj[:address][:state_code] %> <% end %>
+                <% unless person_obj[:address][:postal_code].blank? %>  <%=person_obj[:address][:postal_code] %>  <% end %>
+                <p><span class="bg_font12">Receiving Mail: </span> <%=person_obj[:address][:receiving_mail] %>  </p>
+                <% unless person_obj[:address][:usage].blank? %><p><span class="bg_font12">Usage: </span><%=person_obj[:address][:usage] %> </p> <% end %>
+                <p><span class="bg_font12">Delivery Point: </span> <%=person_obj[:address][:delivery_point].to_s[0..-5] + " Unit"%> </p>
               <% end %>
             </div>
           </td>
