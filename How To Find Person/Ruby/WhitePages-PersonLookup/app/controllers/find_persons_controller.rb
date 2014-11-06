@@ -1,14 +1,11 @@
 require 'api_response'
 
 class FindPersonsController < ApplicationController
-  def index
-  end
-
   def search
-    response = ApiResponse.new(params['first_name'], params['last_name'], params['where'])
-    api_response = response.json_response
-    @results = { error: api_response['error']['message'] } unless api_response['error'].nil?
-    unless api_response['results'].blank?
+    api_response = ApiResponse.new(params['first_name'], params['last_name'], params['where']).json_response
+    unless api_response['error'].nil?
+      @results = { error: api_response['error']['message'] }
+    else
       person_obj = Person.new(api_response)
       @results = { result: person_obj.formatted_result }
     end
