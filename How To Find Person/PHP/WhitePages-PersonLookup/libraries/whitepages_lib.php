@@ -4,30 +4,21 @@ namespace Libraries;
 
 class WhitepagesLib
 {
-    /**
-     * API Key
-     */
+    //API Key
     private $whitepages_api_key;
 
-    /**
-     * API URL
-     */
+    //API URL
     private $whitepages_api_url;
 
-    /**
-     * API Version
-     */
+    //API Version
     private $whitepages_api_version;
 
-    /**
-     * Query string
-     */
+    //Query string
     private $url;
 
-    /**
-     * Response from server
-     */
-    public $response;
+    //Response from server
+    public $response = false;
+
 
     public function __construct()
     {
@@ -37,25 +28,19 @@ class WhitepagesLib
     }
 
 
-    /**
-     * API Method to find a person
-     */
-    public function findPerson($options = array()) {
-
+    //API Method to find a person
+    public function findPerson($options = array())
+    {
         $this->buildUrl('person', $options);
         if ($this->response) {
             return $this->response;
         }
-        return false;
     }
 
-    /**
-     * Build query string that will be requested by serialize parameters
-     */
-    private function buildUrl($method, $param) {
-
+    //Build query string that will be requested by serialize parameters
+    private function buildUrl($method, $param)
+    {
         if(!isset($method) || !isset($param)) return false;
-
         //Check if we have a query string sta yet
         if (is_array($param)) {
             //Build query string
@@ -68,13 +53,11 @@ class WhitepagesLib
             //Fetch request
             $this->getResponse($this->url);
         }
-
     }
 
-    /**
-     * Fetch URL Request using cURL
-     */
-    private function getResponse($url) {
+    //Fetch URL Request using cURL
+    private function getResponse($url)
+    {
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $curl_response = curl_exec($curl);
@@ -86,6 +69,5 @@ class WhitepagesLib
 
         curl_close($curl);
         $this->response = json_decode($curl_response, true);
-        return true;
     }
 }
