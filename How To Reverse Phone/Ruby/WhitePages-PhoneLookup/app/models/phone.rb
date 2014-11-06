@@ -4,6 +4,17 @@ class Phone
     @response = response
   end
 
+  def formatted_result
+    response['results'].map do |entity| {
+     phone: phone(entity),
+     people: people(entity),
+     location: location(entity)
+    }end.reject(&:empty?)
+  end
+
+
+  private
+
   def retrieve_by_id(id)
     response['dictionary'][id] if id && response && response['dictionary'][id]
   end
@@ -80,6 +91,10 @@ class Phone
     entity['usage']
   end
 
+  def postal_code(entity)
+    entity['postal_code']
+  end
+
   def delivery_point(entity)
     entity['delivery_point']
   end
@@ -93,25 +108,26 @@ class Phone
      usage: usage(entity),
      delivery_point: delivery_point(entity),
      city: phone_city(entity),
+     postal_code: postal_code(entity),
      state_code: phone_state_code(entity)
     }
   end
 
   # get belongs to location key
-  def phone_location_details(id)
+  def location(id)
     phone_belongs_to(id).map do |entity| {
-     location: location(entity)
+     address: location_data(entity)
     } end.reject(&:empty?)
   end
 
   # get best location key and location details
-  def location(id)
+  def location_data(id)
     location_id = phone_best_location(id)
     location = retrieve_by_id(location_id) if location_id
     location_details(location) if location
   end
 
-  def people_details(id)
+  def people(id)
     phone_belongs_to(id).map do |entity| {
      name: people_name(entity),
      people_type: people_type(entity)
@@ -129,7 +145,7 @@ class Phone
   end
 
   # get requested phone details
-  def phone_details(entity)
+  def phone(entity)
     {
      number: phone_number(entity),
      country_code: phone_country_code(entity),
@@ -138,13 +154,5 @@ class Phone
      do_not_call: do_not_call(entity),
      reputation: phone_reputation(entity)
     }
-  end
-
-  def formatted_result
-    response['results'].map do |entity| {
-     phone: phone_details(entity),
-     people: people_details(entity),
-     location: phone_location_details(entity)
-    }end.reject(&:empty?)
   end
 end
