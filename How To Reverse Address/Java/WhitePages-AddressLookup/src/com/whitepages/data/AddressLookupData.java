@@ -1,3 +1,9 @@
+/**
+ * This class contains the Address Lookup data.
+ * @author Kushal Shah
+ * @since  2014-06-08
+ */
+
 package com.whitepages.data;
 
 import org.json.JSONArray;
@@ -11,37 +17,29 @@ public class AddressLookupData {
 	public String errorName = null;
 	public String errorMessage = null;
 	
-	public AddressLookupData(JSONObject errorObject) throws JSONException
-	{
+	public AddressLookupData(JSONObject errorObject) throws JSONException {
 		this.isError = true;
 		this.errorName = errorObject.optString("name");
 		this.errorMessage = errorObject.optString("message");
 		this.locationData = null;
 	}
 	
-	public AddressLookupData(JSONObject responseObject, JSONArray resultsArray) throws JSONException
-	{		
+	public AddressLookupData(JSONObject responseObject, JSONArray resultsArray) throws JSONException {		
 		JSONObject dictionaryObject = responseObject.optJSONObject("dictionary");
-		if(dictionaryObject != null)
-		{
+		if(dictionaryObject != null) {
 			String resultKey = resultsArray.optString(0);
-			if(resultKey != null && !resultKey.equals(""))
-			{
+			if(resultKey != null && !resultKey.equals("")) {
 				JSONObject locationObject = dictionaryObject.optJSONObject(resultKey);
-				if(locationObject != null)
-				{
+				if(locationObject != null) {
 					this.locationData = new LocationData(dictionaryObject, locationObject, resultKey);
 				}	
 			}
-		}
-		else
-		{
+		} else {
 			this.locationData = null;
 		}
 	}
 	
-	public class LocationData
-	{
+	public class LocationData {
 		// Location Data
 		public final String addressLine1;
 		public final String addressLine2;
@@ -51,8 +49,7 @@ public class AddressLookupData {
 		public final String deliveryPoint;
 		public final PersonData[] personDataArray;
 		
-		LocationData(JSONObject dictionaryObject, JSONObject locationObject, String locationKey) throws JSONException
-		{
+		LocationData(JSONObject dictionaryObject, JSONObject locationObject, String locationKey) throws JSONException {
 			////////////////////////////////////////////////
 			// Get location data related details from phone lookup data.
 			//
@@ -65,23 +62,17 @@ public class AddressLookupData {
 			this.usage = locationObject.optString("usage");
 			this.deliveryPoint = locationObject.optString("delivery_point");
 			JSONArray legalEntitiesAtArray = locationObject.getJSONArray("legal_entities_at");
-			if(legalEntitiesAtArray != null && legalEntitiesAtArray.length() > 0)
-			{
+			if(legalEntitiesAtArray != null && legalEntitiesAtArray.length() > 0) {
 				this.personDataArray = new PersonData[legalEntitiesAtArray.length()];
-				for(int i = 0; i < legalEntitiesAtArray.length(); i++)
-				{
+				for(int i = 0; i < legalEntitiesAtArray.length(); i++) {
 					JSONObject object = legalEntitiesAtArray.optJSONObject(i);
-					if(object != null)
-					{
+					if(object != null) {
 						JSONObject idObject = object.optJSONObject("id");
-						if(idObject != null)
-						{
+						if(idObject != null) {
 							String personKey = idObject.optString("key");
-							if(personKey != null && !personKey.equals(""))
-							{
+							if(personKey != null && !personKey.equals("")) {
 								JSONObject personObject = dictionaryObject.optJSONObject(personKey);
-								if(personObject != null)
-								{
+								if(personObject != null) {
 									PersonData personData = new PersonData(personObject, locationKey);
 									this.personDataArray[i] = personData;
 								}
@@ -89,9 +80,7 @@ public class AddressLookupData {
 						}
 					}
 				}
-			}
-			else
-			{
+			} else {
 				this.personDataArray = null;
 			}
 		}
@@ -102,15 +91,14 @@ public class AddressLookupData {
 		// person Data
 		public final String name;
 		public final String contactType;
+		
+		PersonData(JSONObject personObject, String locationKey) throws JSONException {
+		///////////////////////////////////////////////////////////////////
+		// Get person data related details from address lookup data.
+		//
+		///////////////////////////////////////////////////////////////////
 			
-		PersonData(JSONObject personObject, String locationKey) throws JSONException
-		{
-			///////////////////////////////////////////////////////////////////
-			// Get person data related details from address lookup data.
-			//
-			///////////////////////////////////////////////////////////////////
-			
-			// Get person name
+		// Get person name
 			this.name = personObject.has("best_name") ? personObject.optString("best_name") : 
 				(personObject.has("name") ? personObject.optString("name") : null);
 			
@@ -118,19 +106,14 @@ public class AddressLookupData {
 			String contactType = "";
 
 			JSONArray locationArray = personObject.optJSONArray("locations");
-			if(locationArray != null && locationArray.length() > 0)
-			{
-				for(int i = 0; i < locationArray.length(); i++)
-				{
+			if(locationArray != null && locationArray.length() > 0) {
+				for(int i = 0; i < locationArray.length(); i++) {
 					JSONObject object = locationArray.optJSONObject(i);
-					if(object != null)
-					{
+					if(object != null) {
 						JSONObject locationIdObject = object.optJSONObject("id");
-						if(locationIdObject != null)
-						{
+						if(locationIdObject != null) {
 							String actualLocationKey = locationIdObject.optString("key");
-							if(locationKey.equals(actualLocationKey))
-							{
+							if(locationKey.equals(actualLocationKey)) {
 								contactType = object.optString("contact_type");
 								break;
 							}
