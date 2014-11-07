@@ -9,25 +9,37 @@ class Phone
     public $belongsToId;
     public $peoples;
     public $locations;
+    public $locationIds;
 
-    public function __construct($params)
+    public function __construct($response)
     {
-        $this->response = $params;
+        $this->response = $response;
         $this->resultData = array();
         $this->belongsToId = array();
         $this->peoples = array();
         $this->locations = array();
+        $this->locationIds = array();
+    }
+
+    public function formattedResult()
+    {
+        while (list(, $val) = each($this->response['results'])) {
+            array_push($this->resultData, $this->getResultData($val));
+        }
+        return $this->resultData;
     }
 
     // for getting object id
-    public function retrieveById($id)
+    private function retrieveById($id)
     {
         if (!empty($this->response) && !empty($this->response['dictionary']) && !empty($this->response['dictionary'][$id])) {
             return $this->response['dictionary'][$id];
+        } else {
+            return '';
         }
     }
 
-    public function phoneBelongsTo($id)
+    private function phoneBelongsTo($id)
     {
         $entity =  $this->retrieveById($id);
         if (!empty($entity['belongs_to'])) {
@@ -36,26 +48,30 @@ class Phone
                     array_push($this->belongsToId, $val['id']['key']);
                 }
             }
+        } else {
+            return '';
         }
     }
 
     // for best location id
-    public function getBestLocation($entity)
+    private function getBestLocation($entity)
     {
         if (!empty($entity['best_location']) && !empty($entity['best_location']['id'])) {
             return $entity['best_location']['id']['key'];
         } elseif (!empty($entity['locations'])) {
             return $entity['locations'][0]['id']['key'];
+        } else {
+            return '';
         }
     }
 
     // return location entity
-    public function getLocation($id)
+    private function getLocation($id)
     {
         return $this->retrieveById($id);
     }
 
-    public function addressLine1($entity)
+    private function addressLine1($entity)
     {
         return $entity['standard_address_line1'];
     }
@@ -65,37 +81,37 @@ class Phone
         return $entity['standard_address_line2'];
     }
 
-    public function getCity($entity)
+    private function getCity($entity)
     {
         return $entity['city'];
     }
 
-    public function getPostalCode($entity)
+    private function getPostalCode($entity)
     {
         return $entity['postal_code'];
     }
 
-    public function getStateCode($entity)
+    private function getStateCode($entity)
     {
         return $entity['state_code'];
     }
 
-    public function getReceivingMail($entity)
+    private function getReceivingMail($entity)
     {
         return $entity['is_receiving_mail'];
     }
 
-    public function getUsage($entity)
+    private function getUsage($entity)
     {
         return $entity['usage'];
     }
 
-    public function getDeliveryPoint($entity)
+    private function getDeliveryPoint($entity)
     {
         return $entity['delivery_point'];
     }
 
-    public function getPersonDetails($id)
+    private function getPersonDetails($id)
     {
         return array('name' => $this->getName($id),
             'age' => $this->getAge($id),
@@ -104,37 +120,37 @@ class Phone
     }
 
 
-    public function getPhoneNumber($id)
+    private function getPhoneNumber($id)
     {
         $entity =  $this->retrieveById($id);
         return $entity['phone_number'];
     }
 
-    public function getCountryCode($id)
+    private function getCountryCode($id)
     {
         $entity =  $this->retrieveById($id);
         return $entity['country_calling_code'];
     }
 
-    public function getPhoneType($id)
+    private function getPhoneType($id)
     {
         $entity =  $this->retrieveById($id);
         return $entity['line_type'];
     }
 
-    public function getPhoneCarrier($id)
+    private function getPhoneCarrier($id)
     {
         $entity =  $this->retrieveById($id);
         return $entity['carrier'];
     }
 
-    public function getDoNotCall($id)
+    private function getDoNotCall($id)
     {
         $entity =  $this->retrieveById($id);
         return $entity['do_not_call']? 'Registered' : 'Not Registered';
     }
 
-    public function getReputation($id)
+    private function getReputation($id)
     {
         $entity =  $this->retrieveById($id);
         if (!empty($entity['reputation'])) {
@@ -154,61 +170,79 @@ class Phone
     }
 
     // for name (business or person)
-    public function getPeopleName($id)
+    private function getPeopleName($id)
     {
         $entity =  $this->retrieveById($id);
         if (!empty($entity['best_name'])) {
-            $name = $entity['best_name'];
+            return $entity['best_name'];
         } elseif (!empty($entity['name'])) {
-            $name = $entity['name'];
+            return $entity['name'];
+        } else {
+            return '';
         }
-        return $name;
     }
 
     // for people contact type
-    public function getPeopleContactType($id)
+    private function getContactType($id)
     {
         $entity =  $this->retrieveById($id);
-        if (!empty($entity['locations'])) {
-            while (list(, $val) = each($entity['locations'])) {
-                if (!empty($val['id'])) {
-                    if ($val['id']['key'] == $this->getBestLocation($entity)) {
-                        $contact_type = $val['contact_type'];
-                        break;
-                    }
-                }
-            }
+        if (!empty($entity['id'])) {
+            return $entity['id']['type'];
+        } else {
+            return '';
         }
-        return empty($contact_type)? '' : $contact_type;
     }
 
-    public function getPeopleData($id)
+    private function getPeopleData($id)
     {
         return array('name' => $this->getPeopleName($id),
-            'people_type' => $this->getPeopleContactType($id)
+            'people_type' => $this->getContactType($id)
         );
     }
 
-    public function getLocationData($id)
+    private function getAddressData($entity)
     {
-        $location_entity =  $this->retrieveById($id);
+        return array('address_line1' => $this->addressLine1($entity),
+            'address_line2' => $this->addressLine2($entity),
+            'city' => $this->getCity($entity),
+            'postal_code' => $this->getPostalCode($entity),
+            'state_code' => $this->getStateCode($entity),
+            'is_receiving_mail' => $this->getReceivingMail($entity)? 'Yes' : 'No',
+            'usage' => $this->getUsage($entity),
+            'delivery_point' => $this->getDeliveryPoint($entity)
+        );
+    }
+
+    private function getLocationData($val, $id)
+    {
+        $location_entity =  $this->retrieveById($val);
         if (!empty($location_entity)) {
             $location_id = $this->getBestLocation($location_entity);
             if (!empty($location_id)) {
-                $entity =  $this->retrieveById($location_id);
-                return array('address_line1' => $this->addressLine1($entity),
-                    'address_line2' => $this->addressLine2($entity),
-                    'city' => $this->getCity($entity),
-                    'postal_code' => $this->getPostalCode($entity),
-                    'state_code' => $this->getStateCode($entity),
-                    'is_receiving_mail' => $this->getReceivingMail($entity)? 'Yes' : 'No',
-                    'usage' => $this->getUsage($entity),
-                    'delivery_point' => $this->getDeliveryPoint($entity));
+                if (!in_array($location_id, $this->locationIds)) {
+                    array_push($this->locationIds, $location_id);
+                    $entity =  $this->retrieveById($location_id);
+                    return $this->getAddressData($entity);
+                }
+            } else {
+                $entity =  $this->retrieveById($id);
+                if (!empty($entity['best_location'])) {
+                    if (!empty($entity['best_location']['id'])) {
+                        $location_id = $entity['best_location']['id']['key'];
+                        array_push($this->locationIds, $location_id);
+                        $entity =  $this->retrieveById($location_id);
+                        return $this->getAddressData($entity);
+                    } else {
+                        return array();
+                    }
+                } else {
+                    return array();
+                }
             }
         }
     }
 
-    public function getPeopleDetails($id)
+    private function getPeopleDetails($id)
     {
         $this->phoneBelongsTo($id);
         if (!empty($this->belongsToId)) {
@@ -219,20 +253,20 @@ class Phone
         return $this->peoples;
     }
 
-    public function getLocationDetails($id)
+    private function getLocationDetails($id)
     {
         $this->phoneBelongsTo($id);
         if (!empty($this->belongsToId)) {
             while (list(, $val) = each($this->belongsToId)) {
                 if (!empty($val)) {
-                    array_push($this->locations, $this->getLocationData($val));
+                    array_push($this->locations, $this->getLocationData($val, $id));
                 }
             }
         }
         return $this->locations;
     }
 
-    public function getResultData($id)
+    private function getResultData($id)
     {
         return array(
             'phone' => $this->getPhoneDetails($id),
@@ -241,12 +275,5 @@ class Phone
         );
     }
 
-    public function formattedResult()
-    {
-        while (list(, $val) = each($this->response['results'])) {
-            array_push($this->resultData, $this->getResultData($val));
-        }
-        return $this->resultData;
-    }
 }
 
