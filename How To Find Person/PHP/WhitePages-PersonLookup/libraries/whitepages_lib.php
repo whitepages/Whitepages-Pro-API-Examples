@@ -71,3 +71,4 @@ class WhitepagesLib
         $this->response = json_decode($curl_response, true);
     }
 }
+

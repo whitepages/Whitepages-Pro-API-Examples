@@ -14,7 +14,7 @@ if (isset($_POST['submit'])) {
         if (!empty($response['error'])) {
             $error = $response['error']['message'];
         } else {
-            $person_obj = new Libraries\Person($whitepages_obj->response);
+            $person_obj = new Libraries\Person($response);
             $result_data = $person_obj->formattedResult();
         }
     } else {

@@ -74,10 +74,10 @@ class Person
                         return $contact_type = $val['contact_type'];
                         break;
                     }
-                } else {
-                    return '';
                 }
             }
+        } else {
+            return '';
         }
     }
 
