@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService", "WebService\We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{B906D927-41E9-4DB2-B055-0F1F1B689593}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhitePages", "WhitePages\WhitePages.csproj", "{7405F0BC-522B-43A8-9368-5EFF8538A37D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhitePagesPhoneLookup", "WhitePagesPhoneLookup\WhitePagesPhoneLookup.csproj", "{7405F0BC-522B-43A8-9368-5EFF8538A37D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

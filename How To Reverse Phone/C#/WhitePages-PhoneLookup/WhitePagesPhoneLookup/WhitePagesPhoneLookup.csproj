@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Whitepaper</RootNamespace>
-    <AssemblyName>Whitepaper</AssemblyName>
+    <RootNamespace>WhitePagesPhoneLookup</RootNamespace>
+    <AssemblyName>WhitePagesPhoneLookup</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -63,16 +63,16 @@
   <ItemGroup>
     <Content Include="css\style.css" />
     <Content Include="Libs\Newtonsoft.Json.dll" />
-    <Content Include="phones_lookup.aspx" />
+    <Content Include="Phonelookup.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="phones_lookup.aspx.cs">
-      <DependentUpon>phones_lookup.aspx</DependentUpon>
+    <Compile Include="Phonelookup.aspx.cs">
+      <DependentUpon>Phonelookup.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="phones_lookup.aspx.designer.cs">
-      <DependentUpon>phones_lookup.aspx</DependentUpon>
+    <Compile Include="Phonelookup.aspx.designer.cs">
+      <DependentUpon>Phonelookup.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

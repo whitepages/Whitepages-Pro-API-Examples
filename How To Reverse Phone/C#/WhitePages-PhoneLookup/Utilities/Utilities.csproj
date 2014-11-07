@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Location.cs" />
+    <Compile Include="People.cs" />
+    <Compile Include="PhoneLookupData.cs" />
     <Compile Include="RequestData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerApis.cs" />

@@ -1,15 +1,15 @@
 ﻿// ***********************************************************************
 // Assembly         : Utilities
 // Author           : Kushal Shah
-// Created          : 08-06-2014
+// Created          : 11-06-2014
 //
 // Last Modified By : Kushal Shah
-// Last Modified On : 11-05-2014
+// Last Modified On : 11-06-2014
 // ***********************************************************************
-// <copyright file="ServerApis.cs" company="Whitepages Pro">
+// <copyright file="Location.cs" company="Whitepages Pro">
 //     . All rights reserved.
 // </copyright>
-// <summary>Class ServerApis to store the server's backend API</summary>
+// <summary>To keep the location information after parsing the result of phone lookup.</summary>
 // ***********************************************************************
 
 using System;
@@ -20,9 +20,14 @@ using System.Threading.Tasks;
 
 namespace Utilities
 {
-    public class ServerApis
+    public class Location
     {
-        // WhitePages phone lookup API
-        public const string WhitePagesPhoneLookupApi = "http://proapi.whitepages.com/2.0/phone.json";
+        public string Address { get; set; }
+
+        public string ReceivingMail { get; set; }
+
+        public string Usage { get; set; }
+
+        public string DeliveryPoint { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="phones_lookup.aspx.cs" Inherits="WhitePages.phones_lookup" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Phonelookup.aspx.cs" Inherits="WhitePagesPhoneLookup.PhoneLookup" %>
 
 <!DOCTYPE html>
 
@@ -44,7 +44,7 @@
                     </p>
                     <p>
                         <span>Spam Score:</span>
-                        <asp:Literal ID="LiteralSpanScore" runat="server"></asp:Literal>
+                        <asp:Literal ID="LiteralSpamScore" runat="server"></asp:Literal>
                     </p>
                 </div>
                 <div class="detail_box">
@@ -54,7 +54,7 @@
                 <div class="detail_box">
                     <h1>Location</h1>
                     <asp:Literal ID="LiteralLocationDetails" runat="server"></asp:Literal>
-                    
+
                 </div>
             </div>
         </div>

@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WhitePages {
+namespace WhitePagesPhoneLookup {
     
     
-    public partial class phones_lookup {
+    public partial class PhoneLookup {
         
         /// <summary>
         /// form1 control.
@@ -103,13 +103,13 @@ namespace WhitePages {
         protected global::System.Web.UI.WebControls.Literal LiteralDndStatus;
         
         /// <summary>
-        /// LiteralSpanScore control.
+        /// LiteralSpamScore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal LiteralSpanScore;
+        protected global::System.Web.UI.WebControls.Literal LiteralSpamScore;
         
         /// <summary>
         /// LiteralPeopleDetails control.
