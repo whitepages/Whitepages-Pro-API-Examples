@@ -1,10 +1,11 @@
-package com.whitepages.utilities;
-
 /**
  * This class contains white pages Api name.
- * @author vipin
- *
+ * @author Kushal Shah
+ * @since  2014-06-08
  */
+
+package com.whitepages.utilities;
+
 public class ServerApis {
 	// White pages API version
 	public static String API_VERSION = "2.0";

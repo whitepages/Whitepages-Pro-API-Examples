@@ -1,3 +1,9 @@
+/**
+ * This class contains method to create Person Lookup data, request and parse response data.
+ * @author Kushal Shah
+ * @since  2014-06-08
+ */
+
 package com.whitepages.webservice;
 
 import com.whitepages.data.PersonAddressLookupData;
@@ -8,19 +14,24 @@ import com.whitepages.utilities.Constants;
 
 public class PersonAddressService {
 
-	public PersonAddressLookupData getPersonAddressLookUpData(String firstName, String lastName, String address)
-	{
+	/**
+	 * This method to calls method doGetPersonAddressLookupData to get response of API and calls parseDataResponse to parse the result and returns PersonAddressLookupData object.
+	 * @param firstName: first name string.
+	 * @param lastName: last name string.
+	 * @param address: address string.
+	 * @return: PersonAddressLookupData.
+	 */
+	public PersonAddressLookupData getPersonAddressLookupData(String firstName, String lastName, String address) {
 		PersonAddressLookupData personAddressLookupData = null;
 		
-		if(firstName != null && firstName != "")
-		{
+		if(firstName != null && firstName != "") {
 			firstName = firstName.trim();
 			lastName = (lastName != null && !lastName.equals("")) ? lastName.trim() : "";
 			address = (address != null && !address.equals("")) ? address.trim() : "";
 			
 			String request = getPersonAdressLookUpRequest(firstName, lastName, address);
 			HttpRestClient httpRestClient = new HttpRestClient();
-			String response = httpRestClient.doGetPersonAddresslookupData(request);
+			String response = httpRestClient.doGetPersonAddressLookupData(request);
 			
 			// Parse phone lookup data json response
 			personAddressLookupData = parseDataResponse(response);
@@ -30,14 +41,13 @@ public class PersonAddressService {
 	}
 	
 	/**
-	 * This method create a request to get person address lookup data.
+	 * This method creates a request to get person address lookup data.
 	 * @param firstName: firstName to get data.
 	 * @param lastName: lastName to get data.
 	 * @param address: address to get data.
 	 * @return: request to get person address lookup data.
 	 */
-	private String getPersonAdressLookUpRequest(String firstName, String lastName, String address)
-	{
+	private String getPersonAdressLookUpRequest(String firstName, String lastName, String address) {
 		String request = null;
 		String serverUrl = ServerUrls.SERVER_URL;
 		String apiVersion = ServerApis.API_VERSION;
@@ -53,11 +63,9 @@ public class PersonAddressService {
 		return request;
 	}
 	
-	private PersonAddressLookupData parseDataResponse(String jsonResponse)
-	{
+	private PersonAddressLookupData parseDataResponse(String jsonResponse) {
 		PersonAddressLookupData personAddressLookupData = null;
-		if(jsonResponse != null && !jsonResponse.equals(""))
-		{
+		if(jsonResponse != null && !jsonResponse.equals("")) {
 			PersonAddressLookupParser personAddressLookupParser = new PersonAddressLookupParser();
 			personAddressLookupData = personAddressLookupParser.parsePersonAdressLookupData(jsonResponse);
 		}
