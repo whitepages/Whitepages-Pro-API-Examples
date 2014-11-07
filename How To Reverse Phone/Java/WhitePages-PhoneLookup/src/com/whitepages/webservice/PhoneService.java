@@ -1,3 +1,9 @@
+/**
+ * This class contains method to create Phone Lookup data, request and parse response data.
+ * @author Kushal Shah
+ * @since  2014-06-08
+ */
+
 package com.whitepages.webservice;
 
 import com.whitepages.data.PhoneLookupData;
@@ -8,16 +14,19 @@ import com.whitepages.utilities.Constants;
 
 public class PhoneService {
 
-	public PhoneLookupData getPhoneLookUpData(String phoneNumber)
-	{
+	/**
+	 * This method to calls method doGetPhoneLookupData to get response of API and calls parseDataResonse to parse the result and returns PhoneLookupData object.
+	 * @param phoneNumber: phone number.
+	 * @return: PhoneLookupData.
+	 */
+	public PhoneLookupData getPhoneLookupData(String phoneNumber) {
 		PhoneLookupData phoneLookupData = null;
 		
-		if(phoneNumber != null && phoneNumber != "")
-		{
+		if(phoneNumber != null && !phoneNumber.equals("")) {
 			phoneNumber = phoneNumber.trim();
-			String request = getPhoneLookUpRequest(phoneNumber);
+			String request = getPhoneLookupRequest(phoneNumber);
 			HttpRestClient httpRestClient = new HttpRestClient();
-			String response = httpRestClient.doGetPhonelookupData(request);
+			String response = httpRestClient.doGetPhoneLookupData(request);
 			
 			// Parse phone lookup data json response
 			phoneLookupData = parseDataResonse(response);
@@ -27,12 +36,11 @@ public class PhoneService {
 	}
 	
 	/**
-	 * This method create a request to get phone lookup data.
+	 * This method creates a request to get phone lookup data.
 	 * @param phoneNumber: phone number to get data.
 	 * @return: request to get phone data.
 	 */
-	private String getPhoneLookUpRequest(String phoneNumber)
-	{
+	private String getPhoneLookupRequest(String phoneNumber) {
 		String request = null;
 		String serverUrl = ServerUrls.SERVER_URL;
 		String apiVersion = ServerApis.API_VERSION;
@@ -46,11 +54,9 @@ public class PhoneService {
 		return request;
 	}
 	
-	private PhoneLookupData parseDataResonse(String jsonResponse)
-	{
+	private PhoneLookupData parseDataResonse(String jsonResponse) {
 		PhoneLookupData phoneLookupData = null;
-		if(jsonResponse != null && !jsonResponse.equals(""))
-		{
+		if(jsonResponse != null && !jsonResponse.equals("")) {
 			PhoneLookupParser phoneLookupParser = new PhoneLookupParser();
 			phoneLookupData = phoneLookupParser.parsePhoneLookupData(jsonResponse);
 		}

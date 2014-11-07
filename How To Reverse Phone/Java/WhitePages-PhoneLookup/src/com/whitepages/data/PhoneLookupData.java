@@ -1,3 +1,9 @@
+/**
+ * This class contains the Phone Lookup data.
+ * @author Kushal Shah
+ * @since  2014-06-08
+ */
+
 package com.whitepages.data;
 
 import org.json.JSONArray;
@@ -11,43 +17,34 @@ public class PhoneLookupData {
 	public String errorName = null;
 	public String errorMessage = null;
 	
-	public PhoneLookupData(JSONObject errorObject) throws JSONException
-	{
+	public PhoneLookupData(JSONObject errorObject) throws JSONException {
 		this.isError = true;
 		this.errorName = errorObject.optString("name");
 		this.errorMessage = errorObject.optString("message");
 		this.phoneDataArary = null;
 	}
 	
-	public PhoneLookupData(JSONObject responseObject, JSONArray resultsArray) throws JSONException
-	{		
+	public PhoneLookupData(JSONObject responseObject, JSONArray resultsArray) throws JSONException {
 		this.phoneDataArary = new PhoneData[resultsArray.length()];
 
 		JSONObject dictionaryObject = responseObject.optJSONObject("dictionary");
-		if(dictionaryObject != null)
-		{
-			for(int i = 0; i < resultsArray.length(); i++)
-			{
+		if(dictionaryObject != null) {
+			for(int i = 0; i < resultsArray.length(); i++) {
 				String resultKey = resultsArray.optString(i);
-				if(resultKey != null && !resultKey.equals(""))
-				{
+				if(resultKey != null && !resultKey.equals("")) {
 					JSONObject phoneObject = dictionaryObject.optJSONObject(resultKey);
-					if(phoneObject != null)
-					{
+					if(phoneObject != null) {
 						PhoneData phoneData = new PhoneData(dictionaryObject, phoneObject);
 						this.phoneDataArary[i] = phoneData;
-					}	
+					}
 				}
 			}
-		}
-		else
-		{
+		} else {
 			this.phoneDataArary = null;
 		}
 	}
 	
-	public class LocationData
-	{
+	public class LocationData {
 		// Location Data
 		public final String addressLine1;
 		public final String addressLine2;
@@ -56,8 +53,7 @@ public class PhoneLookupData {
 		public final String usage;
 		public final String deliveryPoint;
 		
-		LocationData(JSONObject locationObject) throws JSONException
-		{
+		LocationData(JSONObject locationObject) throws JSONException {
 			////////////////////////////////////////////////
 			// Get location data related details from phone lookup data.
 			//
@@ -72,15 +68,13 @@ public class PhoneLookupData {
 		}
 	}
 	
-	public class PeopleData
-	{
+	public class PeopleData {
 		// People Data
 		public final String type;
 		public final String name;
 		public final LocationData locationData;
 		
-		PeopleData(JSONObject dictionaryObject, String personKey) throws JSONException
-		{
+		PeopleData(JSONObject dictionaryObject, String personKey) throws JSONException {
 			////////////////////////////////////////////////
 			// Get people data related details from phone lookup data.
 			//
@@ -88,8 +82,7 @@ public class PhoneLookupData {
 			
 			JSONObject personObject = dictionaryObject.optJSONObject(personKey);
 			
-			if(personObject != null)
-			{
+			if(personObject != null) {
 				JSONObject idObject = personObject.optJSONObject("id");
 
 				this.type = idObject != null ? idObject.optString("type") : null;
@@ -98,8 +91,7 @@ public class PhoneLookupData {
 					(personObject.has("name") ? personObject.optString("name") : null);
 				
 				JSONObject personLocationObject = personObject.optJSONObject("best_location");
-				if(personLocationObject == null)
-				{
+				if(personLocationObject == null) {
 					JSONArray personLocationArray = personObject.getJSONArray("locations");
 					personLocationObject = personLocationArray.optJSONObject(0);
 				}
@@ -108,20 +100,15 @@ public class PhoneLookupData {
 				
 				String locationKey = personIdObject != null ? personIdObject.optString("key") : null;
 				
-				JSONObject locationObject = (locationKey != null && !locationKey.equals("")) ? 
-						dictionaryObject.optJSONObject(locationKey) : null;
+				JSONObject locationObject = (locationKey != null && !locationKey.equals("")) 
+						? dictionaryObject.optJSONObject(locationKey) : null;
 				
-				if(locationObject != null)
-				{
+				if(locationObject != null) {
 					this.locationData = new LocationData(locationObject);
-				}
-				else
-				{
+				} else {
 					this.locationData = null;
 				}
-			}
-			else
-			{
+			} else {
 				// People Data
 				this.type = null;
 				this.name = null;
@@ -130,18 +117,16 @@ public class PhoneLookupData {
 		}
 	}
 	
-	public class PhoneData
-	{
+	public class PhoneData {
 		// Phone Data
 		public final String phoneNumber;
 		public final String carrier;
 		public final String phoneType;
-		public final String doNotCallRegistry;
+		public final String doNotCall;
 		public final String spamScore;
 		public final PeopleData[] peopleDataArray;
 		
-		PhoneData(JSONObject dictionaryObject, JSONObject phoneObject) throws JSONException
-		{
+		PhoneData(JSONObject dictionaryObject, JSONObject phoneObject) throws JSONException {
 			////////////////////////////////////////////////
 			// Get phone data related details from phone lookup data.
 			//
@@ -154,63 +139,47 @@ public class PhoneLookupData {
 			this.carrier = phoneObject.optString("carrier");
 			
 			// Create phone number in required format i.e. +1-206-973-5100
-			this.phoneNumber = "+" + phoneObject.optString("country_calling_code") + "-" +
-					(phoneObject.optString("phone_number") != null ? 
-							phoneObject.optString("phone_number").replaceFirst("(\\d{3})(\\d{3})(\\d+)", "$1-$2-$3") : null);							
+			this.phoneNumber = "+" + phoneObject.optString("country_calling_code") + "-" 
+					+ (phoneObject.optString("phone_number") != null 
+							? phoneObject.optString("phone_number").replaceFirst("(\\d{3})(\\d{3})(\\d+)", "$1-$2-$3") : null);							
 			    
 			//Get do_not_call value
-			this.doNotCallRegistry = phoneObject.optBoolean("do_not_call", false) ? "Registered" : "Not Registered";
+			this.doNotCall = phoneObject.optBoolean("do_not_call", false) ? "Registered" : "Not Registered";
 			
 			JSONObject reputationObject = phoneObject.optJSONObject("reputation");
 			
-			if(reputationObject != null)
-			{
+			if(reputationObject != null) {
 				//Get spam_score value
 				this.spamScore = String.valueOf(reputationObject.optLong("spam_score")) + "%";
-			}
-			else
-			{
+			} else {
 				this.spamScore = null;
 			}
 			
 			JSONArray belongsToArray = phoneObject.optJSONArray("belongs_to");
-			if(belongsToArray != null && belongsToArray.length() > 0)
-			{
+			if(belongsToArray != null && belongsToArray.length() > 0) {
 				this.peopleDataArray = new PeopleData[belongsToArray.length()];
 				
-				for(int i = 0; i < belongsToArray.length(); i++)
-				{
+				for(int i = 0; i < belongsToArray.length(); i++) {
 					JSONObject object = belongsToArray.optJSONObject(i);
-					if(object != null)
-					{
+					if(object != null) {
 						JSONObject idObject = object.optJSONObject("id");
-						if(idObject != null)
-						{
+						if(idObject != null) {
 							String personKey = idObject.optString("key");
 							
-							if(personKey != null && !personKey.equals(""))
-							{
+							if(personKey != null && !personKey.equals("")) {
 								PeopleData peopleData = new PeopleData(dictionaryObject, personKey);
 								this.peopleDataArray[i] = peopleData;
-							}
-							else
-							{
+							} else {
 								this.peopleDataArray[i] = null;
 							}
-						}
-						else
-						{
+						} else {
 							this.peopleDataArray[i] = null;
 						}
-					}
-					else
-					{
+					} else {
 						this.peopleDataArray[i] = null;
 					}
 				}
-			}
-			else
-			{
+			} else {
 				this.peopleDataArray = null;
 			}
 		}

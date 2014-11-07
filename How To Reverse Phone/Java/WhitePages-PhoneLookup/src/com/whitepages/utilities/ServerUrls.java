@@ -1,10 +1,11 @@
+/**
+ * This class contains WhitePages Server Url.
+ * @author Kushal Shah
+ * @since  2014-06-08
+ */
+
 package com.whitepages.utilities;
 
-/**
- * This class contains White Pages Server Url.
- * @author vipin
- *
- */
 public class ServerUrls {
 	
 	// White pages server url.

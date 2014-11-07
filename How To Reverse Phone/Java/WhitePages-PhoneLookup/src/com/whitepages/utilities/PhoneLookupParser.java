@@ -1,3 +1,9 @@
+/**
+ * This is the class contains method parsePhoneLookupData to parse the result.
+ * @author Kushal Shah
+ * @since  2014-06-08
+ */
+
 package com.whitepages.utilities;
 
 import org.json.JSONArray;
@@ -8,26 +14,19 @@ import com.whitepages.data.PhoneLookupData;
 
 public class PhoneLookupParser {
 
-	public PhoneLookupData parsePhoneLookupData(String phoneLookupJsonResponse)
-	{
+	public PhoneLookupData parsePhoneLookupData(String phoneLookupJsonResponse) {
 		PhoneLookupData phoneLookupData = null;
 		try {
 				JSONObject responseObject = new JSONObject(phoneLookupJsonResponse);
-				if(responseObject != null)
-				{
-					if(responseObject.has("results"))
-					{
+				if(responseObject != null) {
+					if(responseObject.has("results")) {
 						JSONArray resultsArray = responseObject.optJSONArray("results");
-						if(resultsArray != null && resultsArray.length() > 0)
-						{
+						if(resultsArray != null && resultsArray.length() > 0) {
 							phoneLookupData = new PhoneLookupData(responseObject, resultsArray);
 						}
-					}
-					else if(responseObject.has("error"))
-					{
+					} else if(responseObject.has("error")) {
 						JSONObject errorObject = responseObject.optJSONObject("error");
-						if(errorObject != null)
-						{
+						if(errorObject != null) {
 							phoneLookupData = new PhoneLookupData(errorObject);
 						}
 					}
