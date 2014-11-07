@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Whitepaper</RootNamespace>
-    <AssemblyName>Whitepaper</AssemblyName>
+    <RootNamespace>WhitePagesAddressLookup</RootNamespace>
+    <AssemblyName>WhitePagesAddressLookup</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -61,18 +61,18 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="address_lookup.aspx" />
+    <Content Include="Addresslookup.aspx" />
     <Content Include="css\style.css" />
     <Content Include="Libs\Newtonsoft.Json.dll" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="address_lookup.aspx.cs">
-      <DependentUpon>address_lookup.aspx</DependentUpon>
+    <Compile Include="Addresslookup.aspx.cs">
+      <DependentUpon>Addresslookup.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="address_lookup.aspx.designer.cs">
-      <DependentUpon>address_lookup.aspx</DependentUpon>
+    <Compile Include="Addresslookup.aspx.designer.cs">
+      <DependentUpon>Addresslookup.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
