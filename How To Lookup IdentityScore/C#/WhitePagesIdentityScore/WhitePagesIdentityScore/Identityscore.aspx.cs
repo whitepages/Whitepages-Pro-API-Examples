@@ -1,4 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿// ***********************************************************************
+// Assembly         : WhitePagesIdentityScore
+// Author           : Kushal Shah
+// Created          : 08-12-2014
+//
+// Last Modified By : Kushal Shah
+// Last Modified On : 11-06-2014
+// ***********************************************************************
+// <copyright file="Identityscore.aspx.cs" company="Whitepages Pro">
+//     . All rights reserved.
+// </copyright>
+// <summary>IdentityScore class is code behind of Identityscore page.</summary>
+// ***********************************************************************
+
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -14,7 +28,7 @@ using WebService;
 
 namespace WhitePagesIdentityScore
 {
-    public partial class identity_score : System.Web.UI.Page
+    public partial class IdentityScore : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -29,9 +43,9 @@ namespace WhitePagesIdentityScore
         /// Click event of Find button. Find button event occurs when user clicks on find button.
         /// get data from WhitePages identity_score API and show on UI.
         /// </summary>
-        /// <param name="sender">sender</param>
-        /// <param name="e">EventArgs</param>
-        protected void ButtonFind_Click(object sender, EventArgs e)
+        /// <param name="sender">Object sender</param>
+        /// <param name="e">event data.</param>
+        protected void ButtonFindClick(object sender, EventArgs e)
         {
             errorDiv.Visible = false;
             LitralErrorMessage.Text = string.Empty;
@@ -62,7 +76,6 @@ namespace WhitePagesIdentityScore
 
             nameValues["api_key"] = WhitePagesConstants.ApiKey;
 
-
             WhitePagesWebService webService = new WhitePagesWebService();
             Stream responseStream = webService.ExecuteWebRequest(nameValues, ref statusCode, ref description, ref errorMessage);
 
@@ -80,7 +93,7 @@ namespace WhitePagesIdentityScore
                 if (identityScoreDataList != null && identityScoreDataList.Count > 0)
                 {
                     // Calling function to populate data on UI.
-                    PopulateDataOnUi(identityScoreDataList);
+                    PopulateDataOnUI(identityScoreDataList);
                 }
                 else
                 {
@@ -100,8 +113,8 @@ namespace WhitePagesIdentityScore
                     LitralErrorMessage.Text = errorMessage;
                 }
 
-                identityScoreResult.Visible = false;
-                errorDiv.Visible = true;
+                this.identityScoreResult.Visible = false;
+                this.errorDiv.Visible = true;
             }
         }
 
@@ -115,50 +128,50 @@ namespace WhitePagesIdentityScore
 
             if ((string.IsNullOrEmpty(name.Text)) && isInputValidated == true)
             {
-                errorDiv.Visible = true;
-                LitralErrorMessage.Text = WhitePagesConstants.NameNotProvidedMessage;
+                this.errorDiv.Visible = true;
+                this.LitralErrorMessage.Text = WhitePagesConstants.NameNotProvidedMessage;
                 isInputValidated = false;
             }
 
             if (string.IsNullOrEmpty(billing_address_street_line_1.Text) && isInputValidated == true)
             {
-                errorDiv.Visible = true;
-                LitralErrorMessage.Text = WhitePagesConstants.BillingAddressStreetLine1NotProvidedMessage;
+                this.errorDiv.Visible = true;
+                this.LitralErrorMessage.Text = WhitePagesConstants.BillingAddressStreetLine1NotProvidedMessage;
                 isInputValidated = false;
             }
 
             if (string.IsNullOrEmpty(billing_address_city.Text) && isInputValidated == true)
             {
-                errorDiv.Visible = true;
-                LitralErrorMessage.Text = WhitePagesConstants.BillingAddressCityNotProvidedMessage;
+                this.errorDiv.Visible = true;
+                this.LitralErrorMessage.Text = WhitePagesConstants.BillingAddressCityNotProvidedMessage;
                 isInputValidated = false;
             }
 
             if (string.IsNullOrEmpty(billing_address_state_code.Text) && isInputValidated == true)
             {
-                errorDiv.Visible = true;
-                LitralErrorMessage.Text = WhitePagesConstants.BillingAddressStateCodeNotProvidedMessage;
+                this.errorDiv.Visible = true;
+                this.LitralErrorMessage.Text = WhitePagesConstants.BillingAddressStateCodeNotProvidedMessage;
                 isInputValidated = false;
             }
 
             if (string.IsNullOrEmpty(billing_phone.Text) && isInputValidated == true)
             {
-                errorDiv.Visible = true;
-                LitralErrorMessage.Text = WhitePagesConstants.BillingPhoneNotProvidedMessage;
+                this.errorDiv.Visible = true;
+                this.LitralErrorMessage.Text = WhitePagesConstants.BillingPhoneNotProvidedMessage;
                 isInputValidated = false;
             }
 
             if (string.IsNullOrEmpty(ip_address.Text) && isInputValidated == true)
             {
-                errorDiv.Visible = true;
-                LitralErrorMessage.Text = WhitePagesConstants.IpAddressNotProvidedMessage;
+                this.errorDiv.Visible = true;
+                this.LitralErrorMessage.Text = WhitePagesConstants.IPAddressNotProvidedMessage;
                 isInputValidated = false;
             }
 
             if (string.IsNullOrEmpty(email_address.Text) && isInputValidated == true)
             {
-                errorDiv.Visible = true;
-                LitralErrorMessage.Text = WhitePagesConstants.EmailAddressNotProvidedMessage;
+                this.errorDiv.Visible = true;
+                this.LitralErrorMessage.Text = WhitePagesConstants.EmailAddressNotProvidedMessage;
                 isInputValidated = false;
             }
 
@@ -169,23 +182,25 @@ namespace WhitePagesIdentityScore
         /// This method populates data on UI.
         /// </summary>
         /// <param name="identityScoreDataList">identityScoreDataList</param>
-        private void PopulateDataOnUi(List<IdentityScoreData> identityScoreDataList)
+        private void PopulateDataOnUI(List<IdentityScoreData> identityScoreDataList)
         {
             string identityScoreDataTemplates = WhitePagesConstants.IdentityScoreDataTemplates;
 
             string identityScoreDataString = string.Empty;
 
+            // Creating template for identity score to show on UI.
             foreach(IdentityScoreData identityScoreData in identityScoreDataList)
             {
                 string componentDataString = string.Empty;
                 string identityScoreDataBox = WhitePagesConstants.IdentityScoreDataBox;
 
-                foreach(Components component in identityScoreData.components)
+                foreach(Components component in identityScoreData.GetComponents())
                 {
                     identityScoreDataTemplates = WhitePagesConstants.IdentityScoreDataTemplates;
 
-                    identityScoreDataTemplates = identityScoreDataTemplates.Replace(":SCORE_NAME", component.scoreName);
-                    identityScoreDataTemplates = identityScoreDataTemplates.Replace(":SCORE", string.IsNullOrEmpty(component.score) ? WhitePagesConstants.NaText : component.score);
+                    // get score, score name and bind with template.
+                    identityScoreDataTemplates = identityScoreDataTemplates.Replace(":SCORE_NAME", component.ScoreName);
+                    identityScoreDataTemplates = identityScoreDataTemplates.Replace(":SCORE", string.IsNullOrEmpty(component.Score) ? WhitePagesConstants.NAText : component.Score);
 
                     componentDataString += identityScoreDataTemplates;
                 }
@@ -193,9 +208,10 @@ namespace WhitePagesIdentityScore
                 identityScoreDataString += identityScoreDataBox.Replace(":IDENTITY_SCORE_RESULT", componentDataString);
             }
 
-            identityScoreResult.Visible = true;
+            this.identityScoreResult.Visible = true;
 
-            LiteralIdentityScoreResult.Text = identityScoreDataString;
+            // Final template string is binding to LiteralIdentityScoreResult.
+            this.LiteralIdentityScoreResult.Text = identityScoreDataString;
         }
         
         /// <summary>
@@ -247,16 +263,16 @@ namespace WhitePagesIdentityScore
                         // Extact billing_address object
                         dynamic billingAddressObj = identityScoreRequestObj.billing_address;
 
-                        identityScoreData.billingName = billingNameObj == null ? string.Empty : (string)billingNameObj["name"];
-                        identityScoreData.shippingName = shippingNameObj == null ? string.Empty : (string)shippingNameObj["name"];
-                        identityScoreData.billingPhone = (string)identityScoreRequestObj["billing_phone"];
+                        identityScoreData.BillingName = billingNameObj == null ? string.Empty : (string)billingNameObj["name"];
+                        identityScoreData.ShippingName = shippingNameObj == null ? string.Empty : (string)shippingNameObj["name"];
+                        identityScoreData.BillingPhone = (string)identityScoreRequestObj["billing_phone"];
 
-                        identityScoreData.streetLine1 = billingAddressObj == null ? string.Empty : (string)billingAddressObj["street_line_1"];
-                        identityScoreData.stateCode = billingAddressObj == null ? string.Empty : (string)billingAddressObj["city"];
-                        identityScoreData.city = billingAddressObj == null ? string.Empty : (string)billingAddressObj["state_code"];
+                        identityScoreData.StreetLine1 = billingAddressObj == null ? string.Empty : (string)billingAddressObj["street_line_1"];
+                        identityScoreData.StateCode = billingAddressObj == null ? string.Empty : (string)billingAddressObj["city"];
+                        identityScoreData.City = billingAddressObj == null ? string.Empty : (string)billingAddressObj["state_code"];
 
-                        identityScoreData.emailAddress = (string)identityScoreRequestObj["email_address"];
-                        identityScoreData.ipAddress = (string)identityScoreRequestObj["ip_address"];
+                        identityScoreData.EmailAddress = (string)identityScoreRequestObj["email_address"];
+                        identityScoreData.IPAddress = (string)identityScoreRequestObj["ip_address"];
 
                         // Extact components object
                         dynamic identityScoreComponentsObj = identityScoreObject.components;
@@ -270,13 +286,13 @@ namespace WhitePagesIdentityScore
                             {
                                 components = new Components();
 
-                                components.scoreName = component == null ? string.Empty : (string)component["name"];
-                                components.score = component == null ? string.Empty : (string)component["score"];
+                                components.ScoreName = component == null ? string.Empty : (string)component["name"];
+                                components.Score = component == null ? string.Empty : (string)component["score"];
 
                                 componentList.Add(components);
                             }
 
-                            identityScoreData.components = componentList.ToArray();
+                            identityScoreData.SetComponents(componentList.ToArray());
                         }
 
                         identityScoreDataList.Add(identityScoreData);

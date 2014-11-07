@@ -1,4 +1,18 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : Utilities
+// Author           : Kushal Shah
+// Created          : 08-12-2014
+//
+// Last Modified By : Kushal Shah
+// Last Modified On : 11-05-2014
+// ***********************************************************************
+// <copyright file="RequestData.cs" company="Whitepages Pro">
+//     . All rights reserved.
+// </copyright>
+// <summary>RequestData class having method to provide identity score request URL and create the request data.</summary>
+// ***********************************************************************
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -18,14 +32,14 @@ namespace Utilities
         /// </summary>
         /// <param name="requestType">API Request Type will return as a ref parameter</param>
         /// <returns>returns WhitePages request Url</returns>
-        public string GetWhitePagesRequest(ref string requestType)
+        public string GetWhitePagesIdentityScoreRequest(ref string requestType)
         {
-            string whitePagesRequestUrl = string.Empty;
+            string whitePagesIdentityScoreRequestUrl = string.Empty;
 
-            whitePagesRequestUrl = ServerApis.WhitePagesIdentityScoreApi;
+            whitePagesIdentityScoreRequestUrl = ServerApis.WhitePagesIdentityScoreApi;
             requestType = GetRequest;
 
-            return whitePagesRequestUrl;
+            return whitePagesIdentityScoreRequestUrl;
         }
 
         /// <summary>
@@ -38,35 +52,41 @@ namespace Utilities
         {
             string requestData = string.Empty;
 
+            // Reading all parameter from NameValueCollection and creates request data.
             foreach (string key in nameValues.AllKeys)
             {
+                // Here checking requestData is empty to skip first titration to put '&' for GET request and ',' for POST request.
                 if (!string.IsNullOrEmpty(requestData))
                 {
-                    if (requestType.Equals(GetRequest))
+                    // Here we check the request type either GET or POST and we add the '&' separator for paramaters for GET 
+                    // and ',' for POST to create JSON data.
+                    if (requestType.Equals(GetRequest, StringComparison.CurrentCulture))
                     {
                         requestData += "&";
                     }
-                    else if (requestType.Equals(PostRequest))
+                    else if (requestType.Equals(PostRequest, StringComparison.CurrentCulture))
                     {
                         requestData += ", ";
                     }
                 }
 
-                if (requestType.Equals(GetRequest))
+                // Concatenating request parameters key and value here.
+                if (requestType.Equals(GetRequest, StringComparison.CurrentCulture))
                 {
                     requestData += key + "=" + nameValues[key];
                 }
-                else if (requestType.Equals(PostRequest))
+                else if (requestType.Equals(PostRequest, StringComparison.CurrentCulture))
                 {
                     requestData += '"' + key + '"' + ":" + '"' + nameValues[key] + '"';
                 }
             }
 
-            if (requestType.Equals(GetRequest))
+            // Adding prefix '?' for GET method and prefix/postfix '{' / '}' for POST method.
+            if (requestType.Equals(GetRequest, StringComparison.CurrentCulture))
             {
                 requestData = "?" + requestData;
             }
-            else if (requestType.Equals(PostRequest))
+            else if (requestType.Equals(PostRequest, StringComparison.CurrentCulture))
             {
                 requestData = "{" + requestData + "}";
             }

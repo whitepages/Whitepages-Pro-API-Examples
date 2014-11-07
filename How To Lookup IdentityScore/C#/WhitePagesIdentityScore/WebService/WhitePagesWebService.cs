@@ -1,4 +1,18 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : WebService
+// Author           : Kushal Shah
+// Created          : 08-12-2014
+//
+// Last Modified By : Kushal Shah
+// Last Modified On : 11-05-2014
+// ***********************************************************************
+// <copyright file="WhitePagesWebService.cs" company="Whitepages Pro">
+//     . All rights reserved.
+// </copyright>
+// <summary>WhitePagesWebService having method to execute the web requests.</summary>
+// ***********************************************************************
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -7,7 +21,8 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities;
-
+using System.Globalization;
+// Assembly marked as compliant.
 namespace WebService
 {
     public class WhitePagesWebService
@@ -23,8 +38,8 @@ namespace WebService
         public Stream ExecuteWebRequest(NameValueCollection requestDataNameValues, ref int statusCode, ref string statusDescription, ref string errorMessage)
         {
             Stream responseStream = null;
-            statusDescription = "Unknown";
-            errorMessage = "Unknown error has occured.";
+            statusDescription = WhitePagesConstants.ErrorStatusDescription;
+            errorMessage = WhitePagesConstants.UnknownErrorMessage;
 
             try
             {
@@ -34,17 +49,25 @@ namespace WebService
                 string authorization = requestDataNameValues["authorization"];
                 requestDataNameValues.Remove("authorization");
 
-                string request = requestData.GetWhitePagesRequest(ref requestType);
+                // Gets WhitePages IdentityScore request URL and requestType.
+                string request = requestData.GetWhitePagesIdentityScoreRequest(ref requestType);
+
+                // Gets requested data for IdentityScore API.
                 string requestDataString = requestData.GetRequestData(requestType, requestDataNameValues);
 
                 HttpWebRequest httpRequest = null;
 
+                // Creating HttpWebRequest for Get and Post method. 
                 switch (requestType)
                 {
-                    case "GET":
+                    case WhitePagesConstants.GetMethod:
                         request += requestDataString;
+
+                        // Creating HttpWebRequest.
                         httpRequest = WebRequest.Create(request) as HttpWebRequest;
-                        httpRequest.Method = "GET";
+
+                        // Set method type to GET
+                        httpRequest.Method = WhitePagesConstants.GetMethod;
                         httpRequest.ContentType = "application/json";
 
                         if (!string.IsNullOrEmpty(authorization))
@@ -54,9 +77,15 @@ namespace WebService
 
                         break;
 
-                    case "POST":
+                    case WhitePagesConstants.PostMethod:
+
+                        // Creating HttpWebRequest.
                         httpRequest = WebRequest.Create(request) as HttpWebRequest;
-                        httpRequest.Method = "POST";
+
+                        // Set method type to POST
+                        httpRequest.Method = WhitePagesConstants.PostMethod;
+
+                        // set ContentType to HttpWebRequest
                         httpRequest.ContentType = "application/json";
 
                         if (!string.IsNullOrEmpty(authorization))
@@ -66,7 +95,10 @@ namespace WebService
 
                         string postData = requestDataString;
 
+                        // Convert Post Data to byte.
                         byte[] postBytes = new ASCIIEncoding().GetBytes(postData);
+
+                        // Set ContentLength
                         httpRequest.ContentLength = postBytes.Length;
 
                         Stream requestStream = httpRequest.GetRequestStream();
@@ -74,17 +106,21 @@ namespace WebService
                         requestStream.Close();
 
                         break;
+                    default:
+                        // do the default action
+                        break;
                 }
 
                 HttpWebResponse response = httpRequest.GetResponse() as HttpWebResponse;
 
-                statusCode = Convert.ToInt32(response.StatusCode);
+                statusCode = Convert.ToInt32(response.StatusCode, CultureInfo.CurrentCulture);
                 statusDescription = response.StatusDescription;
                 errorMessage = string.Empty;
 
-                // Get response stream
+                // Get response stream.
                 responseStream = response.GetResponseStream();
             }
+            // Handles WebException if occurs.
             catch (WebException webException)
             {
                 try
@@ -93,30 +129,32 @@ namespace WebService
 
                     if (webResponse != null)
                     {
-                        statusCode = Convert.ToInt32(webResponse.StatusCode);
+                        statusCode = Convert.ToInt32(webResponse.StatusCode, CultureInfo.CurrentCulture);
                         statusDescription = webResponse.StatusDescription;
 
                         Stream stream = webResponse.GetResponseStream();
-                        StreamReader streamReader = new StreamReader(stream);
-                        string textErrorMessage = streamReader.ReadToEnd();
-                        errorMessage = textErrorMessage;
+                        using (StreamReader streamReader = new StreamReader(stream))
+                        {
+                            string textErrorMessage = streamReader.ReadToEnd();
+                            errorMessage = textErrorMessage;
+                        }
                     }
                     else
                     {
-                        statusCode = Convert.ToInt32(webException.Status);
-                        statusDescription = "WebException Status Messgae =>" + webException.Message;
+                        statusCode = Convert.ToInt32(webException.Status, CultureInfo.CurrentCulture);
+                        statusDescription = WhitePagesConstants.WebExceptionStatusMessageText + webException.Message;
                         errorMessage = webException.StackTrace;
                     }
                 }
                 catch (Exception ex)
                 {
-                    statusDescription = "ExceptionOccurred";
+                    statusDescription = WhitePagesConstants.ExceptionStatusDescription;
                     errorMessage = ex.Message;
                 }
             }
             catch (Exception ex)
             {
-                statusDescription = "ExceptionOccurred";
+                statusDescription = WhitePagesConstants.ExceptionStatusDescription;
                 errorMessage = ex.Message;
             }
 

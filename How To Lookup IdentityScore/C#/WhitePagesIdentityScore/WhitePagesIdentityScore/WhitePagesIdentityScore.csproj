@@ -61,17 +61,18 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="identity_score.aspx" />
+    <Content Include="css\style.css" />
+    <Content Include="Identityscore.aspx" />
     <Content Include="Libs\Newtonsoft.Json.dll" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="identity_score.aspx.cs">
-      <DependentUpon>identity_score.aspx</DependentUpon>
+    <Compile Include="Identityscore.aspx.cs">
+      <DependentUpon>Identityscore.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="identity_score.aspx.designer.cs">
-      <DependentUpon>identity_score.aspx</DependentUpon>
+    <Compile Include="Identityscore.aspx.designer.cs">
+      <DependentUpon>Identityscore.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

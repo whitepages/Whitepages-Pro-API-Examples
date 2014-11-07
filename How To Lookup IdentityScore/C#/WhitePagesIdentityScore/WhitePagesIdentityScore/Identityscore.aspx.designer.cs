@@ -8,9 +8,10 @@
 //------------------------------------------------------------------------------
 
 namespace WhitePagesIdentityScore {
-    
-    
-    public partial class identity_score {
+
+
+    public partial class IdentityScore
+    {
         
         /// <summary>
         /// form1 control.
