@@ -53,8 +53,8 @@
         <div class="detail_box">
           <h1>Location </h1>
           <% phone_obj[:location].each do |location_obj| %>
-            <div class="detail_boxin_phone" style="height: 122px;min-height: 105px;">
-              <% unless location_obj[:address].blank? %>
+            <% unless location_obj[:address].blank? %>
+              <div class="detail_boxin_phone" style="height: 122px;min-height: 105px;">
                 <% unless location_obj[:address][:standard_address_line1].blank? %>
                   <%= location_obj[:address][:standard_address_line1]  %>
                   <br />
@@ -86,8 +86,8 @@
                   <span class="bg_font12">Delivery Point: </span>
                   <%= location_obj[:address][:delivery_point].to_s[0..-5] + " Unit" %>
                 </p>
-              <% end %>
-            </div>
+              </div>
+            <% end %>
           <% end %>
         </div>
       <% end %>

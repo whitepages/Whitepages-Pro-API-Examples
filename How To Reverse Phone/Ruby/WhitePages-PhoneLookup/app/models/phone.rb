@@ -1,7 +1,8 @@
 class Phone
-  attr_reader :response
+  attr_reader :response, :location_ids
   def initialize(response)
     @response = response
+    @location_ids = []
   end
 
   def formatted_result
@@ -116,15 +117,31 @@ class Phone
   # get belongs to location key
   def location(id)
     phone_belongs_to(id).map do |entity| {
-     address: location_data(entity)
+     address: location_data(entity, id)
     } end.reject(&:empty?)
   end
 
   # get best location key and location details
-  def location_data(id)
-    location_id = phone_best_location(id)
-    location = retrieve_by_id(location_id) if location_id
-    location_details(location) if location
+  def location_data(entity, id)
+    location_id = phone_best_location(entity)
+    if location_id
+      unless location_ids.include? location_id
+        location_ids << location_id
+        location = retrieve_by_id(location_id)
+        location_details(location) if location
+      end
+    else
+      entity = retrieve_by_id(id)
+      unless entity['best_location'].blank?
+        location_id = entity['best_location']['id']['key'] if entity['best_location']['id']
+        if location_id
+          unless location_ids.include? location_id
+            location_ids << location_id
+            location_details(retrieve_by_id(location_id)) if location_id
+          end
+        end
+      end
+    end
   end
 
   def people(id)
