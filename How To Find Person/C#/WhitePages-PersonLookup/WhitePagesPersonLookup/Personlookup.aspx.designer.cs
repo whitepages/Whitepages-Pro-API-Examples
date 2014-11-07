@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WhitePages {
+namespace WhitePagesPersonLookup {
     
     
-    public partial class personlookup {
+    public partial class PersonLookup {
         
         /// <summary>
         /// form1 control.
