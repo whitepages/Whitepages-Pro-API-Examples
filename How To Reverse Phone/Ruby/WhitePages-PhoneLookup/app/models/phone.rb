@@ -1,35 +1,57 @@
 class Phone
-  attr_reader :response, :location_ids
+  attr_reader :response
+
   def initialize(response)
     @response = response
-    @location_ids = []
   end
 
+  # return formatted result array
   def formatted_result
     response['results'].map do |entity| {
-     phone: phone(entity),
-     people: people(entity),
-     location: location(entity)
+     phone: phone_detail(entity),
+     people: people_detail(entity),
+     location: location_detail(entity)
     }end.reject(&:empty?)
   end
 
 
   private
 
+  # get belongs to location key
+  def location_detail(phone_key)
+    location_arr =  belongs_to_best_location(phone_key)
+    if location_arr.blank?
+      location_arr << best_location(phone_key) if best_location(phone_key)
+    end
+    location_arr = location_arr.uniq
+
+    location_arr.map do |entity| {
+     address: location_data(entity)
+    } end.reject(&:empty?)
+  end
+
+  # get belongs to key
+  def belongs_to_best_location(id)
+    entity = retrieve_by_id(id)
+    entity['belongs_to'].map do |entity|
+      best_location(entity['id']['key'])
+    end.reject(&:blank?)
+  end
+
+  def belongs_to_people(id)
+    entity = retrieve_by_id(id)
+    entity['belongs_to'].map do |entity|
+      entity['id']['key']
+    end.reject(&:blank?)
+  end
+
+  # for getting object from id
   def retrieve_by_id(id)
     response['dictionary'][id] if id && response && response['dictionary'][id]
   end
 
-  # get belongs to key
-  def phone_belongs_to(id)
-    entity = retrieve_by_id(id)
-    entity['belongs_to'].map do |belongs_to_entity|
-      belongs_to_entity['id']['key']
-    end.reject(&:empty?)
-  end
-
   # get best location key
-  def phone_best_location(id)
+  def best_location(id)
     entity = retrieve_by_id(id)
     unless entity['best_location'].blank?
       entity['best_location']['id']['key']
@@ -38,138 +60,46 @@ class Phone
     end
   end
 
-  def phone_number(id)
-    entity = retrieve_by_id(id)
-    entity['phone_number']
-  end
-
-  def phone_country_code(id)
-    entity = retrieve_by_id(id)
-    entity['country_calling_code']
-  end
-
-  def phone_type(id)
-    entity = retrieve_by_id(id)
-    entity['line_type']
-  end
-
-  def phone_carrier(id)
-    entity = retrieve_by_id(id)
-    entity['carrier']
-  end
-
-  def do_not_call(id)
-    entity = retrieve_by_id(id)
-    entity['do_not_call']? 'Registered' : 'Not Registered'
-  end
-
-  def phone_reputation(id)
-    entity = retrieve_by_id(id)
+  # phone spam score
+  def reputation(entity)
     entity['reputation']['spam_score'] if entity['reputation']
   end
 
-  def phone_city(entity)
-    entity['city']
-  end
-
-  def phone_state_code(entity)
-    entity['state_code']
-  end
-
-  def standard_address_line1(entity)
-    entity['standard_address_line1']
-  end
-
-  def standard_address_line2(entity)
-    entity['standard_address_line2']
-  end
-
-  def receiving_mail(entity)
-    entity['is_receiving_mail']? 'Yes' : 'No'
-  end
-
-  def usage(entity)
-    entity['usage']
-  end
-
-  def postal_code(entity)
-    entity['postal_code']
-  end
-
-  def delivery_point(entity)
-    entity['delivery_point']
-  end
-
-  # get location details
-  def location_details(entity)
+  # getting location details using location id
+  def location_data(id)
+    entity = retrieve_by_id(id)
     {
-     standard_address_line1: standard_address_line1(entity),
-     standard_address_line2: standard_address_line2(entity),
-     receiving_mail: receiving_mail(entity),
-     usage: usage(entity),
-     delivery_point: delivery_point(entity),
-     city: phone_city(entity),
-     postal_code: postal_code(entity),
-     state_code: phone_state_code(entity)
+     standard_address_line1: entity['standard_address_line1'],
+     standard_address_line2: entity['standard_address_line2'],
+     receiving_mail: entity['is_receiving_mail']? 'Yes' : 'No',
+     usage: entity['usage'],
+     delivery_point: entity['delivery_point'],
+     city: entity['city'],
+     postal_code: entity['postal_code'],
+     state_code: entity['state_code']
     }
   end
 
-  # get belongs to location key
-  def location(id)
-    phone_belongs_to(id).map do |entity| {
-     address: location_data(entity, id)
-    } end.reject(&:empty?)
+  # getting people details using people id
+  def people_detail(id)
+    belongs_to_people(id).map do |people_entity|
+      entity = retrieve_by_id(people_entity)
+      {
+       name: entity['name'] || entity['best_name'],
+       people_type: entity['id']['type']
+      }end.reject(&:empty?)
   end
 
-  # get best location key and location details
-  def location_data(entity, id)
-    location_id = phone_best_location(entity)
-    if location_id
-      unless location_ids.include? location_id
-        location_ids << location_id
-        location = retrieve_by_id(location_id)
-        location_details(location) if location
-      end
-    else
-      entity = retrieve_by_id(id)
-      unless entity['best_location'].blank?
-        location_id = entity['best_location']['id']['key'] if entity['best_location']['id']
-        if location_id
-          unless location_ids.include? location_id
-            location_ids << location_id
-            location_details(retrieve_by_id(location_id)) if location_id
-          end
-        end
-      end
-    end
-  end
-
-  def people(id)
-    phone_belongs_to(id).map do |entity| {
-     name: people_name(entity),
-     people_type: people_type(entity)
-    }end.reject(&:empty?)
-  end
-
-  def people_name(id)
-    entity = retrieve_by_id(id) if id
-    entity['name'] || entity['best_name'] if entity
-  end
-
-  def people_type(id)
-    entity = retrieve_by_id(id) if id
-    entity['id']['type'] if entity
-  end
-
-  # get requested phone details
-  def phone(entity)
+  # getting phone details using phone id
+  def phone_detail(id)
+    entity = retrieve_by_id(id)
     {
-     number: phone_number(entity),
-     country_code: phone_country_code(entity),
-     phone_type: phone_type(entity),
-     phone_carrier: phone_carrier(entity),
-     do_not_call: do_not_call(entity),
-     reputation: phone_reputation(entity)
+     number: entity['phone_number'],
+     country_code: entity['country_calling_code'],
+     phone_type: entity['line_type'],
+     phone_carrier: entity['carrier'],
+     do_not_call: entity['do_not_call']? 'Registered' : 'Not Registered',
+     reputation: reputation(entity)
     }
   end
 end

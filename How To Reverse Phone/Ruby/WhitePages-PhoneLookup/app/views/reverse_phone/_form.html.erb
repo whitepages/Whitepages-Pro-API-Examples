@@ -1,7 +1,7 @@
 <div class="search_sec">
   <p>Find by Phone</p>
-  <form method="post" action="/phone">
-    <input type="text" name="phone" placeholder="Phone number" value="<%=params['phone']%>" id="phone" class="inputbox" >
+  <form method="post" action="/reverse_phone">
+    <input type="text" name="phone" placeholder="Phone number" value="<%= params['phone'] %>" id="phone" class="inputbox" >
     <input type="Submit" name="submit" value="Find" class="find_btn" >
     <input type="button" name="clear" value="Clear" class="find_btn" id="clear_bt">
   </form>

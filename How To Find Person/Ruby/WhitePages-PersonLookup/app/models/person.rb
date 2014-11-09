@@ -5,10 +5,11 @@ class Person
   end
 
   def formatted_result
-    response['results'].map do |entity|
+    response['results'].map do |id|
+      entity = retrieve_by_id(id)
       {
-       name: name(entity),
-       age: age(entity),
+       name: entity['name'] || entity['best_name'],
+       age: entity['age_range'],
        contact_type: contact_type(entity),
        address: address(entity)
       }
@@ -22,50 +23,8 @@ class Person
     response['dictionary'][id] if id && response && response['dictionary'][id]
   end
 
-  def retrieve_best_location_id(id)
+  def best_location_id(id)
     id['best_location']['id']['key'] if id && id['best_location'] && id['best_location']['id']
-  end
-
-  def name(id)
-    entity = retrieve_by_id(id)
-    entity['name'] || entity['best_name']
-  end
-
-  def age(id)
-    entity = retrieve_by_id(id)
-    entity['age_range']
-  end
-
-  def standard_address_line1(entity)
-    entity['standard_address_line1']
-  end
-
-  def standard_address_line2(entity)
-    entity['standard_address_line2']
-  end
-
-  def receiving_mail(entity)
-    entity['is_receiving_mail']? 'Yes' : 'No'
-  end
-
-  def city(entity)
-    entity['city']
-  end
-
-  def postal_code(entity)
-    entity['postal_code']
-  end
-
-  def state_code(entity)
-    entity['state_code']
-  end
-
-  def usage(entity)
-    entity['usage']
-  end
-
-  def delivery_point(entity)
-    entity['delivery_point']
   end
 
   def location(id)
@@ -73,30 +32,28 @@ class Person
     location_details(location) if location
   end
 
-  def address(id)
-    best_location = retrieve_best_location_id(retrieve_by_id(id))
+  def address(entity)
+    best_location = best_location_id(entity)
     location(best_location) if best_location
   end
 
-  def contact_type(id)
-    entity = retrieve_by_id(id)
+  def contact_type(entity)
     entity['locations'].map do |locations_entity|
-      locations_entity['contact_type']  if locations_entity['id']['key'] == retrieve_best_location_id(entity)
+      locations_entity['contact_type']  if locations_entity['id']['key'] == best_location_id(entity)
     end.reject(&:nil?)
   end
 
   # get location details
   def location_details(entity)
     {
-     standard_address_line1: standard_address_line1(entity),
-     standard_address_line2: standard_address_line2(entity),
-     receiving_mail: receiving_mail(entity),
-     postal_code: postal_code(entity),
-     usage: usage(entity),
-     delivery_point: delivery_point(entity),
-     city: city(entity),
-     state_code: state_code(entity)
+     standard_address_line1: entity['standard_address_line1'],
+     standard_address_line2: entity['standard_address_line2'],
+     receiving_mail: entity['is_receiving_mail']? 'Yes' : 'No',
+     postal_code: entity['postal_code'],
+     usage: entity['usage'],
+     delivery_point: entity['delivery_point'],
+     city: entity['city'],
+     state_code: entity['state_code']
     }
   end
-
 end
