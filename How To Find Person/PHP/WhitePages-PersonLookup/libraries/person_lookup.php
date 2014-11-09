@@ -8,17 +8,25 @@ if (isset($_POST['submit'])) {
         'last_name' => trim($_POST['last_name']),
         'address' => trim($_POST['where'])
     );
-    $whitepages_obj = new Libraries\WhitepagesLib();
+    $whitepages_obj = new WhitepagesLib();
     $response = $whitepages_obj->findPerson($param);
-    if ($response) {
-        if (!empty($response['error'])) {
-            $error = $response['error']['message'];
-        } else {
-            $person_obj = new Libraries\Person($response);
-            $result_data = $person_obj->formattedResult();
+    try {
+        if ($response === false) {
+            throw new Exception;
         }
-    } else {
-        $error = 'No records found';
+        if ($response) {
+            if (!empty($response['error'])) {
+                $error = $response['error']['message'];
+            } else {
+                $person_obj = new Person($response);
+                $result_data = $person_obj->formattedResult();
+            }
+        } else {
+            $error = 'No records found';
+        }
+
+    } catch(Exception $exception) {
+        echo "Error Api response";
     }
 }
 

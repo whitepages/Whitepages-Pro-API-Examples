@@ -1,24 +1,27 @@
 <?php
-
-namespace Libraries;
-
+/**
+ * Library for abstraction of methods to use Whitepages Pro API
+ * @require     PHP5
+ *
+ * @author      Kushal Shah
+ * @date        2014-06-01
+ */
 class Address
 {
     public $response;
-    public $resultData;
 
     public function __construct($response)
     {
         $this->response = $response;
-        $this->resultData = array();
     }
 
     public function formattedResult()
     {
+        $resultData = array();
         while (list(, $val) = each($this->response['results'])) {
-            array_push($this->resultData, $this->getResultData($val));
+            array_push($resultData, $this->getResultData($val));
         }
-        return $this->resultData;
+        return $resultData;
     }
 
     // for getting object id
@@ -46,9 +49,8 @@ class Address
     }
 
     // for name (business or person)
-    private function getName($id)
+    private function getName($entity)
     {
-        $entity =  $this->retrieveById($id);
         if (!empty($entity['best_name'])) {
             return $entity['best_name'];
         } elseif (!empty($entity['name'])) {
@@ -59,9 +61,8 @@ class Address
     }
 
     // for person age
-    private function getAge($id)
+    private function getAge($entity)
     {
-        $entity =  $this->retrieveById($id);
         if (!empty($entity['age_range'])) {
             return $entity['age_range'];
         } else {
@@ -70,9 +71,8 @@ class Address
     }
 
     // for person contact type
-    private function getContactType($id)
+    private function getContactType($entity)
     {
-        $entity =  $this->retrieveById($id);
         if (!empty($entity['locations'])) {
             while (list(, $val) = each($entity['locations'])) {
                 if (!empty($val['id'])) {
@@ -86,7 +86,6 @@ class Address
             return '';
         }
     }
-
 
     // getting legal entities (people id)
     private function getPersons($id)
@@ -127,9 +126,10 @@ class Address
 
     private function getPersonDetails($id)
     {
-        return array('name' => $this->getName($id),
-            'age' => $this->getAge($id),
-            'contact_type' => $this->getContactType($id)
+        $entity =  $this->retrieveById($id);
+        return array('name' => $this->getName($entity),
+            'age' => $this->getAge($entity),
+            'contact_type' => $this->getContactType($entity)
         );
     }
 

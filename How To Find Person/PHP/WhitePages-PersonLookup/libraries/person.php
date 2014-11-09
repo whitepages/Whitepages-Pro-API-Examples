@@ -1,24 +1,28 @@
 <?php
-
-namespace Libraries;
+/**
+ * Library for abstraction of methods to use Whitepages Pro API
+ * @require     PHP5
+ *
+ * @author      Kushal Shah
+ * @date        2014-06-02
+ */
 
 class Person
 {
     public $response;
-    public $resultData;
 
     public function __construct($response)
     {
         $this->response = $response;
-        $this->resultData = array();
     }
 
     public function formattedResult()
     {
+        $resultData = array();
         while (list(, $val) = each($this->response['results'])) {
-            array_push($this->resultData, $this->getResultData($val));
+            array_push($resultData, $this->getResultData($val));
         }
-        return $this->resultData;
+        return $resultData;
     }
 
     // for getting object id
@@ -42,9 +46,8 @@ class Person
     }
 
     // for name (business or person)
-    private function getName($id)
+    private function getName($entity)
     {
-        $entity =  $this->retrieveById($id);
         if (!empty($entity['best_name']))
             return $entity['best_name'];
         elseif (!empty($entity['name']))
@@ -54,9 +57,8 @@ class Person
     }
 
     // for person age
-    private function getAge($id)
+    private function getAge($entity)
     {
-        $entity =  $this->retrieveById($id);
         if (!empty($entity['age_range']))
             return $entity['age_range'];
         else
@@ -64,14 +66,13 @@ class Person
     }
 
     // for person contact type
-    private function getContactType($id)
+    private function getContactType($entity)
     {
-        $entity =  $this->retrieveById($id);
         if (!empty($entity['locations'])) {
             while (list(, $val) = each($entity['locations'])) {
                 if (!empty($val['id'])) {
                     if ($val['id']['key'] == $this->getBestLocation($entity)) {
-                        return $contact_type = $val['contact_type'];
+                        return $val['contact_type'];
                         break;
                     }
                 }
@@ -79,51 +80,6 @@ class Person
         } else {
             return '';
         }
-    }
-
-    private function addressLine1($entity)
-    {
-        return $entity['standard_address_line1'];
-    }
-
-    private function addressLine2($entity)
-    {
-        return $entity['standard_address_line2'];
-    }
-
-    private function getCity($entity)
-    {
-        return $entity['city'];
-    }
-
-    private function getPostalCode($entity)
-    {
-        return $entity['postal_code'];
-    }
-
-    private function getStateCode($entity)
-    {
-        return $entity['state_code'];
-    }
-
-    private function getCountryCode($entity)
-    {
-        return $entity['country_code'];
-    }
-
-    private function getReceivingMail($entity)
-    {
-        return $entity['is_receiving_mail'];
-    }
-
-    private function getUsage($entity)
-    {
-        return $entity['usage'];
-    }
-
-    private function getDeliveryPoint($entity)
-    {
-        return $entity['delivery_point'];
     }
 
     private function getLocationDetails($id)
@@ -134,15 +90,15 @@ class Person
             if (!empty($bestLocation)) {
                 $location =  $this->retrieveById($bestLocation);
                 return array(
-                    'address_line1' => $this->addressLine1($location),
-                    'address_line2' => $this->addressLine2($location),
-                    'city' => $this->getCity($location),
-                    'postal_code' => $this->getPostalCode($location),
-                    'state_code' => $this->getStateCode($location),
-                    'country_code' => $this->getCountryCode($location),
-                    'is_receiving_mail' => $this->getReceivingMail($location)? 'Yes' : 'No',
-                    'usage' => $this->getUsage($location),
-                    'delivery_point' => $this->getDeliveryPoint($location)
+                    'address_line1' => $location['standard_address_line1'],
+                    'address_line2' => $location['standard_address_line2'],
+                    'city' => $location['city'],
+                    'postal_code' => $location['postal_code'],
+                    'state_code' => $location['state_code'],
+                    'country_code' => $location['country_code'],
+                    'is_receiving_mail' => $location['is_receiving_mail']? 'Yes' : 'No',
+                    'usage' => $location['usage'],
+                    'delivery_point' => $location['delivery_point']
                 );
             } else {
                 return array();
@@ -154,9 +110,10 @@ class Person
 
     private function getPersonDetails($id)
     {
-        return array('name' => $this->getName($id),
-            'age' => $this->getAge($id),
-            'contact_type' => $this->getContactType($id)
+        $entity =  $this->retrieveById($id);
+        return array('name' => $this->getName($entity),
+            'age' => $this->getAge($entity),
+            'contact_type' => $this->getContactType($entity)
         );
     }
 

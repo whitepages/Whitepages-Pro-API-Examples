@@ -1,8 +1,13 @@
 <?php
+/**
+ * Library for abstraction of methods to use Whitepages Pro API
+ * @require     PHP5
+ *
+ * @author      Kushal Shah
+ * @date        2014-06-01
+ */
 
-namespace Libraries;
-
-class WhitepagesLib
+class WhitepagesLib extends Exception
 {
     //API Key
     private $whitepages_api_key;
@@ -61,14 +66,17 @@ class WhitepagesLib
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $curl_response = curl_exec($curl);
-        if ($curl_response === false) {
-            $info = curl_getinfo($curl);
+        try {
+            if ($curl_response === false) {
+                $info = curl_getinfo($curl);
+                curl_close($curl);
+                throw new Exception;
+            }
             curl_close($curl);
-            die('error occured during curl exec. Additioanl info: ' . var_export($info));
-        }
+            $this->response = json_decode($curl_response, true);
 
-        curl_close($curl);
-        $this->response = json_decode($curl_response, true);
+        } catch (Exception $exception) {
+            echo "Error occured during curl exec";
+        }
     }
 }
-
