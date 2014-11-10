@@ -1,93 +1,99 @@
 <% unless @results[:result].blank? %>
-  <% @results[:result].each do |phone_obj| %>
+  <% @results[:result].each do |obj| %>
     <div class="detail_wrapper">
       <div class="detail_box">
         <h1>Phone</h1>
         <div class="detail_boxin_phone">
           <p>
-            <%= number_to_phone(phone_obj[:phone][:number], country_code: phone_obj[:phone][:country_code]) %>
+            <%= number_to_phone(obj[:phone][:phone_number], country_code: obj[:phone][:country_calling_code]) %>
           </p>
-          <% unless phone_obj[:phone][:phone_carrier].blank? %>
+          <% unless obj[:phone][:carrier].blank? %>
             <p>
               <span class="bg_font12">Carrier:</span>
-              <%= phone_obj[:phone][:phone_carrier] %>
+              <%= obj[:phone][:carrier] %>
             </p>
           <% end %>
-          <% unless phone_obj[:phone][:phone_type].blank? %>
+          <% unless obj[:phone][:line_type].blank? %>
             <p>
               <span class="bg_font12">Phone Type:</span>
-              <%= phone_obj[:phone][:phone_type] %>
+              <%= obj[:phone][:line_type] %>
             </p>
           <% end %>
-          <% unless phone_obj[:phone][:do_not_call].blank? %>
+          <% unless obj[:phone][:do_not_call].blank? %>
             <p>
               <span class="bg_font12">Do not Call registry:</span>
-              <%= phone_obj[:phone][:do_not_call] %>
+              <%= obj[:phone][:do_not_call] %>
             </p>
           <% end %>
-          <% unless phone_obj[:phone][:reputation].blank? %>
+          <% unless obj[:phone][:reputation].blank? %>
             <p>
               <span class="bg_font12">SPAN Score:</span>
-              <%= phone_obj[:phone][:reputation] %>%
+              <%= obj[:phone][:reputation] %>%
             </p>
           <% end %>
         </div>
       </div>
-      <% unless phone_obj[:people].blank?%>
+      <% unless obj[:people].blank?%>
         <div class="detail_box">
-          <h1>People ( <%= phone_obj[:people].length%> )</h1>
-          <% phone_obj[:people].each do |people_obj| %>
+          <h1>People ( <%= obj[:people].length%> )</h1>
+          <% obj[:people].each do |people_obj| %>
             <div class="detail_boxin_phone" style="height: 75px;min-height: 70px;">
               <p>
                 <span class="bg_font14"><%= people_obj[:name] %></span>
               </p>
+              <% unless people_obj[:age_range].blank? %>
+                <p>
+                  <span class="bg_font12">Age: </span>
+                  <%= people_obj[:age_range]['start'] %>+
+                </p>
+              <% end %>
               <p>
                 <span class="bg_font12">Type: </span>
-                <%= people_obj[:people_type] %>
+                <%= people_obj[:type] %>
               </p>
             </div>
           <% end %>
         </div>
       <% end %>
-      <% unless phone_obj[:location].blank?%>
+      <% unless obj[:location].blank?%>
         <div class="detail_box">
           <h1>Location </h1>
-          <% phone_obj[:location].each do |location_obj| %>
-            <% unless location_obj[:address].blank? %>
-              <div class="detail_boxin_phone" style="height: 122px;min-height: 105px;">
-                <% unless location_obj[:address][:standard_address_line1].blank? %>
-                  <%= location_obj[:address][:standard_address_line1]  %>
-                  <br />
-                <% end %>
-                <% unless location_obj[:address][:standard_address_line2].blank? %>
-                  <%= location_obj[:address][:standard_address_line2] %>
-                  <br />
-                <% end %>
-                <% unless location_obj[:address][:city].blank? %>
-                  <%= location_obj[:address][:city] %>
-                <% end %>
-                <% unless location_obj[:address][:state_code].blank? %>
-                  <%= location_obj[:address][:state_code] %>
-                <% end %>
-                <% unless location_obj[:address][:postal_code].blank? %>
-                  <%= location_obj[:address][:postal_code] %>
-                <% end %>
+          <% obj[:location].each do |location_obj| %>
+            <div class="detail_boxin_phone" style="height: 122px;min-height: 105px;">
+              <% unless location_obj[:standard_address_line1].blank? %>
+                <%= location_obj[:standard_address_line1]  %>
+                <br />
+              <% end %>
+              <% unless location_obj[:standard_address_line2].blank? %>
+                <%= location_obj[:standard_address_line2] %>
+                <br />
+              <% end %>
+              <% unless location_obj[:city].blank? %>
+                <%= location_obj[:city] %>
+              <% end %>
+              <% unless location_obj[:state_code].blank? %>
+                <%= location_obj[:state_code] %>
+              <% end %>
+              <% unless location_obj[:postal_code].blank? %>
+                <%= location_obj[:postal_code] %>
+              <% end %>
+              <p>
+                <span class="bg_font12">Receiving Mail: </span>
+                <%= location_obj[:is_receiving_mail] %>
+              </p>
+              <% unless location_obj[:usage].blank? %>
                 <p>
-                  <span class="bg_font12">Receiving Mail: </span>
-                  <%= location_obj[:address][:receiving_mail] %>
+                  <span class="bg_font12">Usage: </span>
+                  <%= location_obj[:usage] %>
                 </p>
-                <% unless location_obj[:address][:usage].blank? %>
-                  <p>
-                    <span class="bg_font12">Usage: </span>
-                    <%= location_obj[:address][:usage] %>
-                  </p>
-                <% end %>
+              <% end %>
+              <% unless location_obj[:delivery_point].blank? %>
                 <p>
                   <span class="bg_font12">Delivery Point: </span>
-                  <%= location_obj[:address][:delivery_point].to_s[0..-5] + " Unit" %>
+                  <%= location_obj[:delivery_point].to_s[0..-5] + " Unit" %>
                 </p>
-              </div>
-            <% end %>
+              <%  end %>
+            </div>
           <% end %>
         </div>
       <% end %>

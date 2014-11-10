@@ -8,8 +8,21 @@ class ReversePhoneController < ApplicationController
       unless api_response['error'].nil?
         @results = { error: api_response['error']['message'] }
       else
-        phone_obj = Phone.new(api_response)
-        @results = { result: phone_obj.formatted_result }
+        results = api_response['results'].map do |id|
+          phone = Phone.new(api_response['dictionary'][id])
+          belongs_to = phone.belongs_to
+          {
+           phone: phone.data,
+           people: belongs_to.map do |belongs_to_id|
+             Person.new(api_response['dictionary'][belongs_to_id]).data if belongs_to_id
+           end.reject(&:blank?),
+           location: belongs_to.map do |belongs_to_id|
+             best_location = Person.new(api_response['dictionary'][belongs_to_id]).best_location if belongs_to_id
+             Location.new(api_response['dictionary'][best_location]).data if best_location
+           end.reject(&:blank?),
+          }
+        end.reject(&:blank?)
+        @results = { result: results }
       end
     rescue => e
       Rails.logger.debug "Error:#{e}"
