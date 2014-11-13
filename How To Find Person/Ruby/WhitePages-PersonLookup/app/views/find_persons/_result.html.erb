@@ -1,0 +1,20 @@
+<% unless @results.person.blank? %>
+  <div class="detail_wrapper">
+    <div class="result_box">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <th align="left" width="30%">Who</th>
+          <th align="left" width="30%">Where</th>
+        </tr>
+        <% @results.person.each do |person| %>
+          <tr>
+            <%= render :partial => "person", :locals => {:result => person} %>
+            <%= render :partial => "location", :locals => {:result => person} %>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+<% else %>
+  <%= render :partial => "message" %>
+<% end %>
