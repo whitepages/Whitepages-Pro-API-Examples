@@ -1,0 +1,38 @@
+<div class="detail_box">
+  <h1>Location</h1>
+  <div class="box_in_location">
+    <% unless result[:standard_address_line1].blank? %>
+      <%= result[:standard_address_line1] %>
+      <br />
+    <% end %>
+    <% unless result[:standard_address_line2].blank? %>
+      <%= result[:standard_address_line2] %>
+      <br />
+    <% end %>
+    <% unless result[:city].blank? %>
+      <%= result[:city] %>,
+    <% end %>
+    <% unless result[:state_code].blank? %>
+      <%= result[:state_code] %>
+    <% end %>
+    <% unless result[:postal_code].blank? %>
+      <%= result[:postal_code] %>
+    <% end %>
+    <p>
+      <span class="location_label_font">Receiving Mail: </span>
+      <%=result[:is_receiving_mail]? 'Yes' : 'No' %>
+    </p>
+    <% unless result[:usage].blank? %>
+      <p>
+        <span class="location_label_font">Usage: </span>
+        <%= result[:usage] %>
+      </p>
+    <% end %>
+    <% unless result[:delivery_point].blank? %>
+      <p>
+        <span class="location_label_font">Delivery Point: </span>
+        <%= result[:delivery_point].to_s[0..-5] + " Unit" %>
+      </p>
+    <% end %>
+  </div>
+</div>

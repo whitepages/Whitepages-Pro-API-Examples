@@ -1,0 +1,23 @@
+<% unless result[:legal_entities_at].blank? %>
+  <div class="box_in_people" style="float: right;">
+    <h1>People <span>( <%= result[:legal_entities_at].length %> )</span></h1>
+    <% result[:legal_entities_at].each do |people| %>
+      <div class="detail_people">
+        <p>
+          <span class="people_subheading_font"><%= people[:name] %></span>
+        </p>
+        <% unless people[:age_range].blank? %>
+          <p>
+            <span class="people_label_font">Age:</span>
+            <%= people[:age_range]["start"] %>+
+          </p>
+        <% end %>
+        <% unless people[:type].blank? %>
+          <p><span class="people_label_font">Type:</span>
+            <%= people[:type] %>
+          </p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

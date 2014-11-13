@@ -1,0 +1,18 @@
+<% unless @results.location.blank? %>
+  <% @results.location.each do |location| %>
+    <div class="detail_wrapper">
+      <div class="result_box">
+        <table width="50%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+              <%= render :partial => "location", :locals => {:result => location} %>
+            </td>
+            <%= render :partial => "people", :locals => {:result => location} %>
+          </tr>
+        </table>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <%= render :partial => "message" %>
+<% end %>

@@ -2,14 +2,9 @@ require 'api_response'
 
 class ReverseAddressController < ApplicationController
   def search
-     begin
+    begin
       api_response = ApiResponse.new(params['street'], params['city']).json_response
-      unless api_response['error'].nil?
-        @results = { error: api_response['error']['message'] }
-      else
-        address_obj = Address.new(api_response)
-        @results = { result: address_obj.formatted_result }
-      end
+      @results = Result.new(api_response)
     rescue => e
       Rails.logger.debug "Error:#{e}"
     end
