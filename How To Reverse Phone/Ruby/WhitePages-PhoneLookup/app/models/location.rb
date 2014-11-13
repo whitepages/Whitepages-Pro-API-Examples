@@ -52,7 +52,7 @@ class Location
   end
 
   def is_receiving_mail
-    entity['is_receiving_mail']? 'Yes' : 'No'
+    entity['is_receiving_mail']
   end
 
   def is_deliverable

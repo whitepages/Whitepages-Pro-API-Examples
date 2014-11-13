@@ -19,7 +19,7 @@ class Person
   end
 
   def best_location
-    unless entity['best_location'].blank?
+    if entity['best_location']
       entity['best_location']['id']['key']
     else
       entity['locations'].first['id']['key'] unless entity['locations'].blank?
@@ -33,7 +33,7 @@ class Person
   end
 
   def type
-    entity['id']['type']  if entity['id']
+    entity['id']['type']  unless entity['id'].blank?
   end
 
   def age_range

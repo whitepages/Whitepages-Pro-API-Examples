@@ -1,0 +1,9 @@
+<% if @results %>
+  <div class="detail_wrapper">
+    <%= render :partial => "phone", :locals => {:result => @results} %>
+    <%= render :partial => "people", :locals => {:result => @results} %>
+    <%= render :partial => "location", :locals => {:result => @results} %>
+  </div>
+<% else %>
+  <%= render :partial => "message" %>
+<% end %>

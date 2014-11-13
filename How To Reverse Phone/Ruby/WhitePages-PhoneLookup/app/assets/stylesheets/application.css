@@ -158,8 +158,7 @@
   min-height:105px;
 }
 
-
-.detail_boxin_phone {
+.box_in_phone {
   float:left;
   width:278px;
   height: 105px;
@@ -178,6 +177,48 @@
   -o-box-sizing:border-box;
   -ms-box-sizing:border-box;
   min-height:125px;
+}
+
+.box_in_location {
+  float:left;
+  width:278px;
+  height: 122px;
+  margin:0px 0px 10px 0px;
+  padding:10px;
+  background:#fff;
+  border:1px solid #ccc;
+  border-radius:5px;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  -o-border-radius:5px;
+  -ms-border-radius:5px;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  -o-box-sizing:border-box;
+  -ms-box-sizing:border-box;
+  min-height:105px;
+}
+
+.box_in_people {
+  float:left;
+  width:278px;
+  height: 75px;
+  margin:0px 0px 10px 0px;
+  padding:10px;
+  background:#fff;
+  border:1px solid #ccc;
+  border-radius:5px;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  -o-border-radius:5px;
+  -ms-border-radius:5px;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  -o-box-sizing:border-box;
+  -ms-box-sizing:border-box;
+  min-height:70px;
 }
 
 .detail_boxin:last-child{
@@ -245,4 +286,29 @@
   font:12px Arial, Helvetica, sans-serif;
   color:#333;
   font-weight:bold;
+}
+
+.location_label_font{
+  font:12px Arial, Helvetica, sans-serif;
+  color:#333;
+  font-weight:bold;
+}
+
+.phone_label_font{
+  font:12px Arial, Helvetica, sans-serif;
+  color:#333;
+  font-weight:bold;
+}
+
+.people_label_font{
+  font:12px Arial, Helvetica, sans-serif;
+  color:#333;
+  font-weight:bold;
+}
+
+.people_subheading_font{
+  font:14px Arial, Helvetica, sans-serif;
+  color:#333;
+  font-weight:bold;
+  margin-bottom:4px;
 }

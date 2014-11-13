@@ -1,8 +1,8 @@
 <%= render :partial => "form" %>
 <% if @results %>
-  <% unless @results[:error].nil? %>
+  <% if @results.error %>
     <%= render :partial => "error" %>
   <% else %>
-    <%= render :partial => "phone" %>
+    <%= render :partial => "result" %>
   <% end %>
 <% end %>

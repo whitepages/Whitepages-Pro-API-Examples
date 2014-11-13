@@ -1,104 +1,30 @@
-<% unless @results[:result].blank? %>
-  <% @results[:result].each do |obj| %>
-    <div class="detail_wrapper">
-      <div class="detail_box">
-        <h1>Phone</h1>
-        <div class="detail_boxin_phone">
-          <p>
-            <%= number_to_phone(obj[:phone][:phone_number], country_code: obj[:phone][:country_calling_code]) %>
-          </p>
-          <% unless obj[:phone][:carrier].blank? %>
-            <p>
-              <span class="bg_font12">Carrier:</span>
-              <%= obj[:phone][:carrier] %>
-            </p>
-          <% end %>
-          <% unless obj[:phone][:line_type].blank? %>
-            <p>
-              <span class="bg_font12">Phone Type:</span>
-              <%= obj[:phone][:line_type] %>
-            </p>
-          <% end %>
-          <% unless obj[:phone][:do_not_call].blank? %>
-            <p>
-              <span class="bg_font12">Do not Call registry:</span>
-              <%= obj[:phone][:do_not_call] %>
-            </p>
-          <% end %>
-          <% unless obj[:phone][:reputation].blank? %>
-            <p>
-              <span class="bg_font12">SPAN Score:</span>
-              <%= obj[:phone][:reputation] %>%
-            </p>
-          <% end %>
-        </div>
-      </div>
-      <% unless obj[:people].blank?%>
-        <div class="detail_box">
-          <h1>People ( <%= obj[:people].length%> )</h1>
-          <% obj[:people].each do |people_obj| %>
-            <div class="detail_boxin_phone" style="height: 75px;min-height: 70px;">
-              <p>
-                <span class="bg_font14"><%= people_obj[:name] %></span>
-              </p>
-              <% unless people_obj[:age_range].blank? %>
-                <p>
-                  <span class="bg_font12">Age: </span>
-                  <%= people_obj[:age_range]['start'] %>+
-                </p>
-              <% end %>
-              <p>
-                <span class="bg_font12">Type: </span>
-                <%= people_obj[:type] %>
-              </p>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
-      <% unless obj[:location].blank?%>
-        <div class="detail_box">
-          <h1>Location </h1>
-          <% obj[:location].each do |location_obj| %>
-            <div class="detail_boxin_phone" style="height: 122px;min-height: 105px;">
-              <% unless location_obj[:standard_address_line1].blank? %>
-                <%= location_obj[:standard_address_line1]  %>
-                <br />
-              <% end %>
-              <% unless location_obj[:standard_address_line2].blank? %>
-                <%= location_obj[:standard_address_line2] %>
-                <br />
-              <% end %>
-              <% unless location_obj[:city].blank? %>
-                <%= location_obj[:city] %>
-              <% end %>
-              <% unless location_obj[:state_code].blank? %>
-                <%= location_obj[:state_code] %>
-              <% end %>
-              <% unless location_obj[:postal_code].blank? %>
-                <%= location_obj[:postal_code] %>
-              <% end %>
-              <p>
-                <span class="bg_font12">Receiving Mail: </span>
-                <%= location_obj[:is_receiving_mail] %>
-              </p>
-              <% unless location_obj[:usage].blank? %>
-                <p>
-                  <span class="bg_font12">Usage: </span>
-                  <%= location_obj[:usage] %>
-                </p>
-              <% end %>
-              <% unless location_obj[:delivery_point].blank? %>
-                <p>
-                  <span class="bg_font12">Delivery Point: </span>
-                  <%= location_obj[:delivery_point].to_s[0..-5] + " Unit" %>
-                </p>
-              <%  end %>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
-<% else %>
-  <%= render :partial => "message" %>
-<% end %>
+<div class="detail_box">
+  <h1>Phone</h1>
+  <div class="box_in_phone">
+    <p>
+      <%= number_to_phone(result.phone[:phone_number], country_code: result.phone[:country_calling_code]) %>
+    </p>
+    <% unless result.phone[:carrier].blank? %>
+      <p>
+        <span class="phone_label_font">Carrier:</span>
+        <%= result.phone[:carrier] %>
+      </p>
+    <% end %>
+    <% unless result.phone[:line_type].blank? %>
+      <p>
+        <span class="phone_label_font">Phone Type:</span>
+        <%= result.phone[:line_type] %>
+      </p>
+    <% end %>
+    <p>
+      <span class="phone_label_font">Do not Call registry:</span>
+      <%= result.phone[:do_not_call]? 'Registered' : 'Not Registered' %>
+    </p>
+    <% unless result.phone[:reputation].blank? %>
+      <p>
+        <span class="phone_label_font">SPAN Score:</span>
+        <%= result.phone[:reputation] %>%
+      </p>
+    <% end %>
+  </div>
+</div>

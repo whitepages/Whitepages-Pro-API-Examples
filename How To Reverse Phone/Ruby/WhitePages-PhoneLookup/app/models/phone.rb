@@ -59,14 +59,14 @@ class Phone
   end
 
   def reputation
-    entity['reputation']['spam_score'] if entity['reputation']
+    entity['reputation']['spam_score'] unless entity['reputation'].blank?
   end
 
   def do_not_call
-    entity['do_not_call']? 'Registered' : 'Not Registered'
+    entity['do_not_call']
   end
 
   def best_location
-    entity['best_location']['id']['key'] if entity && entity['best_location'] && entity['best_location']['id']
+    entity['best_location']['id']['key'] unless entity['best_location'].blank?
   end
 end

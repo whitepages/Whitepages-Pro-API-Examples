@@ -1,0 +1,42 @@
+<% unless result.location.blank?%>
+  <div class="detail_box">
+    <h1>Location </h1>
+    <% result.location.each do |location_obj| %>
+      <div class="box_in_location">
+        <% unless location_obj[:standard_address_line1].blank? %>
+          <%= location_obj[:standard_address_line1]  %>
+          <br />
+        <% end %>
+        <% unless location_obj[:standard_address_line2].blank? %>
+          <%= location_obj[:standard_address_line2] %>
+          <br />
+        <% end %>
+        <% unless location_obj[:city].blank? %>
+          <%= location_obj[:city] %>
+        <% end %>
+        <% unless location_obj[:state_code].blank? %>
+          <%= location_obj[:state_code] %>
+        <% end %>
+        <% unless location_obj[:postal_code].blank? %>
+          <%= location_obj[:postal_code] %>
+        <% end %>
+        <p>
+          <span class="location_label_font">Receiving Mail: </span>
+          <%= location_obj[:is_receiving_mail]? 'Yes' : 'No' %>
+        </p>
+        <% unless location_obj[:usage].blank? %>
+          <p>
+            <span class="location_label_font">Usage: </span>
+            <%= location_obj[:usage] %>
+          </p>
+        <% end %>
+        <% unless location_obj[:delivery_point].blank? %>
+          <p>
+            <span class="location_label_font">Delivery Point: </span>
+            <%= location_obj[:delivery_point].to_s[0..-5] + " Unit" %>
+          </p>
+        <%  end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
