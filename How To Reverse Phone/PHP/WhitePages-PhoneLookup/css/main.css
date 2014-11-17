@@ -114,6 +114,27 @@
     font-weight:normal;
 }
 
+.message_box{
+    float:left;
+    width:588px;
+    margin:0px 0px 20px 0px;
+    padding:10px;
+    background:green;
+    border:1px solid black;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -o-border-radius:5px;
+    -ms-border-radius:5px;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    -o-box-sizing:border-box;
+    -ms-box-sizing:border-box;
+    font:13px Arial, Helvetica, sans-serif;
+    color:#ffffff;
+    font-weight:normal;
+}
 
 .inputbox_address{
     font:13px Arial, Helvetica, sans-serif;
@@ -129,8 +150,7 @@
     -ms-border-radius:5px;
 }
 
-
-.detail_boxin {
+.detail_box_in_result {
     float:left;
     width:278px;
     margin:0px 0px 10px 0px;
@@ -150,6 +170,6 @@
     min-height:80px;
 }
 
-.detail_boxin:last-child{
+.detail_box_in_result:last-child{
     margin-bottom:0px;
 }

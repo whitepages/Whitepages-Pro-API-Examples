@@ -1,15 +1,20 @@
 <?php
-if (isset($result_data)) {
-    if (!empty($result_data)) {
-        foreach ($result_data as $key => $value) { ?>
-            <div class="detail_wrapper">
-                <?php include 'phone_result.php'; ?>
-            </div>
-        <?php }
-    } else { ?>
-        <div class="error_box">
-            No result found.
+if (isset($result->phone)) {
+    if (!empty($result->phone)) { ?>
+        <div class="detail_wrapper">
+            <?php
+            include 'phone_result.php';
+            if (!empty($result->people)) {
+                include 'person_result.php';
+            }
+            if (!empty($result->location)) {
+                include 'location_result.php';
+            }
+            ?>
         </div>
-    <?php }
+    <?php
+    } else {
+        include 'message.php';
+    }
 }
 

@@ -8,7 +8,7 @@
  */
 
 include 'whitepages_lib.php';
-include 'phone.php';
+include 'result.php';
 
 if (isset($_POST['submit'])) {
     if (!empty($_POST['phone'])) {
@@ -16,24 +16,15 @@ if (isset($_POST['submit'])) {
             'phone' => trim($_POST['phone'])
         );
         $whitepages_obj = new WhitepagesLib();
-        $response = $whitepages_obj->reversePhone($param);
+        $api_response = $whitepages_obj->reverse_phone($param);
         try {
-            if ($response === false) {
+            if ($api_response === false) {
                 throw new Exception;
             }
-            if (!empty($response['error'])) {
-                $error = $response['error']['message'];
-            } elseif (!empty($response['results'])) {
-                $person_obj = new Phone($response);
-                $result_data = $person_obj->formattedResult();
-            } else {
-                $error = 'No records found';
-            }
-
+            $result = new Result($api_response);
         } catch(Exception $exception) {
             echo "Error Api response";
         }
-
     } else {
         $error = 'Please enter phone number';
     }

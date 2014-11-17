@@ -7,7 +7,7 @@
     <script src="js/main.js"></script>
 </head>
 <body>
-<?php include 'libraries/phone_lookup.php'; ?>
+<?php include 'lib/phone_lookup.php'; ?>
 <div class="wrapper">
     <?php include 'views/form.php'; ?>
 </body>
