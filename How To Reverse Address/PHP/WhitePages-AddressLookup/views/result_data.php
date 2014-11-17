@@ -1,16 +1,13 @@
 <?php
-if (isset($result_data)) {
-    if (!empty($result_data)) {
-        foreach ($result_data as $key => $value) { ?>
+if (isset($result->location)) {
+    if (!empty($result->location)) {
+        foreach ($result->location as $key => $val) { ?>
             <div class="detail_wrapper">
-                <?php include 'location.php'; ?>
-                <?php include 'people.php'; ?>
+                <?php include 'location_result.php'; ?>
+                <?php include 'person_result.php'; ?>
             </div>
         <?php }
-    } else { ?>
-        <div class="error_box">
-            No result found.
-        </div>
-    <?php }
+    } else {
+        include 'message.php';
+    }
 }
-

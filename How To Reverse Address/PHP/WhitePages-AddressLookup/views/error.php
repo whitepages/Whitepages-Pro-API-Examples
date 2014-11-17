@@ -1,6 +1,9 @@
-<?php if (isset($error) && !empty($error)) { ?>
-    <div class="error_box">
-        <?php echo $error; ?>
-    </div>
-<?php }
-
+<div class="error_box">
+    <?php
+    if (!empty($result->error)) {
+        echo $result->error;
+    } else {
+        echo $error;
+    }
+    ?>
+</div>

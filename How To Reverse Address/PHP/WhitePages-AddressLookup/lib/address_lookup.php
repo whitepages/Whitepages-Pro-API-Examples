@@ -7,7 +7,7 @@
  * @date        2014-06-01
  */
 include 'whitepages_lib.php';
-include 'address.php';
+include 'result.php';
 
 if (isset($_POST['submit'])) {
     if (!empty($_POST['street_line_1'])) {
@@ -17,25 +17,15 @@ if (isset($_POST['submit'])) {
                 'city' => trim($_POST['city'])
             );
             $whitepages_obj = new WhitepagesLib();
-            $response = $whitepages_obj->findAddress($param);
+            $api_response = $whitepages_obj->reverse_address($param);
             try {
-                if ($response === false) {
+                if ($api_response === false) {
                     throw new Exception;
                 }
-                if ($response) {
-                    if (!empty($response['error'])) {
-                        $error = $response['error']['message'];
-                    } else {
-                        $person_obj = new Address($response);
-                        $result_data = $person_obj->formattedResult();
-                    }
-                } else {
-                    $error = 'No records found';
-                }
-            } catch (Exception $exception) {
+                $result = new Result($api_response);
+            } catch(Exception $exception) {
                 echo "Error Api response";
             }
-
         } else {
             $error = 'Please enter city and state or zip.';
         }
