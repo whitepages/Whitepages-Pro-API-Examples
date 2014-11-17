@@ -7,6 +7,8 @@
  * @date        2014-06-01
  */
 
+include 'keys.php';
+
 class WhitepagesLib extends Exception
 {
     //API Key
@@ -27,23 +29,23 @@ class WhitepagesLib extends Exception
 
     public function __construct()
     {
-        $this->whitepages_api_key = '';
+        $this->whitepages_api_key = WP_API_KEY;
         $this->whitepages_api_version = '2.0';
         $this->whitepages_api_url = 'http://proapi.whitepages.com';
     }
 
 
     //API Method to find a person
-    public function findPerson($options = array())
+    public function find_person($options = array())
     {
-        $this->buildUrl('person', $options);
+        $this->build_url('person', $options);
         if ($this->response) {
             return $this->response;
         }
     }
 
     //Build query string that will be requested by serialize parameters
-    private function buildUrl($method, $param)
+    private function build_url($method, $param)
     {
         if(!isset($method) || !isset($param)) return false;
         //Check if we have a query string sta yet
@@ -56,12 +58,12 @@ class WhitepagesLib extends Exception
             //Append API key & response type
             $this->url = $this->url . 'api_key='. $this->whitepages_api_key;
             //Fetch request
-            $this->getResponse($this->url);
+            $this->get_response($this->url);
         }
     }
 
     //Fetch URL Request using cURL
-    private function getResponse($url)
+    private function get_response($url)
     {
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);

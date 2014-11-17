@@ -7,7 +7,7 @@
     <script src="js/main.js"></script>
 </head>
 <body>
-<?php include 'libraries/person_lookup.php'; ?>
+<?php include 'lib/person_lookup.php'; ?>
 <div class="wrapper">
     <?php include 'views/form.php'; ?>
 </body>
