@@ -3,7 +3,10 @@ require 'api_response'
 class FindPersonsController < ApplicationController
   def search
     begin
-      api_response = ApiResponse.new(params['first_name'], params['last_name'], params['where']).json_response
+      req_params = { :first_name => params['first_name'],
+                     :last_name => params['last_name'],
+                     :address => params['address'] }
+      api_response = ApiResponse.new(req_params).json_response
       @results = Result.new(api_response)
     rescue => e
       Rails.logger.debug "Error:#{e}"

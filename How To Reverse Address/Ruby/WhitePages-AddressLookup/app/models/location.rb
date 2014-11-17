@@ -34,10 +34,10 @@ class Location
   end
 
 
-  def legal_entities_at(json_response)
+  def legal_entities_at
     unless entity['legal_entities_at'].blank?
-      @legal_entities = entity['legal_entities_at'].map do |legal_entity|
-        Person.new(json_response['dictionary'][legal_entity['id']['key']]).data
+     entity['legal_entities_at'].map do |legal_entity|
+        legal_entity['id']['key']
       end.reject(&:nil?)
     end
   end

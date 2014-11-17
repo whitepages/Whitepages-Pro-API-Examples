@@ -21,10 +21,9 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem 'json' 
-gem 'httparty','0.11.0'
+gem 'json'  
 #gem 'simplecov'
-gem 'rubocop', :require => false
+#gem 'rubocop', :require => false
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

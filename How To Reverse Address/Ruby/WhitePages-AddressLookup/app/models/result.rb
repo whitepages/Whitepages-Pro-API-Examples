@@ -13,7 +13,12 @@ class Result
     else
       @location = json_response['results'].map do |id|
         location = Location.new(json_response['dictionary'][id])
-        location.legal_entities_at(json_response)
+        legal_entities_arr = location.legal_entities_at
+        unless legal_entities_arr.blank?
+            location.legal_entities = legal_entities_arr.map do |legal_entity_id|
+               Person.new(json_response['dictionary'][legal_entity_id]).data
+            end
+        end
         location.data
       end.reject(&:blank?)
     end

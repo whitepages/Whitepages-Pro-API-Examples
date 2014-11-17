@@ -13,7 +13,8 @@ class Result
     else
       @person = json_response['results'].map do |id|
         person = Person.new(json_response['dictionary'][id])
-        person.location(json_response,person.best_location)
+        best_location = person.best_location
+        person.location = Location.new(json_response['dictionary'][best_location]).data if best_location
         person.data
       end.reject(&:blank?)
     end

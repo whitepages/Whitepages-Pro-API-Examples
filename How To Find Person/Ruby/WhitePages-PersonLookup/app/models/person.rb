@@ -1,6 +1,6 @@
 class Person
 
-  attr_accessor :entity, :name, :age_range, :type, :person_location
+  attr_accessor :entity, :name, :age_range, :type, :location
 
   def initialize(entity)
     @entity = entity
@@ -14,7 +14,7 @@ class Person
      :name => name,
      :type => type,
      :age_range => age_range,
-     :location => person_location
+     :location => location
     }
   end
 
@@ -24,10 +24,6 @@ class Person
     else
       entity['locations'].first['id']['key'] unless entity['locations'].blank?
     end
-  end
-
-  def location(json_response, id)
-    @person_location = Location.new(json_response['dictionary'][id]).data
   end
 
 

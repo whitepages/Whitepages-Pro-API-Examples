@@ -11,7 +11,7 @@ $(function() {
   $( "#clear_bt" ).click(function() {
     $( "#first_name" ).val("");
     $( "#last_name" ).val("");
-    $( "#where" ).val("");
+    $( "#address" ).val("");
   });
 });
 
