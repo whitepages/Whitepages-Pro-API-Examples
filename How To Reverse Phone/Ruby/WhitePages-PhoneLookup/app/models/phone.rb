@@ -33,6 +33,10 @@ class Phone
     end.reject(&:blank?)
   end
 
+  def best_location
+    entity['best_location']['id']['key'] unless entity['best_location'].blank?
+  end
+
 
   private
 
@@ -64,9 +68,5 @@ class Phone
 
   def do_not_call
     entity['do_not_call']
-  end
-
-  def best_location
-    entity['best_location']['id']['key'] unless entity['best_location'].blank?
   end
 end

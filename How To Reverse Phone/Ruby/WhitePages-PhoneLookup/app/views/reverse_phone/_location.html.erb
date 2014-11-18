@@ -20,22 +20,26 @@
         <% unless location_obj[:postal_code].blank? %>
           <%= location_obj[:postal_code] %>
         <% end %>
+        <% unless location_obj[:zip4].blank? %>
+          <%= location_obj[:zip4] %>
+        <% end %>
+
         <p>
           <span class="location_label_font">Receiving Mail: </span>
-          <%= location_obj[:is_receiving_mail]? 'Yes' : 'No' %>
+          <%= location_obj[:is_receiving_mail]? 'Yes' : 'Unknown' %>
         </p>
-        <% unless location_obj[:usage].blank? %>
-          <p>
-            <span class="location_label_font">Usage: </span>
-            <%= location_obj[:usage] %>
-          </p>
-        <% end %>
-        <% unless location_obj[:delivery_point].blank? %>
-          <p>
-            <span class="location_label_font">Delivery Point: </span>
+        <p>
+          <span class="location_label_font">Usage: </span>
+          <%= location_obj[:usage]? location_obj[:usage] : 'Unknown' %>
+        </p>
+        <p>
+          <span class="location_label_font">Delivery Point: </span>
+          <% unless location_obj[:delivery_point].blank? %>
             <%= location_obj[:delivery_point].to_s[0..-5] + " Unit" %>
-          </p>
-        <%  end %>
+          <% else %>
+            <%= 'Unknown' %>
+          <% end %>
+        </p>
       </div>
     <% end %>
   </div>

@@ -20,6 +20,7 @@ class Location
     public $is_deliverable;
     public $standard_address_line1;
     public $standard_address_line2;
+    public $zip4;
 
 
     public function __construct($entity)
@@ -35,6 +36,7 @@ class Location
         $this->is_deliverable = $this->is_deliverable();
         $this->standard_address_line1 = $this->standard_address_line1();
         $this->standard_address_line2 = $this->standard_address_line2();
+        $this->zip4 = $this->zip4();
     }
 
     public function data()
@@ -49,7 +51,8 @@ class Location
             'delivery_point' => $this->delivery_point,
             'is_deliverable' => $this->is_deliverable,
             'standard_address_line1' => $this->standard_address_line1,
-            'standard_address_line2' => $this->standard_address_line2
+            'standard_address_line2' => $this->standard_address_line2,
+            'zip4' => $this->zip4
         );
     }
 
@@ -102,6 +105,11 @@ class Location
     private function standard_address_line2()
     {
         return  $this->entity['standard_address_line2'];
+    }
+
+    private function zip4()
+    {
+        return  $this->entity['zip4'];
     }
 }
 

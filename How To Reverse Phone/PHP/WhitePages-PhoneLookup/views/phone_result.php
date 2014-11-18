@@ -24,16 +24,12 @@
         ?>
         <p>
             <span>Do not Call registry:</span>
-            <?php echo $result->phone['line_type']? 'Yes' : 'No'; ?>
+            <?php echo $result->phone['line_type']? 'Yes' : 'Unknown'; ?>
         </p>
-        <?php
-        if (!empty($result->phone['reputation'])) { ?>
-            <p><span>SPAN Score:</span>
-                <?php echo $result->phone['reputation']; ?>%
-            </p>
-        <?php
-        }
-        ?>
+        <p>
+            <span>Spam Score:</span>
+            <?php echo $result->phone['reputation']? $result->phone['reputation'] : 0; ?>%
+        </p>
     </div>
 </div>
 

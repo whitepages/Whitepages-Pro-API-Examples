@@ -1,7 +1,7 @@
 class Location
 
-  attr_accessor :entity, :city, :postal_code, :state_code, :country_code,
-                :is_receiving_mail, :usage, :delivery_point, :is_deliverable, :standard_address_line1, :standard_address_line2
+  attr_accessor :entity, :city, :postal_code, :state_code, :country_code, :zip4, :is_receiving_mail, :usage,
+                :delivery_point, :is_deliverable, :standard_address_line1, :standard_address_line2
 
   def initialize(entity)
     @entity = entity
@@ -15,6 +15,7 @@ class Location
     @is_deliverable = is_deliverable
     @standard_address_line1 = standard_address_line1
     @standard_address_line2 = standard_address_line2
+    @zip4 = zip4
   end
 
   def data
@@ -22,6 +23,7 @@ class Location
      :city => city,
      :postal_code => postal_code,
      :state_code => state_code,
+     :zip4 => zip4,
      :country_code => country_code,
      :is_receiving_mail => is_receiving_mail,
      :usage => usage,
@@ -41,6 +43,10 @@ class Location
 
   def postal_code
     entity['postal_code']
+  end
+
+  def zip4
+    entity['zip4']
   end
 
   def state_code
