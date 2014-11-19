@@ -46,9 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PersonLookupData.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="RequestData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Result.cs" />
     <Compile Include="ServerApis.cs" />
     <Compile Include="WhitePagesConstants.cs" />
   </ItemGroup>

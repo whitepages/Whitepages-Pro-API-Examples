@@ -8,14 +8,14 @@
 	width:1000px;
     }
 
-.search_sec{
+.search_section{
 	float:left;
 	width:1000px;
 	margin:0px 0px 20px 0px;
 	padding:0px;
     }
 
-.search_sec p{ 
+.search_section p{ 
 	font:14px Arial, Helvetica, sans-serif;
 	color:#333;
 	font-weight:bold;
@@ -152,7 +152,7 @@
     margin-bottom: 0px;
     }
 
-.result_display_box {
+.person_result_display_box {
     float: left;
     width: 960px;
     margin: 0px 0px 20px 0px;
@@ -174,30 +174,30 @@
     font-weight: normal;
     }
 
-.result_display_box table {
+.person_result_display_box table {
     margin: 0px;
     padding: 0px;
     }
 
-.result_display_box table tr, td, th {
+.person_result_display_box table tr, td, th {
     margin: 0px;
     padding: 0px;
     border-collapse: collapse;
     }
 
-.result_display_box table th {
+.person_result_display_box table th {
     padding: 10px 0px;
     }
 
-.result_display_box table td {
+.person_result_display_box table td {
     padding: 10px 0px 10px 10px;
     border-top: 1px solid #ccc;
     }
 
-.result_display_box table tr:hover {
+.person_result_display_box table tr:hover {
     background: #fff;
     }
 
-.result_display_box table tr:first-child {
+.person_result_display_box table tr:first-child {
     background: none;
     }

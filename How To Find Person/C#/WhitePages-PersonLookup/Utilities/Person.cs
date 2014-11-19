@@ -1,15 +1,15 @@
 ﻿// ***********************************************************************
 // Assembly         : Utilities
 // Author           : Kushal Shah
-// Created          : 11-04-2014
+// Created          : 11-13-2014
 //
 // Last Modified By : Kushal Shah
-// Last Modified On : 11-06-2014
+// Last Modified On : 11-13-2014
 // ***********************************************************************
-// <copyright file="PersonLookupData.cs" company="Whitepages Pro">
+// <copyright file="Person.cs" company="Whitepages Pro">
 //     . All rights reserved.
 // </copyright>
-// <summary>After parsing the result we will keep all information to PersonLookupData.</summary>
+// <summary>After parsing it will keep all information related to person.</summary>
 // ***********************************************************************
 
 using System;
@@ -20,17 +20,21 @@ using System.Threading.Tasks;
 
 namespace Utilities
 {
-    public class PersonLookupData
+    public class Person
     {
-        public string AgeSection { get; set; }
+        public string AddressLine1 { get; set; }
+
+        public string AddressLine2 { get; set; }
+
+        public string AddressLocation { get; set; }
+
+        public string AgeRange { get; set; }
 
         public string ContentType { get; set; }
 
-        public string Address { get; set; }
-
         public string PersonName { get; set; }
 
-        public string ReceivingMail { get; set; }
+        public bool ReceivingMail { get; set; }
 
         public string Usage { get; set; }
 

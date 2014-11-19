@@ -11,7 +11,7 @@
 <body>
     <form id="form1" runat="server">
         <div class="wrapper">
-            <div class="search_sec">
+            <div class="search_section">
                 <p>Find Person</p>
                 <asp:TextBox ID="person_first_name" class="inputbox" placeholder="First Name" runat="server"></asp:TextBox>
                 <asp:TextBox ID="person_last_name" runat="server" placeholder="Last Name" class="inputbox"></asp:TextBox>
@@ -24,7 +24,7 @@
             </div>
 
             <div class="detail_wrapper" runat="server" id="personResult">
-                <div class="result_display_box">
+                <div class="person_result_display_box">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
                             <th align="left" width="30%">Who</th>
