@@ -1,15 +1,15 @@
 ﻿// ***********************************************************************
 // Assembly         : Utilities
 // Author           : Kushal Shah
-// Created          : 11-04-2014
+// Created          : 11-13-2014
 //
 // Last Modified By : Kushal Shah
-// Last Modified On : 11-06-2014
+// Last Modified On : 11-13-2014
 // ***********************************************************************
-// <copyright file="AddressLookupData.cs" company="Whitepages Pro">
+// <copyright file="Address.cs" company="Whitepages Pro">
 //     . All rights reserved.
 // </copyright>
-// <summary>After parsing the result we will keep all information to AddressLookupData.</summary>
+// <summary>After parsing the result we will keep address details.</summary>
 // ***********************************************************************
 
 using System;
@@ -20,28 +20,20 @@ using System.Threading.Tasks;
 
 namespace Utilities
 {
-    public class AddressLookupData
+    public class Address
     {
-        public string Address { get; set; }
+        public string AddressLine1 { get; set; }
 
-        public string ReceivingMail { get; set; }
+        public string AddressLine2 { get; set; }
+
+        public string AddressLocation { get; set; }
+
+        public bool ReceivingMail { get; set; }
 
         public string Usage { get; set; }
 
         public string DeliveryPoint { get; set; }
 
         public int NoOfPerson { get; set; }
-
-        private Person[] person;
-
-        public Person[] GetPerson()
-        {
-            return person;
-        }
-
-        public void SetPerson(Person[] value)
-        {
-            person = value;
-        }
     }
 }

@@ -4,7 +4,7 @@
 // Created          : 08-06-2014
 //
 // Last Modified By : Kushal Shah
-// Last Modified On : 11-06-2014
+// Last Modified On : 11-18-2014
 // ***********************************************************************
 // <copyright file="WhitePagesConstants.cs" company="Whitepages Pro">
 //     . All rights reserved.
@@ -22,7 +22,7 @@ namespace Utilities
 {
     public class WhitePagesConstants
     {
-	    // Need to specify the API key to access data from WhatPages API. This is mandatory.
+	    // Need to specify the API key to access data from WhitePages API. This is mandatory.
         public const string ApiKey = "";
 
         public const string PeopleDataTemplates = "<p>"+
@@ -50,7 +50,7 @@ namespace Utilities
             "</p>" +
             "<br />";
 
-        public const string PersonDataTemplates ="<div class='detail_boxin'>"+
+        public const string PersonDataTemplates = "<div class='person_box_inner'>" +
             "<p>:PERSON_NAME</p>"+
             "<p><span>Type:</span>  :PERSON_TYPE</p>"+
             "</div>";
@@ -62,7 +62,9 @@ namespace Utilities
         public const string WebExceptionStatusMessageText = "WebException Status Message =>";
         public const string ExceptionStatusDescription = "ExceptionOccurred";
         public const string NoResultMessage = "No result found.";
-
+        public const string YesText = "Yes";
+        public const string NoText = "No";
+        
         public const string AddressBalnkInputMessage = "Please enter your address details.";
         public const string CityBalnkInputMessage = "City value must be at least 1 characters";
     }

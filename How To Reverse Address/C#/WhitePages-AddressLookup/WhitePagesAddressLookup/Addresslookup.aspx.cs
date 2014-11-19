@@ -4,7 +4,7 @@
 // Created          : 08-06-2014
 //
 // Last Modified By : Kushal Shah
-// Last Modified On : 11-06-2014
+// Last Modified On : 11-18-2014
 // ***********************************************************************
 // <copyright file="Addresslookup.aspx.cs" company="Whitepages Pro">
 //     . All rights reserved.
@@ -87,13 +87,13 @@ namespace WhitePagesAddressLookup
                     // Dispose response stream
                     responseStream.Dispose();
 
-                    // Calling ParseAddressLookupResult to parse the response JSON in data class AddressLookupData.
-                    AddressLookupData addressLookupData = ParseAddressLookupResult(responseInJson);
+                    // Calling ParseAddressLookupResult to parse the response  to Result class.
+                    Result addressResult = ParseAddressLookupResult(responseInJson);
 
-                    if (addressLookupData != null)
+                    if (addressResult != null && addressResult.Address != null)
                     {
                         // Calling function to populate data on UI.
-                        PopulateDataOnUI(addressLookupData);
+                        PopulateDataOnUI(addressResult);
                     }
                 }
                 else
@@ -137,115 +137,123 @@ namespace WhitePagesAddressLookup
         }
 
         /// <summary>
-        /// This method parse the Address Lookup data to class AddressLookupData.
+        /// This method parse the Address Lookup data to Result class.
         /// </summary>
         /// <param name="responseInJson">responseInJson</param>
-        /// <returns>List<AddressLookupData></returns>
-        private AddressLookupData ParseAddressLookupResult(string responseInJson)
+        /// <returns>Result</returns>
+        private Result ParseAddressLookupResult(string responseInJson)
         {
-            // Creating PersonLookupData object class to fill the address lookup data.
-            AddressLookupData addressLookupData = new AddressLookupData();
+            // Creating Result class object to fill address lookup data.
+            Result result = new Result();
 
             try
             {
+                // Creating addressData object to fill the address details.
+                Address addressData = new Address();
+
                 // responseInJson to DeserializeObject
                 dynamic jsonObject = JsonConvert.DeserializeObject(responseInJson);
 
-                // Take the dictionary object from jsonObject.
-                dynamic dictionaryObj = jsonObject.dictionary;
-                string locationKey = string.Empty;
-
-                // Get location key from jsonObject.results.
-                foreach (var data in jsonObject.results)
+                if (jsonObject != null)
                 {
-                    locationKey = data.Value;
-                    break;
-                }
+                    // Take the dictionary object from jsonObject.
+                    dynamic dictionaryObj = jsonObject.dictionary;
 
-                if (!string.IsNullOrEmpty(locationKey))
-                {
-                    // Extact locationKeyObject for specific location key.
-                    dynamic locationKeyObject = dictionaryObj[locationKey];
-
-                    // Get address line1, line2 and location from locationKeyObject.
-                    string addressLine1 = (string)locationKeyObject["standard_address_line1"];
-                    string addressLine2 = (string)locationKeyObject["standard_address_line2"];
-                    string addressLocation = (string)locationKeyObject["standard_address_location"];
-
-                    // Get usage from locationKeyObject.
-                    string usage = (string)locationKeyObject["usage"];
-
-                    // Get isReceivingMail from locationKeyObject.
-                    bool isReceivingMail = (bool)locationKeyObject["is_receiving_mail"];
-
-                    // Get deliveryPoint from locationKeyObject.
-                    string deliveryPoint = (string)locationKeyObject["delivery_point"];
-
-                    // Creating Full Address.
-                    string fullAddress = string.Empty;
-                    fullAddress += (string.IsNullOrEmpty(addressLine1) ? string.Empty : addressLine1 + "<br />");
-                    fullAddress += (string.IsNullOrEmpty(addressLine2) ? string.Empty : addressLine2 + "<br />");
-                    fullAddress += (string.IsNullOrEmpty(addressLocation) ? string.Empty : addressLocation + "<br />");
-
-                    // Fill Address data to AddressLookupData class object.
-                    addressLookupData.Address = fullAddress;
-                    addressLookupData.ReceivingMail = isReceivingMail ? "Yes" : "No";
-                    addressLookupData.Usage = usage;
-                    addressLookupData.DeliveryPoint = deliveryPoint;
-                    
-                    // Now we will extrat all person for above location.
-                    dynamic locationLegalEntitiesObj = locationKeyObject.legal_entities_at;
-
-                    if (locationLegalEntitiesObj != null)
+                    if (dictionaryObj != null)
                     {
-                        List<string> personKeyList = new List<string>();
+                        string locationKey = string.Empty;
 
-                        // Extract all personKey from locationLegalEntitiesObj
-                        foreach (var locationLegalData in locationLegalEntitiesObj)
+                        // Get location key from jsonObject.results.
+                        foreach (var data in jsonObject.results)
                         {
-                            dynamic locationLegalDataAtId = locationLegalData.id;
-
-                            string personKey = locationLegalDataAtId["key"];
-                            personKeyList.Add(personKey);
+                            locationKey = data.Value;
+                            break;
                         }
 
-                        addressLookupData.NoOfPerson = personKeyList.Count;
-
-                        List<Person> personList = new List<Person>();
-
-                        Person person = null;
-
-                        if (personKeyList.Count > 0)
+                        if (!string.IsNullOrEmpty(locationKey))
                         {
-                            string personDetails = string.Empty;
+                            // Extact locationKeyObject for specific location key.
+                            dynamic locationKeyObject = dictionaryObj[locationKey];
 
-                            // Now we will search all person for each PersonKey.
-                            foreach (string personKey in personKeyList)
+                            if (locationKeyObject != null)
                             {
-                                person = new Person();
+                                // Get address line1, line2 and location from locationKeyObject.
+                                // Fill Address data to Address class object.
+                                addressData.AddressLine1 = (string)locationKeyObject["standard_address_line1"];
+                                addressData.AddressLine2 = (string)locationKeyObject["standard_address_line2"];
+                                addressData.AddressLocation = (string)locationKeyObject["standard_address_location"];
 
-                                dynamic personKeyObject = dictionaryObj[personKey];
+                                // Get usage from locationKeyObject.
+                                addressData.Usage = (string)locationKeyObject["usage"];
 
-                                dynamic personIdObject = personKeyObject.id;
-
-                                string type = string.Empty;
-                                if (personIdObject != null)
+                                if (locationKeyObject["is_receiving_mail"] != null)
                                 {
-                                    // Extract person type.
-                                    type = (string)personIdObject["type"];
+                                    // Get isReceivingMail from locationKeyObject.
+                                    addressData.ReceivingMail = (bool)(locationKeyObject["is_receiving_mail"]);
                                 }
 
-                                // Get person name.
-                                string fullName = (string)personKeyObject["best_name"];
+                                // Get deliveryPoint from locationKeyObject.
+                                addressData.DeliveryPoint = (string)locationKeyObject["delivery_point"];
 
-                                // Fill person class.
-                                person.PersonName = fullName;
-                                person.PersonType = type;
+                                // Get location legel entities from locationKeyObject.
+                                dynamic locationLegalEntitiesObj = locationKeyObject.legal_entities_at;
 
-                                personList.Add(person);
+                                if (locationLegalEntitiesObj != null)
+                                {
+                                    List<string> personKeyList = new List<string>();
+
+                                    // Extract all personKey from locationLegalEntitiesObj
+                                    foreach (var locationLegalData in locationLegalEntitiesObj)
+                                    {
+                                        dynamic locationLegalDataAtId = locationLegalData.id;
+
+                                        if (locationLegalDataAtId != null)
+                                        {
+                                            string personKey = locationLegalDataAtId["key"];
+                                            if (!string.IsNullOrEmpty(personKey))
+                                            {
+                                                personKeyList.Add(personKey);
+                                            }
+                                        }
+                                    }
+
+                                    addressData.NoOfPerson = personKeyList.Count;
+
+                                    result.Address = addressData;
+
+                                    // Starting here to parse person data.
+                                    List<Person> personList = new List<Person>();
+
+                                    Person person = null;
+
+                                    if (personKeyList.Count > 0)
+                                    {
+                                        // Now we will search all person for each PersonKey.
+                                        foreach (string personKey in personKeyList)
+                                        {
+                                            person = new Person();
+                                            dynamic personKeyObject = dictionaryObj[personKey];
+
+                                            if (personKeyObject != null)
+                                            {
+                                                // Get person name.
+                                                person.PersonName = (string)personKeyObject["best_name"];
+                                                dynamic personIdObject = personKeyObject.id;
+
+                                                if (personIdObject != null)
+                                                {
+                                                    // Extract person type.
+                                                    person.PersonType = (string)personIdObject["type"];
+                                                }
+                                            }
+
+                                            personList.Add(person);
+                                        }
+
+                                        result.SetPerson(personList.ToArray());
+                                    }
+                                }
                             }
-
-                            addressLookupData.SetPerson(personList.ToArray());
                         }
                     }
                 }
@@ -257,36 +265,42 @@ namespace WhitePagesAddressLookup
                 this.LiteralErrorMessage.Text = ex.Message;
             }
 
-            return addressLookupData;
+            return result;
         }
 
         /// <summary>
         /// This method populates data on UI.
         /// </summary>
-        /// <param name="addressLookupData">addressLookupData</param>
-        private void PopulateDataOnUI(AddressLookupData addressLookupData)
+        /// <param name="result">result</param>
+        private void PopulateDataOnUI(Result result)
         {
 		    // Populating address details on UI.
-            this.LitralAddress.Text = addressLookupData.Address;
-            this.LiteralReceivingMail.Text = addressLookupData.ReceivingMail;
-            this.LiteralUsage.Text = addressLookupData.Usage;
-            this.LiteralDeliveryPoint.Text = addressLookupData.DeliveryPoint;
+
+            // Creating Full Address.
+            string fullAddress = string.Empty;
+            fullAddress += (string.IsNullOrEmpty(result.Address.AddressLine1) ? string.Empty : result.Address.AddressLine1 + "<br />");
+            fullAddress += (string.IsNullOrEmpty(result.Address.AddressLine2) ? string.Empty : result.Address.AddressLine2 + "<br />");
+            fullAddress += (string.IsNullOrEmpty(result.Address.AddressLocation) ? string.Empty : result.Address.AddressLocation + "<br />");
+
+            this.LitralAddress.Text = fullAddress;
+            this.LiteralReceivingMail.Text = result.Address.ReceivingMail ? WhitePagesConstants.YesText : WhitePagesConstants.NoText;
+            this.LiteralUsage.Text = result.Address.Usage;
+            this.LiteralDeliveryPoint.Text = result.Address.DeliveryPoint;
+            this.LiteralPersonCount.Text = result.Address.NoOfPerson.ToString(CultureInfo.CurrentCulture);
 
             ResultDiv.Visible = true;
-            
-            if (addressLookupData.GetPerson() != null)
-            {
-                this.LiteralPersonCount.Text = addressLookupData.NoOfPerson.ToString(CultureInfo.CurrentCulture);
 
+            if (result.GetPerson() != null)
+            {
                 this.LiteralPersonDetails.Text = string.Empty;
 				
 				// Creating address template and populate on UI.
-                if (addressLookupData.GetPerson().Length > 0)
+                if (result.GetPerson().Length > 0)
                 {
                     string personDetails = string.Empty;
 					
 					// Populating person details.
-                    foreach (Person person in addressLookupData.GetPerson())
+                    foreach (Person person in result.GetPerson())
                     {
                         string personDataTemplates = WhitePagesConstants.PersonDataTemplates;
 

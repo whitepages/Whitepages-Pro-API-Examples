@@ -11,7 +11,7 @@
 <body>
     <form id="form1" runat="server">
         <div class="wrapper">
-            <div class="search_sec">
+            <div class="search_section">
                 <p>Find by Address</p>
                 <asp:TextBox ID="textBoxStreetLine1" CssClass="inputbox_address" placeholder="Street Address or name" runat="server"></asp:TextBox>
                 <asp:TextBox ID="textBoxCity" CssClass="inputbox_address" placeholder="City and State or Zip" runat="server"></asp:TextBox>
@@ -24,16 +24,16 @@
             </div>
 
             <div class="detail_wrapper" runat="server" visible="false" id="ResultDiv">
-                <div class="detail_box">
+                <div class="address_box">
                     <h1>Location</h1>
 
-                    <div class="detail_boxin">
+                    <div class="address_box_inner">
                         <p>
                             <asp:Literal ID="LitralAddress" runat="server"></asp:Literal>
                         </p>
                     </div>
 
-                    <div class="detail_boxin">
+                    <div class="address_box_inner">
                         <p>
                             <span>Receiving Mail:</span>
                             <asp:Literal ID="LiteralReceivingMail" runat="server"></asp:Literal>
@@ -50,7 +50,7 @@
 
                 </div>
 
-                <div class="detail_box">
+                <div class="person_box">
                     <h1>People <span>(<asp:Literal ID="LiteralPersonCount" runat="server"></asp:Literal>)</span></h1>
                     <asp:Literal ID="LiteralPersonDetails" runat="server"></asp:Literal>
                 </div>
