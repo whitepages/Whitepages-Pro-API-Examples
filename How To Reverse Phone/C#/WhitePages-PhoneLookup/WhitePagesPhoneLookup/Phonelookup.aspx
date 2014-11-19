@@ -17,7 +17,7 @@
 <body>
     <form id="form1" runat="server">
         <div class="wrapper">
-            <div class="search_sec">
+            <div class="search_section">
                 <p>Find by Phone</p>
                 <asp:TextBox ID="textBoxPhoneNumber" CssClass="inputbox" placeholder="4259853735" runat="server"></asp:TextBox>
                 <asp:Button ID="ButtonFind" runat="server" CssClass="find_btn" Text="Find" OnClick="ButtonFindClick" />
@@ -28,7 +28,7 @@
             </div>
 
             <div class="detail_wrapper" runat="server" visible="false" id="ResultDiv">
-                <div class="detail_box">
+                <div class="phone_box">
                     <h1>Phone</h1>
                     <p>
                         <asp:Literal ID="LitralPhoneNumber" runat="server"></asp:Literal>
@@ -47,11 +47,11 @@
                         <asp:Literal ID="LiteralSpamScore" runat="server"></asp:Literal>
                     </p>
                 </div>
-                <div class="detail_box">
+                <div class="people_box">
                     <h1>People</h1>
                     <asp:Literal ID="LiteralPeopleDetails" runat="server"></asp:Literal>
                 </div>
-                <div class="detail_box">
+                <div class="location_box">
                     <h1>Location</h1>
                     <asp:Literal ID="LiteralLocationDetails" runat="server"></asp:Literal>
 

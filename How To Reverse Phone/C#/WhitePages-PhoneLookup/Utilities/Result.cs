@@ -1,15 +1,15 @@
 ﻿// ***********************************************************************
 // Assembly         : Utilities
 // Author           : Kushal Shah
-// Created          : 11-05-2014
+// Created          : 11-11-2014
 //
 // Last Modified By : Kushal Shah
-// Last Modified On : 11-06-2014
+// Last Modified On : 11-11-2014
 // ***********************************************************************
-// <copyright file="PhoneLookupData.cs" company="Whitepages Pro">
+// <copyright file="Result.cs" company="Whitepages Pro">
 //     . All rights reserved.
 // </copyright>
-// <summary>After parsing the result we will keep all information to PhoneLookupData.</summary>
+// <summary>After parsing the result we will keep phone, location and people details.</summary>
 // ***********************************************************************
 
 using System;
@@ -20,17 +20,9 @@ using System.Threading.Tasks;
 
 namespace Utilities
 {
-    public class PhoneLookupData
+    public class Result
     {
-        public string PhoneNumber { get; set; }
-
-        public string Carrier { get; set; }
-
-        public string PhoneType { get; set; }
-
-        public string DndStatus { get; set; }
-
-        public string SpamScore { get; set; }
+        public Phone Phone { get; set; }
 
         private People[] people;
 

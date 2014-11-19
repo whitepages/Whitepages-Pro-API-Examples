@@ -4,7 +4,7 @@
 // Created          : 08-06-2014
 //
 // Last Modified By : Kushal Shah
-// Last Modified On : 11-06-2014
+// Last Modified On : 11-18-2014
 // ***********************************************************************
 // <copyright file="Phonelookup.aspx.cs" company="Whitepages Pro">
 //     . All rights reserved.
@@ -81,13 +81,13 @@ namespace WhitePagesPhoneLookup
                         // Dispose response stream
                         responseStream.Dispose();
 
-                        // Calling ParsePhoneLookupResult to parse the response JSON in data class PhoneLookupData.
-                        PhoneLookupData phoneLookupData = ParsePhoneLookupResult(responseInJson);
+                        // Calling ParsePhoneLookupResult to parse the response JSON in data Result class.
+                        Result resultData = ParsePhoneLookupResult(responseInJson);
 
-                        if (phoneLookupData != null)
+                        if (resultData != null)
                         {
                             // Calling function to populate data on UI.
-                            PopulateDataOnUI(phoneLookupData);
+                            PopulateDataOnUI(resultData);
                         }
                     }
                     else
@@ -113,221 +113,225 @@ namespace WhitePagesPhoneLookup
         }
 
         /// <summary>
-        /// This method parse the Phone Lookup data to class PhoneLookupData.
+        /// This method parse the Phone Lookup data to class Result.
         /// </summary>
         /// <param name="responseInJson">responseInJson</param>
-        /// <returns>PhoneLookupData</returns>
-        private PhoneLookupData ParsePhoneLookupResult(string responseInJson)
+        /// <returns>Result</returns>
+        private Result ParsePhoneLookupResult(string responseInJson)
         {
             // Creating PhoneLookupData object to fill the phone lookup data.
-            PhoneLookupData personLookupData = new PhoneLookupData();
+            Result resultData = new Result();
 
             try
             {
                 // responseInJson to DeserializeObject
                 dynamic jsonObject = JsonConvert.DeserializeObject(responseInJson);
 
-                // Take the dictionary object from jsonObject.
-                dynamic dictionaryObj = jsonObject.dictionary;
-                string phoneKey = string.Empty;
-
-                // Take the phone key from result node of jsonObject
-                foreach (var data in jsonObject.results)
+                if (jsonObject != null)
                 {
-                    phoneKey = data.Value;
-                    break;
-                }
+                    // Take the dictionary object from jsonObject.
+                    dynamic dictionaryObj = jsonObject.dictionary;
 
-                // Checking phone key null or empty.
-                if (!string.IsNullOrEmpty(phoneKey))
-                {
-                    // Get phone key object from dictionaryObj using phoneKey.
-                    dynamic phoneKeyObject = dictionaryObj[phoneKey];
-
-                    // Extracting lineType,phoneNumber, countryCallingCode, carrier, doNotCall status, spamScore from phoneKeyObject.
-                    string lineType = (string)phoneKeyObject["line_type"];
-                    string phoneNumber = (string)phoneKeyObject["phone_number"];
-                    string countryCallingCode = (string)phoneKeyObject["country_calling_code"];
-                    string carrier = (string)phoneKeyObject["carrier"];
-                    bool doNotCall = (bool)phoneKeyObject["do_not_call"];
-
-                    dynamic spamScoreObj = phoneKeyObject.reputation;
-
-                    string spamScore = (string)spamScoreObj["spam_score"];
-
-                    // Concatenate country code and phone number.
-                    phoneNumber = countryCallingCode + phoneNumber;
-
-                    // Formating phone number.
-                    string formatedPhoneNumber = String.Format(CultureInfo.CurrentCulture, "{0:#-###-###-####}", Convert.ToInt64(phoneNumber, CultureInfo.CurrentCulture));
-                    formatedPhoneNumber = "+" + formatedPhoneNumber;
-
-                    personLookupData.PhoneNumber = formatedPhoneNumber;
-                    personLookupData.Carrier = carrier;
-                    personLookupData.PhoneType = lineType;
-                    
-                    if (doNotCall)
+                    if (dictionaryObj != null)
                     {
-                        personLookupData.DndStatus = WhitePagesConstants.RegisteredText;
-                    }
-                    else
-                    {
-                        personLookupData.DndStatus = WhitePagesConstants.NotRegisteredText;
-                    }
+                        string phoneKey = string.Empty;
 
-                    if (!string.IsNullOrEmpty(spamScore))
-                    {
-                        personLookupData.SpamScore = spamScore + WhitePagesConstants.PercentText;
-                    }
-                    else
-                    {
-                        personLookupData.SpamScore = WhitePagesConstants.ZeroPercentText;
-                    }
-
-                    // Extracting location key from Phone details under best_location object.
-                    dynamic bestLocationFromPhoneObj = phoneKeyObject.best_location;
-                    dynamic bestLocationIdFromPhoneObj = bestLocationFromPhoneObj.id;
-                    string locationKeyFromPhone = (string)bestLocationIdFromPhoneObj["key"];
-
-                    // Starting to extarct the person information.
-                    dynamic phoneKeyObjectBelongsToObj = phoneKeyObject.belongs_to;
-
-                    List<string> personKeyListFromBelongsTo = new List<string>();
-                    List<string> locationKeyList = new List<string>();
-
-                    // Creating list of person key from phoneKeyObjectBelongsToObj.
-                    foreach (var data in phoneKeyObjectBelongsToObj)
-                    {
-                        dynamic belongsToObj = data.id;
-                        string personKeyFromBelongsTo = (string)belongsToObj["key"];
-                        personKeyListFromBelongsTo.Add(personKeyFromBelongsTo);
-                    }
-
-                    List<People> peopleList = new List<People>();
-
-                    if (personKeyListFromBelongsTo != null && personKeyListFromBelongsTo.Count > 0)
-                    {
-                        People people = null;
-
-                        dynamic personKeyObject = null;
-
-                        foreach (string personKey in personKeyListFromBelongsTo)
+                        // Take the phone key from result node of jsonObject
+                        foreach (var data in jsonObject.results)
                         {
-                            people = new People();
-                            
-                            personKeyObject = dictionaryObj[personKey];
-
-                            // Get phoneKeyIdObj from personKeyObject.
-                            dynamic phoneKeyIdObj = personKeyObject.id;
-
-                            // Get person type from phoneKeyIdObj.
-                            string personType = phoneKeyIdObj["type"];
-
-                            // phoneKeyNamesObj from name node of personKeyObject.
-                            dynamic phoneKeyNamesObj = personKeyObject.names;
-
-                            string fullName = string.Empty;
-
-                            if (phoneKeyNamesObj != null)
-                            {
-                                string firstName = string.Empty;
-                                string lastName = string.Empty;
-                                string middleName = string.Empty;
-
-                                foreach (var name in phoneKeyNamesObj)
-                                {
-                                    firstName = (string)name["first_name"];
-                                    middleName = (string)name["middle_name"];
-                                    lastName = (string)name["last_name"];
-                                }
-
-                                fullName = firstName + " " + lastName;
-                            }
-                            else
-                            {
-                                fullName = personKeyObject.name;
-                            }
-
-                            people.PersonName = fullName;
-                            people.PersonType = personType;
-
-                            // Collecting Locations Key. if best_location node exist other wise will take location key from locations node
-                            string locationKey = string.Empty;
-                            if (personKeyObject["best_location"] != null)
-                            {
-                                dynamic personBestLocationObj = personKeyObject.best_location;
-                                dynamic bestLocationIdObj = personBestLocationObj.id;
-
-                                locationKey = (string)bestLocationIdObj["key"];
-                            }
-                            else
-                            {
-                                if (personKeyObject["locations"] != null)
-                                {
-                                    dynamic locationsPerPersonObj = personKeyObject.locations;
-                                    foreach (var location in locationsPerPersonObj)
-                                    {
-                                        dynamic locationIdObj = location.id;
-                                        locationKey = (string)locationIdObj["key"];
-                                        break;
-                                    }
-                                }
-                            }
-
-                            // If locationkey not found from best_location and locations node of personKeyObject 
-                            // than will take locationKeyFromPhone.
-                            if (string.IsNullOrEmpty(locationKey))
-                            {
-                                locationKey = locationKeyFromPhone;
-                            }
-
-                            locationKeyList.Add(locationKey);
-
-                            peopleList.Add(people);
+                            phoneKey = data.Value;
+                            break;
                         }
 
-                        personLookupData.SetPeople(peopleList.ToArray());
-                        
-                        if (personKeyObject != null)
+                        // Checking phone key null or empty.
+                        if (!string.IsNullOrEmpty(phoneKey))
                         {
-                            List<Location> locationList = new List<Location>();
+                            // Get phone key object from dictionaryObj using phoneKey.
+                            dynamic phoneKeyObject = dictionaryObj[phoneKey];
 
-                            Location location = null;
-
-                            // Extracting all location for all locationKeyList from locationKeyObject.
-                            foreach (string locationKey in locationKeyList)
+                            if (phoneKeyObject != null)
                             {
-                                location = new Location();
+                                // Creating phoneData object to fill the phone lookup data.
+                                Phone phoneData = new Phone();
 
-                                dynamic locationKeyObject = dictionaryObj[locationKey];
-
-                                string standardAddressLine1 = (string)locationKeyObject["standard_address_line1"];
-                                string standard_address_line2 = (string)locationKeyObject["standard_address_line2"];
-                                string standard_address_location = (string)locationKeyObject["standard_address_location"];
-                                bool isReceivingMail = false;
-                                if (locationKeyObject["is_receiving_mail"] != null)
+                                // Extracting lineType,phoneNumber, countryCallingCode, carrier, doNotCall status, spamScore from phoneKeyObject.
+                                phoneData.PhoneType = (string)phoneKeyObject["line_type"];
+                                phoneData.PhoneNumber = (string)phoneKeyObject["phone_number"];
+                                phoneData.CountryCallingCode = (string)phoneKeyObject["country_calling_code"];
+                                phoneData.Carrier = (string)phoneKeyObject["carrier"];
+                                if (phoneKeyObject["do_not_call"] != null)
                                 {
-                                    isReceivingMail = (bool)locationKeyObject["is_receiving_mail"];
+                                    phoneData.DndStatus = (bool)(phoneKeyObject["do_not_call"]);
                                 }
-                                string usage = (string)locationKeyObject["usage"];
-                                string deliveryPoint = (string)locationKeyObject["delivery_point"];
 
-                                string fullAddress = string.Empty;
-                                fullAddress += string.IsNullOrEmpty(standardAddressLine1) ? string.Empty : standardAddressLine1 + "<br />";
-                                fullAddress += string.IsNullOrEmpty(standard_address_line2) ? string.Empty : standard_address_line2 + "<br />";
-                                fullAddress += string.IsNullOrEmpty(standard_address_location) ? string.Empty : standard_address_location;
+                                dynamic spamScoreObj = phoneKeyObject.reputation;
+                                if (spamScoreObj != null)
+                                {
+                                    phoneData.SpamScore = (string)spamScoreObj["spam_score"];
+                                }
 
-                                string receivingMail = isReceivingMail ? WhitePagesConstants.YesText : WhitePagesConstants.NoText;
+                                resultData.Phone = phoneData;
 
-                                location.Address = fullAddress;
-                                location.ReceivingMail = receivingMail;
-                                location.Usage = usage;
-                                location.DeliveryPoint = deliveryPoint;
+                                // Starting to extarct the person information.
+                                dynamic phoneKeyObjectBelongsToObj = phoneKeyObject.belongs_to;
 
-                                locationList.Add(location);
+                                List<string> personKeyListFromBelongsTo = new List<string>();
+                                List<string> locationKeyList = new List<string>();
+
+                                if (phoneKeyObjectBelongsToObj != null)
+                                {
+                                    // Creating list of person key from phoneKeyObjectBelongsToObj.
+                                    foreach (var data in phoneKeyObjectBelongsToObj)
+                                    {
+                                        dynamic belongsToObj = data.id;
+                                        if (belongsToObj != null)
+                                        {
+                                            string personKeyFromBelongsTo = (string)belongsToObj["key"];
+
+                                            if (!string.IsNullOrEmpty(personKeyFromBelongsTo))
+                                            {
+                                                personKeyListFromBelongsTo.Add(personKeyFromBelongsTo);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                List<People> peopleList = new List<People>();
+
+                                if (personKeyListFromBelongsTo.Count > 0)
+                                {
+                                    People people = null;
+
+                                    dynamic personKeyObject = null;
+
+                                    foreach (string personKey in personKeyListFromBelongsTo)
+                                    {
+                                        people = new People();
+
+                                        personKeyObject = dictionaryObj[personKey];
+
+                                        if (personKeyObject != null)
+                                        {
+                                            // Get phoneKeyIdObj from personKeyObject.
+                                            dynamic phoneKeyIdObj = personKeyObject.id;
+
+                                            if (phoneKeyIdObj != null)
+                                            {
+                                                // Get person type from phoneKeyIdObj.
+                                                people.PersonType = phoneKeyIdObj["type"];
+                                            }
+
+                                            // phoneKeyNamesObj from name node of personKeyObject.
+                                            dynamic phoneKeyNamesObj = personKeyObject.names;
+
+                                            if (phoneKeyNamesObj != null)
+                                            {
+                                                string firstName = string.Empty;
+                                                string lastName = string.Empty;
+                                                string middleName = string.Empty;
+
+                                                foreach (var name in phoneKeyNamesObj)
+                                                {
+                                                    firstName = (string)name["first_name"];
+                                                    middleName = (string)name["middle_name"];
+                                                    lastName = (string)name["last_name"];
+                                                }
+
+                                                people.PersonName = firstName + " " + lastName;
+                                            }
+                                            else
+                                            {
+                                                people.PersonName = personKeyObject.name;
+                                            }
+
+                                            // Collecting Locations Key. if best_location node exist other wise will take location key from locations node
+                                            string locationKey = string.Empty;
+                                            if (personKeyObject["best_location"] != null)
+                                            {
+                                                dynamic personBestLocationObj = personKeyObject.best_location;
+                                                if (personBestLocationObj != null)
+                                                {
+                                                    dynamic bestLocationIdObj = personBestLocationObj.id;
+                                                    if (bestLocationIdObj != null)
+                                                    {
+                                                        locationKey = (string)bestLocationIdObj["key"];
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (personKeyObject["locations"] != null)
+                                                {
+                                                    dynamic locationsPerPersonObj = personKeyObject.locations;
+                                                    if (locationsPerPersonObj != null)
+                                                    {
+                                                        foreach (var personLocation in locationsPerPersonObj)
+                                                        {
+                                                            dynamic locationIdObj = personLocation.id;
+                                                            if (locationIdObj != null)
+                                                            {
+                                                                locationKey = (string)locationIdObj["key"];
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            // If locationkey not found from best_location and locations node of personKeyObject 
+                                            // than will take bestLocationFromPhoneObj.
+                                            if (string.IsNullOrEmpty(locationKey))
+                                            {
+                                                // Extracting location key from Phone details under best_location object.
+                                                dynamic bestLocationFromPhoneObj = phoneKeyObject.best_location;
+                                                if (bestLocationFromPhoneObj != null)
+                                                {
+                                                    dynamic bestLocationIdFromPhoneObj = bestLocationFromPhoneObj.id;
+                                                    if (bestLocationIdFromPhoneObj != null)
+                                                    {
+                                                        locationKey = (string)bestLocationIdFromPhoneObj["key"];
+                                                    }
+                                                }
+                                            }
+
+                                            locationKeyList.Add(locationKey);
+
+                                            peopleList.Add(people);
+                                        }
+                                    }
+                                    
+                                    resultData.SetPeople(peopleList.ToArray());
+
+                                    List<Location> locationList = new List<Location>();
+
+                                    Location location = null;
+
+                                    // Extracting all location for all locationKeyList from locationKeyObject.
+                                    foreach (string locationKey in locationKeyList)
+                                    {
+                                        location = new Location();
+
+                                        dynamic locationKeyObject = dictionaryObj[locationKey];
+
+                                        if (locationKeyObject != null)
+                                        {
+                                            location.StandardAddressLine1 = (string)locationKeyObject["standard_address_line1"];
+                                            location.StandardAddressLine2 = (string)locationKeyObject["standard_address_line2"];
+                                            location.StandardAddressLocation = (string)locationKeyObject["standard_address_location"];
+                                            if (locationKeyObject["is_receiving_mail"] != null)
+                                            {
+                                                location.ReceivingMail = (bool)(locationKeyObject["is_receiving_mail"]);
+                                            }
+                                            location.Usage = (string)locationKeyObject["usage"];
+                                            location.DeliveryPoint = (string)locationKeyObject["delivery_point"];
+
+                                            locationList.Add(location);
+                                        }
+                                    }
+
+                                    resultData.SetLocation(locationList.ToArray());
+                                }
                             }
-
-                            personLookupData.SetLocation(locationList.ToArray());
                         }
                     }
                 }
@@ -339,30 +343,62 @@ namespace WhitePagesPhoneLookup
                 this.LiteralErrorMessage.Text = ex.Message;
             }
 
-            return personLookupData;
+            return resultData;
         }
 
         /// <summary>
         /// This method populates data on UI.
         /// </summary>
-        /// <param name="phoneLookupData">phoneLookupData</param>
-        private void PopulateDataOnUI(PhoneLookupData phoneLookupData)
+        /// <param name="resultData">resultData</param>
+        private void PopulateDataOnUI(Result resultData)
         {
             // populating phone details on UI.
-            this.LitralPhoneNumber.Text = phoneLookupData.PhoneNumber;
-            this.LiteralPhoneCarrier.Text = phoneLookupData.Carrier;
-            this.LiteralPhoneType.Text = phoneLookupData.PhoneType;
-            this.LiteralDndStatus.Text = phoneLookupData.DndStatus;
-            this.LiteralSpamScore.Text = phoneLookupData.SpamScore;
+
+            bool dndStatus = resultData.Phone.DndStatus;
+
+            string dndStatusText = string.Empty;
+
+            if (dndStatus)
+            {
+                dndStatusText = WhitePagesConstants.RegisteredText;
+            }
+            else
+            {
+                dndStatusText = WhitePagesConstants.NotRegisteredText;
+            }
+
+            string spamScore = string.Empty;
+
+            if (!string.IsNullOrEmpty(resultData.Phone.SpamScore))
+            {
+                spamScore = resultData.Phone.SpamScore + WhitePagesConstants.PercentText;
+            }
+            else
+            {
+                spamScore = WhitePagesConstants.ZeroPercentText;
+            }
+
+            // Concatenate country code and phone number.
+            string phoneNumber = resultData.Phone.CountryCallingCode + resultData.Phone.PhoneNumber;
+
+            // Formating phone number.
+            string formatedPhoneNumber = String.Format(CultureInfo.CurrentCulture, "{0:#-###-###-####}", Convert.ToInt64(phoneNumber, CultureInfo.CurrentCulture));
+            formatedPhoneNumber = "+" + formatedPhoneNumber;
+
+            this.LitralPhoneNumber.Text = formatedPhoneNumber;
+            this.LiteralPhoneCarrier.Text = resultData.Phone.Carrier;
+            this.LiteralPhoneType.Text = resultData.Phone.PhoneType;
+            this.LiteralDndStatus.Text = dndStatusText;
+            this.LiteralSpamScore.Text = spamScore;
             
             this.ResultDiv.Visible = true;
 
             // Creating UI template for people and populate on UI.
-            if (phoneLookupData.GetPeople() != null && phoneLookupData.GetPeople().Count() > 0)
+            if (resultData.GetPeople() != null && resultData.GetPeople().Count() > 0)
             {
                 string peopleDetails = string.Empty;
 
-                foreach (People people in phoneLookupData.GetPeople())
+                foreach (People people in resultData.GetPeople())
                 {
                     string peopleData = WhitePagesConstants.PeopleDataTemplates;
 
@@ -376,15 +412,22 @@ namespace WhitePagesPhoneLookup
             }
 
             // Creating UI template for location and populate on UI.
-            if (phoneLookupData.GetLocation() != null && phoneLookupData.GetLocation().Count() > 0)
+            if (resultData.GetLocation() != null && resultData.GetLocation().Count() > 0)
             {
                 string locationDetails = string.Empty;
-                foreach (Location location in phoneLookupData.GetLocation())
+                foreach (Location location in resultData.GetLocation())
                 {
                     string locationDataTemplate = WhitePagesConstants.LocationDataTemplates;
 
-                    locationDataTemplate = locationDataTemplate.Replace(WhitePagesConstants.AddressKey, location.Address);
-                    locationDataTemplate = locationDataTemplate.Replace(WhitePagesConstants.ReceivingMailKey, location.ReceivingMail);
+                    string receivingMail = location.ReceivingMail ? WhitePagesConstants.YesText : WhitePagesConstants.NoText;
+
+                    string fullAddress = string.Empty;
+                    fullAddress += string.IsNullOrEmpty(location.StandardAddressLine1) ? string.Empty : location.StandardAddressLine1 + "<br />";
+                    fullAddress += string.IsNullOrEmpty(location.StandardAddressLine2) ? string.Empty : location.StandardAddressLine2 + "<br />";
+                    fullAddress += string.IsNullOrEmpty(location.StandardAddressLocation) ? string.Empty : location.StandardAddressLocation;
+
+                    locationDataTemplate = locationDataTemplate.Replace(WhitePagesConstants.AddressKey, fullAddress);
+                    locationDataTemplate = locationDataTemplate.Replace(WhitePagesConstants.ReceivingMailKey, receivingMail);
                     locationDataTemplate = locationDataTemplate.Replace(WhitePagesConstants.UageEKey, location.Usage);
                     locationDataTemplate = locationDataTemplate.Replace(WhitePagesConstants.DeliveryPointKey, location.DeliveryPoint);
 

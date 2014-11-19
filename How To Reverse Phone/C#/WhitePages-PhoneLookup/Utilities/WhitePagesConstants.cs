@@ -4,7 +4,7 @@
 // Created          : 08-06-2014
 //
 // Last Modified By : Kushal Shah
-// Last Modified On : 11-06-2014
+// Last Modified On : 11-18-2014
 // ***********************************************************************
 // <copyright file="WhitePagesConstants.cs" company="Whitepages Pro">
 //     . All rights reserved.
@@ -22,7 +22,7 @@ namespace Utilities
 {
     public class WhitePagesConstants
     {
-	    // Need to specify the API key to access data from WhatPages API. This is mandatory.
+	    // Need to specify the API key to access data from WhitePages API. This is mandatory.
         public const string ApiKey = "";
 
         public const string PeopleDataTemplates = "<p>"+
