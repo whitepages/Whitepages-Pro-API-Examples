@@ -9,5 +9,5 @@ package com.whitepages.utilities;
 public class Constants {
 	
 	// API key to be used while calling whitePages Api.
-	public static String API_KEY = "501b3a69edfcc3ec894500130a003df8";
+	public static String API_KEY = "";
 }

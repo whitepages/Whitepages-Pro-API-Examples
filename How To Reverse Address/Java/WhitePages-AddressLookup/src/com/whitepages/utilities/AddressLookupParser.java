@@ -10,36 +10,39 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.whitepages.data.AddressLookupData;
+import com.whitepages.data.Result;
 
 public class AddressLookupParser {
 
 	/**
-	 * This method parse the address lookup response to AddressLookupData.
-	 * @param addressLookupJsonResponse: address lookup JSON response.
-	 * @return: AddressLookupData.
+	 * This method parse the address lookup response to Result.
+	 * 
+	 * @param addressLookupJsonResponse address lookup JSON response.
+	 * @return Result.
 	 */
-	public AddressLookupData parseAddressLookupData(String addressLookupJsonResponse) {
-		AddressLookupData addressLookupData = null;
+	public Result parseAddressLookupData(String addressLookupJsonResponse) {
+		Result addressLookupData = null;
 		try {
-				JSONObject responseObject = new JSONObject(addressLookupJsonResponse);
-				if(responseObject != null) {
-					if(responseObject.has("results")) {
-						JSONArray resultsArray = responseObject.optJSONArray("results");
-						if(resultsArray != null && resultsArray.length() > 0) {
-							addressLookupData = new AddressLookupData(responseObject, resultsArray);
-						}
-					} else if(responseObject.has("error")) {
-						JSONObject errorObject = responseObject.optJSONObject("error");
-						if(errorObject != null) {
-							addressLookupData = new AddressLookupData(errorObject);
-						}
+			// Creating responseObject.
+			JSONObject responseObject = new JSONObject(addressLookupJsonResponse);
+			if (responseObject != null) {
+				if (responseObject.has("results")) {
+					JSONArray resultsArray = responseObject.optJSONArray("results");
+					if (resultsArray != null && resultsArray.length() > 0) {
+						// Calling Result constructor to get address lookup data.
+						addressLookupData = new Result(responseObject, resultsArray);
+					}
+				} else if (responseObject.has("error")) {
+					JSONObject errorObject = responseObject.optJSONObject("error");
+					if (errorObject != null) {
+						addressLookupData = new Result(errorObject);
 					}
 				}
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
+
 		return addressLookupData;
 	}
 }
