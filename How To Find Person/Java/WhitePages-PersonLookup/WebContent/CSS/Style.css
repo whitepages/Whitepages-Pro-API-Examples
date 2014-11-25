@@ -7,14 +7,14 @@
     width:1000px;
 }
 
-.search_sec{
+.search_section{
     float:left;
     width:1000px;
     margin:0px 0px 20px 0px;
     padding:0px;
 }
 
-.search_sec p{ 
+.search_section p{ 
     font:14px Arial, Helvetica, sans-serif;
     color:#333;
     font-weight:bold;
