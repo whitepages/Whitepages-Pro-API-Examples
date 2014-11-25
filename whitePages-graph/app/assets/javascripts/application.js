@@ -15,13 +15,46 @@
 //= require_tree .
 
 $(document).ready(function() {
+    $('#clear_phone_btn').live( "click", function() {
+        $("input#api_key").val("");
+        $("input#phone_number").val("");
+    });
+
+    $('#clear_address_btn').live( "click", function() {
+        $("input#api_key").val("");
+        $("input#address_street_line_1").val("");
+        $("input#address_city").val("");
+    });
+
+    $('#clear_person_btn').live( "click", function() {
+        $("input#api_key").val("");
+        $("input#person_first_name").val("");
+        $("input#person_last_name").val("");
+        $("input#person_where").val("");
+    });
+
+
+    $('#clear_business_btn').live( "click", function() {
+        $("input#api_key").val("");
+        $("input#business_name").val("");
+        $("input#city").val("");
+        $("input#state").val("");
+    });
+
     // When the back button triggers
     $(window).on("popstate", function() {
         var req_url = location.href;
         if (req_url.indexOf("#") > -1) {
-            var url =   req_url.split('#')[1];
+            var url = req_url.split('#')[1];
+            var req_url = url;
+            var req_action = searchLink;
+            if (url.indexOf("&type=") > -1) {
+                var search_type = url.split('&type=');
+                req_url = search_type[0];
+                req_action = searchForm;
+            }
             $("#overlay").show();
-            $.post(graphSearch,{ url: url} ,function(result){ });
+            $.post(req_action,{ url: req_url} ,function(result){ });
         }else{
             window.location =  location.href;
         }

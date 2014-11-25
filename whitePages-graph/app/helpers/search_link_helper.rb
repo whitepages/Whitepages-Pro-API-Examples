@@ -1,0 +1,2 @@
+module SearchLinkHelper
+end

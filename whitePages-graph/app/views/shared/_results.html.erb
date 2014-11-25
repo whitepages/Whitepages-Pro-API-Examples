@@ -1,24 +1,14 @@
-<% if @search_for%>
-    <% unless @results_size.to_s == "No records found" %>
-        <% if @results_size %>
-            <%=@results_size%>  result found for <span>
-      <% if  @search_for == "phone" %>
-      <%=@phone_number%>
-      <% elsif @search_for == "location"%>
-      <%=@standard_address_line1%>  <%=@standard_address_location%>
-      <% elsif @search_for == "person"%>
-      <%=@first_name%>  <%=@last_name %> <%=@address%>
-       <% elsif @search_for == "business"%>
-      <%=@business_name%>  <%=@city %>  <%=@state_code%>
-      <% end %>
+<% if @result_graph && !@result_graph[:result].blank? %>
+    result found for
+    <span>
+       <% if  @search_for == 'phone' %>
+          <%= params[:phone_number] %>
+       <% elsif @search_for == 'location' %>
+           <%= params[:address_street_line_1] %>  <%= params[:address_city]  %>
+       <% elsif @search_for == 'person' %>
+            <%= params[:person_first_name] %>  <%= params[:person_last_name] %> <%= params[:person_where] %>
+       <% elsif @search_for == 'business' %>
+            <%= params[:business_name] %>  <%=params[:city] %>  <%= params[:state] %>
+       <% end %>
     </span>
-        <%end%>
-    <%else%>
-        <div class="error_box"> No records found</div>
-        <script type="text/javascript">
-            $(document).ready( function() {
-                $("#overlay").hide();
-            });
-        </script>
-    <%end%>
 <% end %>

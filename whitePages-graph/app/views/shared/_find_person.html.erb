@@ -1,0 +1,13 @@
+<div id='find_person_div' class='tab-content
+<% if @search_for == 'person' %> active <% end %> '>
+  <div class='search_sec'>
+    <%= form_tag(find_person_path, method: 'post') do %>
+        <%= text_field_tag :api_key, params[:api_key], :placeholder => 'API KEY', :class=>'inputbox' %>
+        <%= text_field_tag :person_first_name, params[:person_first_name], :placeholder => 'First Name', :class=>'inputbox' %>
+        <%= text_field_tag :person_last_name, params[:person_last_name], :placeholder => 'Last Name', :class=>'inputbox' %>
+        <%= text_field_tag :person_where, params[:person_where], :placeholder => 'City, State, ZIP or Address', :class=>'inputbox' %>
+        <%= submit_tag 'Find', :class=>'find_btn' %>
+        <input type='button' value='Clear' id='clear_person_btn'  class='clear_btn'>
+    <% end %>
+  </div>
+</div>

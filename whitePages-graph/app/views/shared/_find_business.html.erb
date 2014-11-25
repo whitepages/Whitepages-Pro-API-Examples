@@ -1,0 +1,13 @@
+<div id='find_business_div' class='tab-content
+<% if @search_for == 'business' %> active <% end %> '>
+  <div class='search_sec'>
+    <%= form_tag(find_business_path, method: 'post') do %>
+        <%= text_field_tag :api_key, params[:api_key], :placeholder => 'API KEY', :class=>'inputbox' %>
+        <%= text_field_tag :business_name, params[:business_name], :placeholder => 'Business Name', :class=>'inputbox' %>
+        <%= text_field_tag :city , params[:city], :placeholder => 'city', :class=>'inputbox' %>
+        <%= text_field_tag :state, params[:state], :placeholder => 'State', :class=>'inputbox' %>
+        <%= submit_tag 'Find', :class=>'find_btn' %>
+        <input type='button' value='Clear' id='clear_business_btn' class='clear_btn'>
+    <% end %>
+  </div>
+</div>

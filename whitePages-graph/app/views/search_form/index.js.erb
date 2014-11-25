@@ -1,0 +1,14 @@
+<% if @result_graph %>
+    $('#wp_graph').replaceWith("<%= escape_javascript render(:partial => 'shared/search', :locals => { :response_error => @result_graph[:error]  }) %>");
+    $('#wp_tabs').html("<%= escape_javascript render(:partial => 'shared/tabs',:locals => { :search_for => @search_for }) %>");
+    $('.tab-content').hide();
+    <% if @search_for == 'location' %>
+        $('#find_address_div').show();
+    <% elsif @search_for == 'phone' %>
+        $('#reverse_phone_div').show();
+    <% elsif @search_for == 'person' %>
+        $('#find_person_div').show();
+    <% elsif @search_for == 'business' %>
+        $('#find_business_div').show();
+    <% end %>
+<% end %>

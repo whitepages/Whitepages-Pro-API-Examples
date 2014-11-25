@@ -2,4 +2,14 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  errors:
+    api_key: "please enter your api key."
+    phone_number: "please enter phone number."
+    business_name: "please enter business name."
+    city: "please enter city."
+    state: "please enter state."
+    address_street_line_1: "please enter street address or name."
+    address_city: "please enter city and state or Zip."
+    person_first_name: "please enter first name."
+    person_last_name: "please enter last name."
+    person_where: "please enter address."

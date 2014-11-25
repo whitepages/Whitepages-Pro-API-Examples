@@ -1,21 +1,11 @@
 WhitePages::Application.routes.draw do
-  get "graph/index"
-  match 'graph' => "graph#index", :as => :graph_phones, :via => :get
 
-  match 'graph/phone' => "graph#index", :as => :graph_phones, :via => :get
-  match 'graph/phone' => "graph#index", :as => :graph_phones, :via => :post
-
-  match 'graph/business' => "graph#find_business", :as => :graph_business, :via => :get
-  match 'graph/business' => "graph#find_business", :as => :graph_business, :via => :post
-
-
-  match 'graph/person' => "graph#person", :as => :graph_person, :via => :get
-  match 'graph/person' => "graph#person", :as => :graph_person, :via => :post
-
-  match 'graph/address' => "graph#address", :as => :graph_address, :via => :get
-  match 'graph/address' => "graph#address", :as => :graph_address, :via => :post
-  match 'graph/search' => "graph#search", :as => :search, :via => :post
-
+  match 'graph/reverse_phone' => 'reverse_phone#index', :as => :reverse_phone, via: [:get, :post]
+  match 'graph/find_business' => 'find_business#index', :as => :find_business, via: [:get, :post]
+  match 'graph/find_person' => 'find_person#index', :as => :find_person, via: [:get, :post]
+  match 'graph/reverse_address' => 'reverse_address#index', :as => :reverse_address, via: [:get, :post]
+  match 'search/form' => 'search_form#index', :as => :search_form, :via => :post
+  match 'search/link' => 'search_link#index', :as => :search_link, :via => :post
  
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -66,7 +56,7 @@ WhitePages::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'graph#index'
+   root :to => 'reverse_phone#index'
 
   # See how all your routes lay out with "rake routes"
 

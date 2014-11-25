@@ -17,5 +17,4 @@ class Cipher
   def decrypt(str)
     str.split(//).map { |char| @map[:decrypt][char] }.join
   end
-
 end

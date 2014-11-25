@@ -1,5 +1,7 @@
 <div class="error_box">
-  <%=@error %>
+  <%  @error.each do |error| %>
+      <%=error%> <br />
+  <%  end  %>
 </div>
 <script type="text/javascript">
     $(document).ready( function() {

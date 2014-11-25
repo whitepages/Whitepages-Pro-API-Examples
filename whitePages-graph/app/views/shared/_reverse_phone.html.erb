@@ -1,0 +1,11 @@
+<div id='reverse_phone_div' class='tab-content
+<% if @search_for == 'phone' %> active <% end %>'>
+  <div class='search_sec'>
+    <%= form_tag(reverse_phone_path, method: 'post', :id=>'gp') do %>
+        <%= text_field_tag :api_key, params[:api_key], :placeholder => 'API KEY', :class=>'inputbox' %>
+        <%= text_field_tag :phone_number, params[:phone_number], :placeholder => 'Phone Number', :class=>'inputbox'%>
+        <%= submit_tag 'Find' ,:class=>'find_btn' %>
+        <input type='button' value='Clear' id='clear_phone_btn' class='clear_btn'>
+    <% end %>
+  </div>
+</div>

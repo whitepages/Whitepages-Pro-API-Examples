@@ -1,0 +1,12 @@
+<div id='find_address_div' class='tab-content
+<% if @search_for == 'location' %> active <% end %>'>
+  <div class='search_sec'>
+    <%= form_tag(reverse_address_path, method: 'post') do %>
+        <%= text_field_tag :api_key, params[:api_key], :placeholder => 'API KEY', :class=>'inputbox' %>
+        <%= text_field_tag :address_street_line_1, params[:address_street_line_1], :placeholder => 'Street Address or name', :class=>'inputbox' %>
+        <%= text_field_tag :address_city , params[:address_city], :placeholder => 'City and State or Zip', :class=>'inputbox' %>
+        <%= submit_tag 'Find', :class=>'find_btn' %>
+        <input type='button' value='Clear' id='clear_address_btn' class='clear_btn'>
+    <% end %>
+  </div>
+</div>
