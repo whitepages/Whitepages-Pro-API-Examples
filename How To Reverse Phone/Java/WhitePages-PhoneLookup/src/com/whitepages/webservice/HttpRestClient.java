@@ -17,15 +17,15 @@ import java.net.URL;
 public class HttpRestClient {
 	/**
 	 * This method to calls back end API and returns response.
-	 * @param request: request URL.
-	 * @return: returns API output in string.
+	 * 
+	 * @param request request URL.
+	 * @return returns API output in string.
 	 */
 	public String doGetPhoneLookupData(final String request) {
 		String apiOutput = "";
 		try {
 			URL requestUrl = new URL(request);
-			HttpURLConnection conn = (HttpURLConnection) requestUrl
-					.openConnection();
+			HttpURLConnection conn = (HttpURLConnection) requestUrl.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
 
@@ -40,14 +40,12 @@ public class HttpRestClient {
 
 				InputStream errorStream = conn.getErrorStream();
 				if (errorStream != null) {
-					bufferReader = new BufferedReader(new InputStreamReader(
-							errorStream));
+					bufferReader = new BufferedReader(new InputStreamReader(errorStream));
 				}
 			} else {
 				InputStream inputStream = conn.getInputStream();
 				if (inputStream != null) {
-					bufferReader = new BufferedReader(new InputStreamReader(
-							inputStream));
+					bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 				}
 			}
 

@@ -10,31 +10,37 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.whitepages.data.PhoneLookupData;
+import com.whitepages.data.Result;
 
 public class PhoneLookupParser {
 
-	public PhoneLookupData parsePhoneLookupData(String phoneLookupJsonResponse) {
-		PhoneLookupData phoneLookupData = null;
+	/**
+	 * This method parse the phone lookup response to Result.
+	 * 
+	 * @param phoneLookupJsonResponse Phone lookup JSON response.
+	 * @return: Result.
+	 */
+	public Result parsePhoneLookupData(String phoneLookupJsonResponse) {
+		Result resultData = null;
 		try {
-				JSONObject responseObject = new JSONObject(phoneLookupJsonResponse);
-				if(responseObject != null) {
-					if(responseObject.has("results")) {
-						JSONArray resultsArray = responseObject.optJSONArray("results");
-						if(resultsArray != null && resultsArray.length() > 0) {
-							phoneLookupData = new PhoneLookupData(responseObject, resultsArray);
-						}
-					} else if(responseObject.has("error")) {
-						JSONObject errorObject = responseObject.optJSONObject("error");
-						if(errorObject != null) {
-							phoneLookupData = new PhoneLookupData(errorObject);
-						}
+			JSONObject responseObject = new JSONObject(phoneLookupJsonResponse);
+			if (responseObject != null) {
+				if (responseObject.has("results")) {
+					JSONArray resultsArray = responseObject.optJSONArray("results");
+					if (resultsArray != null && resultsArray.length() > 0) {
+						resultData = new Result(responseObject, resultsArray);
+					}
+				} else if (responseObject.has("error")) {
+					JSONObject errorObject = responseObject.optJSONObject("error");
+					if (errorObject != null) {
+						resultData = new Result(errorObject);
 					}
 				}
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
-		return phoneLookupData;
+
+		return resultData;
 	}
 }

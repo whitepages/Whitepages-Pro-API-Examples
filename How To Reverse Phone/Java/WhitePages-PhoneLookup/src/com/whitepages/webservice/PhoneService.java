@@ -6,7 +6,7 @@
 
 package com.whitepages.webservice;
 
-import com.whitepages.data.PhoneLookupData;
+import com.whitepages.data.Result;
 import com.whitepages.utilities.PhoneLookupParser;
 import com.whitepages.utilities.ServerApis;
 import com.whitepages.utilities.ServerUrls;
@@ -15,30 +15,34 @@ import com.whitepages.utilities.Constants;
 public class PhoneService {
 
 	/**
-	 * This method to calls method doGetPhoneLookupData to get response of API and calls parseDataResonse to parse the result and returns PhoneLookupData object.
-	 * @param phoneNumber: phone number.
-	 * @return: PhoneLookupData.
+	 * This method to calls method doGetPhoneLookupData to get response of API
+	 * and calls parseDataResonse to parse the result and returns
+	 * PhoneLookupData object.
+	 * 
+	 * @param phoneNumber phone number.
+	 * @return PhoneLookupData.
 	 */
-	public PhoneLookupData getPhoneLookupData(String phoneNumber) {
-		PhoneLookupData phoneLookupData = null;
-		
-		if(phoneNumber != null && !phoneNumber.equals("")) {
+	public Result getPhoneLookupData(String phoneNumber) {
+		Result phoneLookupData = null;
+
+		if (phoneNumber != null && !phoneNumber.equals("")) {
 			phoneNumber = phoneNumber.trim();
 			String request = getPhoneLookupRequest(phoneNumber);
 			HttpRestClient httpRestClient = new HttpRestClient();
 			String response = httpRestClient.doGetPhoneLookupData(request);
-			
+
 			// Parse phone lookup data json response
 			phoneLookupData = parseDataResonse(response);
 		}
-		
+
 		return phoneLookupData;
 	}
-	
+
 	/**
 	 * This method creates a request to get phone lookup data.
-	 * @param phoneNumber: phone number to get data.
-	 * @return: request to get phone data.
+	 * 
+	 * @param phoneNumber phone number to get data.
+	 * @return request to get phone data.
 	 */
 	private String getPhoneLookupRequest(String phoneNumber) {
 		String request = null;
@@ -49,18 +53,23 @@ public class PhoneService {
 		String apiRequestParam = ServerApis.PHONE_API_REQUEST_PARAM;
 		apiRequestParam = apiRequestParam.replace(":phoneNumber", phoneNumber);
 		apiRequestParam = apiRequestParam.replace(":api_key", apiKey);
-		
+
 		request = serverUrl + apiVersion + phoneApi + "?" + apiRequestParam;
 		return request;
 	}
-	
-	private PhoneLookupData parseDataResonse(String jsonResponse) {
-		PhoneLookupData phoneLookupData = null;
-		if(jsonResponse != null && !jsonResponse.equals("")) {
+
+	/**
+	 * This method parse JSON response for phone lookup data. 
+	 * @param jsonResponse
+	 * @return resultData
+	 */
+	private Result parseDataResonse(String jsonResponse) {
+		Result resultData = null;
+		if (jsonResponse != null && !jsonResponse.equals("")) {
 			PhoneLookupParser phoneLookupParser = new PhoneLookupParser();
-			phoneLookupData = phoneLookupParser.parsePhoneLookupData(jsonResponse);
+			resultData = phoneLookupParser.parsePhoneLookupData(jsonResponse);
 		}
-		
-		return phoneLookupData;
+
+		return resultData;
 	}
 }
