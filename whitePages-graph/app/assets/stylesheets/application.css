@@ -300,3 +300,15 @@ a {
     text-align: center;
     width:100%;
 }
+
+.error_message {
+width: 80%;
+margin: 0 auto;
+padding: 0px;
+font: 15px Arial, Helvetica, sans-serif;
+color: #954338;
+font-weight: 700;
+clear: both;
+text-align: left;
+margin-top: -20px;   
+}

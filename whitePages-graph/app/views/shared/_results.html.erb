@@ -1,3 +1,6 @@
+<script>  
+  window.parent.postMessage('<%=@requested_uri%>', "*");  
+</script>
 <% if @result_graph && !@result_graph[:result].blank? %>
     result found for
     <span>
