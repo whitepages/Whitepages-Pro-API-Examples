@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhitepagesDemo_iOS", "WhitepagesDemo_iOS\WhitepagesDemo_iOS.csproj", "{9309CF6A-49FE-4729-96DE-5572329DF950}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhone = Release|iPhone
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9309CF6A-49FE-4729-96DE-5572329DF950}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
+		{9309CF6A-49FE-4729-96DE-5572329DF950}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
+		{9309CF6A-49FE-4729-96DE-5572329DF950}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{9309CF6A-49FE-4729-96DE-5572329DF950}.Debug|iPhone.Build.0 = Debug|iPhone
+		{9309CF6A-49FE-4729-96DE-5572329DF950}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{9309CF6A-49FE-4729-96DE-5572329DF950}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{9309CF6A-49FE-4729-96DE-5572329DF950}.Release|Any CPU.ActiveCfg = Release|iPhone
+		{9309CF6A-49FE-4729-96DE-5572329DF950}.Release|Any CPU.Build.0 = Release|iPhone
+		{9309CF6A-49FE-4729-96DE-5572329DF950}.Release|iPhone.ActiveCfg = Release|iPhone
+		{9309CF6A-49FE-4729-96DE-5572329DF950}.Release|iPhone.Build.0 = Release|iPhone
+		{9309CF6A-49FE-4729-96DE-5572329DF950}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{9309CF6A-49FE-4729-96DE-5572329DF950}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+	EndGlobalSection
+EndGlobal
