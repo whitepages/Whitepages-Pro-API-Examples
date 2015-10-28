@@ -1,0 +1,284 @@
+﻿@using ProApiLibrary.Data.Associations
+@using ProApiLibrary.Data.Entities
+@using ReversePhone.Classes
+@using SampleLibrary
+@model ProApiLibrary.Api.Responses.Response<ProApiLibrary.Data.Entities.IPhone>
+@{
+    ViewBag.Title = "WhitePages PRO Sample App";
+}
+
+<h2>Reverse Phone</h2>
+@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+{
+    var searchedPhoneNumber = "";
+    if ((Model != null) && (Model.Results != null))
+    {
+        var firstResult = Model.Results.FirstOrDefault();
+        if (firstResult != null)
+        {
+            searchedPhoneNumber = firstResult.PhoneNumber;
+        }
+    }
+	<div class="form-group form-group-last">
+	    <div class="input-group">
+	        <div class="floatlabel-wrapper">
+	            <label for="lookup_number" class="label-floatlabel" style="position: absolute; top: 0px; left: 8px; display: block; opacity: 1; font-size: 11px; font-weight: bold; color: rgb(131, 135, 128);">Phone Number</label>
+	            <input placeholder="Phone Number" name="phoneNumber" value="@searchedPhoneNumber" class="form-control float-label active-floatlabel" type="tel" id="lookup_number" style="padding-top: 12px;">
+	        </div>
+	        <div class="input-group-addon" title="Clear fields">
+	            <span class="wp-icon-pro-x" style="position: relative; float: left;"></span>
+	        </div>
+	        <div style="display: table-cell; padding-left: 3px; vertical-align: middle;">
+	            <button name="button" type="submit" class="btn btn-info find">
+	                <span class="wp-icon-pro wp-icon-pro-search"></span>&nbsp;Search
+	            </button>
+	        </div>
+        </div>
+	    
+	</div>
+	
+
+	if (Model != null)
+	{
+		if ((Model.ResponseMessages != null) && (Model.ResponseMessages.Any()))
+		{
+			foreach (var rm in Model.ResponseMessages)
+			{
+				<h4>Exception: @rm.Type @rm.Code @rm.Text</h4>
+			}
+
+			<p />
+		}
+
+		if (Model.IsSuccess)
+		{
+			if (Model.Results == null)
+			{
+				<div>No results were returned.</div>
+			}
+			else
+			{
+				var phone = Model.Results.First();
+				var phoneNumber = phone.Name;
+				IPerson person = null;
+				var bestLocationKey = phone.BestLocation.Id.Key;
+				var personAssociation = phone.PersonAssociations.FirstOrDefault();
+                var location = phone.Locations.FirstOrDefault(x => x.Id.Key == bestLocationKey);
+				IPhone alternatePhone = null;
+				IList<LocationAssociation> locationAssociations = null;
+			    int associatedAddressCount = 0;
+				if (personAssociation != null)
+				{
+					person = personAssociation.Person;
+					var firstPhoneAssociation = person.PhoneAssociations.FirstOrDefault(x => x.Phone.PhoneNumber != phoneNumber);
+					if (firstPhoneAssociation != null)
+					{
+						alternatePhone = firstPhoneAssociation.Phone;
+					}
+					locationAssociations = person.LocationAssociations;
+				    associatedAddressCount = locationAssociations.Count();
+
+                    // try a better way to get the location
+				    var bestLocation = personAssociation.Person.BestLocation;
+				    if (bestLocation != null)
+				    {
+				        location = bestLocation;
+				    }
+				}
+
+                var reputationLevelDisplay = "Unknown";
+                int? reputationLevel = null;
+                if (phone.Reputation != null)
+                {
+                    reputationLevel = phone.Reputation.Level.HasValue ? phone.Reputation.Level.Value : (int?)null;
+                    reputationLevelDisplay = reputationLevel.HasValue ? reputationLevel.ToString() : "Unknown";
+                }
+
+
+				<div class="col-md-4">
+					<div class="result-box">
+						<div data-result-type="phone">
+							<header>Phone</header>
+							<h3 class="search phone-number">@phoneNumber</h3>
+							<div class="attr carrier">
+								<span class="attrname carrier">Carrier:</span> <span class="attrvalue  carrier">@Html.Raw(phone.Carrier)</span> 
+							</div>
+							<div class="attr phone-type">
+								<span class="attrname phone-type">Phone Type:</span> <span class="attrvalue attrsafe phone-type">@phone.LineType</span> 
+							</div>
+							<div class="attr do-not-call-registry">
+							    <span class="attrname do-not-call-registry">Do Not Call Registry:</span> 
+                                <span class="attrvalue  do-not-call-registry">@Display.DoNotCall(phone.DoNotCall)</span> 
+							</div>
+							<div class="attr spam-level">
+							    <span class="attrname spam-level">Spam Level:</span> 
+                                <span class="attrvalue attrsafe spam-level">@reputationLevelDisplay (@DemoUtils.ReputationLevelAsString(reputationLevel))</span> 
+							</div>
+							<div class="attr prepaid">
+							    <span class="attrname prepaid">Prepaid:</span> 
+                                <span class="attrvalue  prepaid">@Display.NullableBoolean(phone.IsPrepaid)</span> 
+							</div>
+						</div>
+					</div>
+				</div>
+
+				if (person != null)
+				{
+                    var ageRange = person.AgeRange == null ? "Unknown" : person.AgeRange.Start + "&mdash;" + person.AgeRange.End;
+                    var gender = person.Gender.HasValue ? person.Gender.ToString() : "Unknown";
+										
+                    var linkedToPhone = "Unknown";
+                    var linkedToAddress = "Unknown";
+
+                    DateTime phoneLinkedDate;
+                    var firstPhone = person.PhoneAssociations.FirstOrDefault();
+                    if (firstPhone != null)
+                    {
+                        phoneLinkedDate = firstPhone.ContactCreationDate.GetValueOrDefault();
+                        if (DateTime.Now.AddYears(-1) > phoneLinkedDate)
+                        {
+                            linkedToPhone = "At least 1 year ago";
+                        }
+                        else
+                        {
+                            linkedToPhone = "Less than 1 year ago";
+                        }
+                    }
+
+                    DateTime addressLinkedDate;
+                    var firstAddress = person.BestLocationAssociation;
+                    if (firstAddress != null)
+                    {
+                        addressLinkedDate = firstAddress.ContactCreationDate.GetValueOrDefault();
+                        if (DateTime.Now.AddYears(-1) > addressLinkedDate)
+                        {
+                            linkedToAddress = "At least 1 year ago";
+                        }
+                        else
+                        {
+                            linkedToAddress = "Less than 1 year ago";
+                        }
+                    }
+
+					<div class="col-md-4">
+						<div class="result-box">
+							<header>Person</header>
+							<div class="person last" data-result-type="person">
+								<h3 class="search person-name">
+									@person.Name &nbsp;<span class="icon icon-search"></span>
+								</h3>
+								<div class="attr age-range">
+									<span class="attrname age-range">Age Range:</span> <span class="attrvalue age-range">@Html.Raw(ageRange)</span> 
+								</div>
+								<div class="attr gender">
+									<span class="attrname gender">Gender:</span> <span class="attrvalue  gender">@gender</span> 
+								</div>
+								<div class="attr linked-to-phone">
+									<span class="attrname linked-to-phone">Linked to Phone:</span> <span class="attrvalue  linked-to-phone">@linkedToPhone</span> 
+								</div>
+								<div class="attr linked-to-address">
+									<span class="attrname linked-to-address">Linked to Address:</span> <span class="attrvalue  linked-to-address">@linkedToAddress</span> 
+								</div>
+								@if (alternatePhone != null)
+								{
+									<div class="alternate-phone">
+										<div class="attr alternate-phone">
+											<span class="attrname alternate-phone">Alternate Phone:</span> 
+											<span class="attrvalue ">
+												@alternatePhone.PhoneNumber
+												<span class="alternate-type">@alternatePhone.LineType</span>
+											</span>
+										</div>
+									</div>
+								}
+								<p/>
+								@if (person.PersonAssociations != null)
+								{
+									<div class="related-people attr">
+										<div class="attrname">
+											<span class="translation_missing">Associated People</span>
+										</div>
+										<ul class="list-inline list-unstyled">
+											@foreach (var p in person.PersonAssociations)
+											{
+
+												<li>
+													@p.Person.BestName &nbsp;
+												</li>
+											}
+										</ul>
+									</div>
+								}
+								<div class="person-addresses-container closed">
+									<div class="toggle">
+									    <span class="title">All Addresses (@associatedAddressCount)</span>
+									    <p/>
+									</div>
+									<div class="addresses">
+									@foreach (var loc in locationAssociations.OrderByDescending(x=>x.ValidFor.Start.Value))
+									{
+										<div class="address highlighted" data-latitude="@loc.Location.LatLong.Latitude" data-longitude="@loc.Location.LatLong.Longitude">
+											<div class="date-range">@Display.LocationSince(loc)</div>
+											<p class="search">
+												<a class="search" href="#">
+													@loc.Location.StandardAddressLine1<br>
+													@if (!String.IsNullOrWhiteSpace(loc.Location.StandardAddressLine2))
+													{
+														<text>@loc.Location.StandardAddressLine2</text><br/>
+													}
+													@loc.Location.City, @loc.Location.StateCode @loc.Location.PostalCode
+													                
+												</a>
+											</p>
+										</div>
+									}
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+
+				if (location != null)
+				{
+					<div class="col-md-4">
+						<div class="result-box">
+							<header>Address</header>
+							<div class="location" data-result-type="location">
+								<p class="search location">
+									<a class="search" href="#">
+										@location.StandardAddressLine1<br/>
+										@if (!String.IsNullOrWhiteSpace(location.StandardAddressLine2))
+										{
+											<text>@location.StandardAddressLine2</text><br/>
+										}
+										@location.City, @location.StateCode @location.PostalCode
+													
+									</a>
+								</p>
+								<div class="attr receiving-mail">
+									<span class="attrname receiving-mail">Receiving Mail:</span> 
+									<span class="attrvalue attrsafe receiving-mail">@Display.NullableBoolean(location.IsReceivingMail)</span> 
+								</div>
+								<div class="attr usage">
+									<span class="attrname usage">Usage:</span> 
+									<span class="attrvalue  usage">@location.Usage</span> 
+								</div>
+								<div class="attr delivery-point">
+									<span class="attrname delivery-point">Delivery Point:</span> 
+									<span class="attrvalue attrsafe delivery-point">@Display.DeliveryPoint(location.DeliveryPoint)</span> 
+								</div>
+							</div>
+						</div>
+
+					</div>
+				}
+			}
+			<p />
+
+		}
+
+	}
+
+}
