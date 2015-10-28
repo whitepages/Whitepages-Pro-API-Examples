@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center_vertical">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_centerInParent="true"
+        android:layout_margin="30dip">
+        <TextView
+            style="@style/label1"
+            android:layout_marginBottom="10dip"
+            android:text="Get Started With" />
+        <TextView
+            style="@style/label2"
+            android:text="KICK APP!"
+            android:layout_marginBottom="25dip" />
+        <TextView
+            style="@style/label3"
+            android:text="Please confirm that these details are correct." />
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="@drawable/customborder"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dip"
+            android:layout_marginTop="10dip">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/NameDescription"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="NAME"
+                    android:textStyle="bold"
+                    android:layout_gravity="left" />
+                <TextView
+                    android:id="@+id/NameLabel"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/NameDescription"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="WHERE"
+                    android:textStyle="bold"
+                    android:layout_gravity="left" />
+                <TextView
+                    android:id="@+id/WhereLabel"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/NameLabel"
+                    android:textAlignment="center" />
+            </LinearLayout>
+        </LinearLayout>
+        <Button
+            android:id="@+id/ConfirmButton"
+            style="@style/button1"
+            android:text="@string/Confirm"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dip" />
+    </LinearLayout>
+</RelativeLayout>
