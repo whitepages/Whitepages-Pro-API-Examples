@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleLibrary", "SampleLibr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseAddress", "ReverseAddress\ReverseAddress.csproj", "{DD57804D-AFAD-4461-BC21-84DF8412B521}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReversePhone", "ReversePhone\ReversePhone.csproj", "{7136F6B6-1BB2-4C89-8D32-9E7EABEFE130}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{DD57804D-AFAD-4461-BC21-84DF8412B521}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD57804D-AFAD-4461-BC21-84DF8412B521}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD57804D-AFAD-4461-BC21-84DF8412B521}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7136F6B6-1BB2-4C89-8D32-9E7EABEFE130}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7136F6B6-1BB2-4C89-8D32-9E7EABEFE130}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7136F6B6-1BB2-4C89-8D32-9E7EABEFE130}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7136F6B6-1BB2-4C89-8D32-9E7EABEFE130}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
