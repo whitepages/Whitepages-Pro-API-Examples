@@ -1,5 +1,0 @@
-Example-3: Reverse Phone
-
-Reverse Phone queries for all the records relating to a single phone number. Reverse Phone search returns the people, locations, and business related to it.
-
-This is Ruby version of the example.

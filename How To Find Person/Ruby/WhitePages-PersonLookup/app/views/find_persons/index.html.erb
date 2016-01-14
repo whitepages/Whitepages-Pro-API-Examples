@@ -1,8 +1,0 @@
-<%= render :partial => "form" %>
-<% if @results %>
-  <% unless @results.error.nil? %>
-    <%= render :partial => "error" %>
-  <% else %>
-    <%= render :partial => "result" %>
-  <% end %>
-<% end %>
