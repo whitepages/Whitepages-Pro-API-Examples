@@ -1,0 +1,107 @@
+﻿@model ApproveOrRejectCall.Models.ReputationViewModel
+@{
+    ViewBag.Title = "Index";
+}
+<style type="text/css">
+    #samples {
+        margin-top: 20px;
+        margin-bottom: 50px;
+    }
+
+        #samples span {
+            border: solid 1px black;
+            margin-right: 6px;
+            padding: 6px;
+            cursor: pointer;
+        }
+</style>
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { id="ApproveForm" }))
+{
+    <div>
+        <div style="padding: 20px 0px 20px 0px; color: white; background-color: #555555;">
+            <h1 style="color: inherit;">Approve or Reject?</h1>
+            <h3 style="color: inherit;">Make informed, real-time decisions based on Phone Reputation</h3>
+        </div>
+        <div style="margin-top: 20px;">
+
+            Enter a phone number:
+            <p />
+            <input type="text" id="PhoneNumber" name="phoneNumber" style="width: 300px;" @if (Model != null)
+                                                                                         {<text>value="@Model.PhoneNumber"</text>} />
+            <button type="submit" value="Submit" id="SubmitButton">Submit</button>
+        </div>
+        <p />
+        <p />
+        <div id="samples">
+            Or, select one of the sample phone numbers listed below:
+            <p style="margin-top: 20px;" />
+            <span num="9991117701">999 111 7701</span>
+            <span num="2282200226">228 220 0226</span>
+            <span num="9991117799">999 111 7799</span>
+            <span num="9991117704">999 111 7704</span>
+            
+            <div style="clear: both;"></div>
+        </div>
+        @if (Model != null)
+        {
+            var color = "green"; // assume ok
+            if (Model.Exception != null)
+            {
+                color = "red";
+            }
+            else if (Model.ReputationLevel >= 2)
+            {
+                color = "yellow";
+            }
+            <div id="ResultBox" style="margin-top: 20px; display: inline-block; width: auto; margin: 0px auto; border: solid @color 2px; margin-bottom: 20px;">
+                <div style="color: white; background-color: @color; font-weight: bold; padding: 8px;">
+                    Report for @Model.PhoneNumber
+                </div>
+                <div style="padding: 30px 20px 30px 20px;">
+
+                    @if (Model.Exception == null)
+                {
+                    <div>
+                        RECOMMENDATION: @Model.Recommendation
+                        <p/>
+                        SPAM/RISK LEVEL: @Model.ReputationLevel.GetValueOrDefault() (@Model.ReputationDescription)
+                    </div>
+                }
+                else
+                {
+
+                    <div>
+                        @if (Model.ReputationLevel.HasValue)
+                        {
+                            <text>RECOMMENDATION: @Model.Recommendation</text>
+                            <p />
+                            <text>SPAM/RISK LEVEL: @Model.ReputationLevel.Value (@Model.ReputationDescription)</text>
+                            <br/>       
+                        }
+                        MESSAGE:<br/>@Model.Exception.Message
+                    </div>
+                }
+                </div>
+
+            </div>
+        }
+    </div>
+
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            $("#samples span").click(function (e) {
+                var text = $(this).attr("num");
+                $("#PhoneNumber").val(text);
+                $("#ApproveForm").submit();
+            });
+
+            $("#ApproveForm").submit(function(form) {
+                $("#ResultBox").hide();
+                return true;
+            });
+        });
+    </script>
+}
