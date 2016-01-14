@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:actionBarNavMode="tabs">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_margin="30dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_vertical|center_horizontal">
+        <TextView
+            style="@style/label1"
+            android:id="@+id/Label1"
+            android:layout_marginBottom="10dip"
+            android:text="Get Started With" />
+        <TextView
+            style="@style/label2"
+            android:text="KICK APP!"
+            android:layout_marginBottom="25dip" />
+        <TextView
+            android:id="@+id/TopLabel"
+            android:text="Please enter your phone number:"
+            style="@style/label3" />
+        <EditText
+            android:id="@+id/PhoneNumberText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:layout_below="@+id/TopLabel" />
+        <Button
+            style="@style/button1"
+            android:id="@+id/MyButton"
+            android:text="@string/Submit"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/PhoneNumberText"
+            android:layout_marginTop="20dip" />
+    </LinearLayout>
+</RelativeLayout>

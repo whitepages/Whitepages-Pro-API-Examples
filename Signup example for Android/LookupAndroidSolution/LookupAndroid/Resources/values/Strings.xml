@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="ApiKey">YOUR API KEY HERE</string>
+    <string name="Submit">Submit</string>
+	<string name="Confirm">Confirm</string>
+	<string name="ApplicationName">Whitepages Lookup</string>
+</resources>
