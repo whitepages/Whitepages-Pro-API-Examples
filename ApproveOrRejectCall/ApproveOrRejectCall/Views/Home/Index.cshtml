@@ -51,7 +51,7 @@
             }
             else if (Model.ReputationLevel >= 2)
             {
-                color = "yellow";
+                color = "#B6B607";
             }
             <div id="ResultBox" style="margin-top: 20px; display: inline-block; width: auto; margin: 0px auto; border: solid @color 2px; margin-bottom: 20px;">
                 <div style="color: white; background-color: @color; font-weight: bold; padding: 8px;">
@@ -63,6 +63,11 @@
                 {
                     <div>
                         RECOMMENDATION: @Model.Recommendation
+                        @if (!string.IsNullOrWhiteSpace(Model.RecommendationDescription))
+                        {
+                            <br />
+                            <text>@Model.RecommendationDescription</text>
+                        }
                         <p/>
                         SPAM/RISK LEVEL: @Model.ReputationLevel.GetValueOrDefault() (@Model.ReputationDescription)
                     </div>
@@ -74,6 +79,11 @@
                         @if (Model.ReputationLevel.HasValue)
                         {
                             <text>RECOMMENDATION: @Model.Recommendation</text>
+                            if (!string.IsNullOrWhiteSpace(Model.RecommendationDescription))
+                            {
+                                <br/>
+                                <text>@Model.RecommendationDescription</text>
+                            }
                             <p />
                             <text>SPAM/RISK LEVEL: @Model.ReputationLevel.Value (@Model.ReputationDescription)</text>
                             <br/>       

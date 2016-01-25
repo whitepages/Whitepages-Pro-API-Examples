@@ -37,6 +37,38 @@ namespace ApproveOrRejectCall.Controllers
 			    {
 				    throw new Exception("Null response from the API.");
 			    }
+				// try to get the reputation details even if there are warnings or errors
+				else if ((response.Results.Any())
+				         && (response.Results.FirstOrDefault() != null)
+				         && (response.Results.First().Reputation != null)
+				         && (response.Results.First().Reputation.Details != null)
+				         && (response.Results.First().Reputation.Details.FirstOrDefault() != null))
+				{
+					var rep = response.Results.First().Reputation;
+					var lvl = rep.Level;
+					var details = rep.Details.First();
+					var type = details.TypeValue;
+					var category = details.Category;
+					var desc = "";
+					if (!string.IsNullOrWhiteSpace(type))
+					{
+						desc = type;
+						if (!string.IsNullOrWhiteSpace(category))
+						{
+							desc += ": " + category;
+						}
+					}
+					else if (!string.IsNullOrWhiteSpace(category))
+					{
+						desc = category;
+					}
+					return new ReputationViewModel()
+					{
+						PhoneNumber = phoneNumber,
+						ReputationLevel = lvl,
+						RecommendationDescription = desc,
+					};
+				}
 				else if (response.IsFailure)
 				{
 					// try to get reputation level anyway

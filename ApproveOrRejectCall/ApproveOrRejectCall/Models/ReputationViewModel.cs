@@ -58,6 +58,8 @@ namespace ApproveOrRejectCall.Models
 
 		}
 
+		public virtual string RecommendationDescription { get; set; }
+
 		public Exception Exception { get; set; }
 	}
 }
