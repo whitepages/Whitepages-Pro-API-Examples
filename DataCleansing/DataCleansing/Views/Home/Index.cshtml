@@ -3,10 +3,41 @@
     ViewBag.Title = "Index";
 }
 <style type="text/css">
-    #exampletable td {
-        border: solid 1px black;
-        padding: 2px 4px 2px 4px;
+    #waitingbg {
+        z-index: 100;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 1000px;
+        display: block;
+        background-color: #7f7f7f;
+        opacity: 0.5;
+        -moz-opacity: 0.5;
+        -webkit-opacity: 0.5;
     }
+
+    #waitingmsg {
+        border: solid red 3px;
+        background-color: white;
+        z-index: 1000;
+        color: black;
+        margin: 0px auto;
+        position: relative;
+        display: block;
+        width: 25%;
+        top: 25%;
+        opacity: 1;
+        -moz-opacity: 1;
+        -webkit-opacity: 1;
+        padding: 10px;
+        top: 0px;
+    }
+
+    #exampletable td {
+         border: solid 1px black;
+         padding: 2px 4px 2px 4px;
+     }
     input[type="file"] {
         border-width: 0px;
         border-color: transparent;
@@ -17,11 +48,11 @@
 </style>
 <h1>Data Cleansing Example</h1>
 <div id="body">
-    @using (Html.BeginForm("Upload", "Home", FormMethod.Post, new { enctype="multipart/form-data" }))
+    @using (Html.BeginForm("Upload", "Home", FormMethod.Post, new { id="UploadForm", enctype="multipart/form-data" }))
     {
         <h3>Browse for a file that you want to cleanse:</h3>
         <p/>
-        <input type="file" name="whichFile" id="WhichFile"/>
+        <input type="file" name="whichFile" id="WhichFile" style="z-index: 99;"/>
         <p/>
         <button type="submit" id="SubmitButton" value="Submit" name="SubmitButton">Upload</button>
     }
@@ -45,3 +76,57 @@
 
     </div>
 </div>
+<div id="waitingbg">
+
+</div>
+<div id="waitingmsg">Please wait while the file is cleansed...</div>
+<script type="text/javascript">
+    var intervalHandle;
+
+    $(function() {
+        hideWaitingMsg();
+        
+        $("#UploadForm").submit(function(e) {
+            showWaitingMsg();
+            intervalHandle = setInterval('poll()', 1000);
+            return true;
+        });
+    });
+
+    function hideWaitingMsg() {
+        $("#waitingmsg").hide();
+        $("#waitingbg").hide();
+    }
+
+    function showWaitingMsg() {
+        $("#waitingmsg").html('Please wait while the file is cleansed...').show();
+        $("#waitingbg").show();
+    }
+
+    function showCompleteMsg() {
+        $("#waitingmsg").html('Your cleansed file has been downloaded. Check the download section of your browser.');
+        setTimeout('hideWaitingMsg()', 5000);
+    }
+
+    function poll() {
+        var url = '@Url.Action("SimpleStatePoll", "Home")';
+        $.ajax(url, {
+            async: true,
+            dataType: 'json',
+            method: 'POST',
+            type: 'POST',
+            success: function(data) {
+                if (data.complete === 'true') {
+                    clearInterval(intervalHandle);
+                    showCompleteMsg();
+                    return;
+                }
+                
+            },
+            error: function(xhr, st, error) {
+                hideWaitingMsg();
+                clearInterval(intervalHandle);
+            }
+        });
+    }
+</script>

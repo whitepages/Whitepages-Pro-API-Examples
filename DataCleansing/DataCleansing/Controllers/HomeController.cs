@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using DataCleansing.Models;
 using ProApiLibrary.Api.Clients;
 using ProApiLibrary.Api.Exceptions;
@@ -25,6 +26,7 @@ namespace DataCleansing.Controllers
 	    [HttpPost]
 	    public ActionResult Upload()
 	    {
+		    Session["Complete"] = false;
 		    UploadedFile file = null;
 		    foreach (string fileName in Request.Files)
 		    {
@@ -55,6 +57,7 @@ namespace DataCleansing.Controllers
 
 		    var encoding = Encoding.UTF8;
 			var bytes = encoding.GetBytes(contents);
+		    Session["Complete"] = true;
 		    return File(bytes, "text/csv", "cleansed.csv");
 		}
 
@@ -153,5 +156,31 @@ namespace DataCleansing.Controllers
 		    return sb.ToString();
 	    }
 
+	    public ContentResult SimpleStatePoll()
+	    {
+		    if (Session["Complete"] == null)
+		    {
+				return new JsonStringResult(@"{""complete"":""unknown""}");
+		    }
+		    var state = (bool) Session["Complete"];
+		    if (state)
+		    {
+			    return new JsonStringResult(@"{""complete"":""true""}");
+		    }
+		    else
+		    {
+				return new JsonStringResult(@"{""complete"":""false""}");
+		    }
+	    }
+
     }
+
+	public class JsonStringResult : ContentResult
+	{
+		public JsonStringResult(string json)
+		{
+			Content = json;
+			ContentType = "application/json";
+		}
+	}
 }
