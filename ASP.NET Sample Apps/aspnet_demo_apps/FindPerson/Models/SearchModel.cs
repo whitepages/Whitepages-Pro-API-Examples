@@ -16,7 +16,11 @@ namespace FindPerson.Models
 		{ 
 			get
 			{
+<<<<<<< HEAD
 				if (_name.Contains(" "))
+=======
+				if (!string.IsNullOrWhiteSpace(_name) && (_name.Contains(" ")))
+>>>>>>> f987985d0334788b0ee79ea1e779a8e380951bf1
 				{
 					return _name.Substring(_name.IndexOf(" ", StringComparison.InvariantCultureIgnoreCase) + 1);
 				}
@@ -28,7 +32,11 @@ namespace FindPerson.Models
 		{
 			get
 			{
+<<<<<<< HEAD
 				if (_name.Contains(" "))
+=======
+				if (!string.IsNullOrWhiteSpace(_name) && (_name.Contains(" ")))
+>>>>>>> f987985d0334788b0ee79ea1e779a8e380951bf1
 				{
 					return _name.Substring(0, _name.IndexOf(" ", StringComparison.InvariantCultureIgnoreCase));
 				}
@@ -70,12 +78,29 @@ namespace FindPerson.Models
 					pat = ".*\\s*(?<state>[A-Za-z]{2})\\s*.*";
 					if (Regex.IsMatch(_where, pat))
 					{
+<<<<<<< HEAD
+=======
+						var wlen = _where.Length;
+>>>>>>> f987985d0334788b0ee79ea1e779a8e380951bf1
 						var regex = new Regex(pat);
 						var match = regex.Match(_where);
 						state = match.Groups["state"].Value;
 						var index = _where.IndexOf(state, StringComparison.InvariantCultureIgnoreCase);
 						city = _where.Substring(0, index - 1).Trim();
+<<<<<<< HEAD
 						zip = _where.Substring(index + state.Length + 1).Trim();
+=======
+						city = city.TrimEnd(new char[2] {' ', ','});
+						var proposedZipStart = index + state.Length;
+						if (proposedZipStart > wlen)
+						{
+							zip = _where.Substring(proposedZipStart).Trim();
+						}
+						else
+						{
+							zip = "";
+						}
+>>>>>>> f987985d0334788b0ee79ea1e779a8e380951bf1
 					}
 					else
 					{

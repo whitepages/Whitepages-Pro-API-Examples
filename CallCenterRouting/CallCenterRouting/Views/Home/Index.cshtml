@@ -1,0 +1,86 @@
+﻿@using System.Globalization
+@model List<CallCenter.Classes.PhoneData>
+@{
+    ViewBag.Title = "Call Center Demo";
+}
+<style type="text/css">
+    .right { text-align: right; }
+    table, td { border:solid 1px #333333; }
+    td { padding: 6px; }
+    table { width: 100%; }
+    .alt {background-color: #eeeeee; }         
+    thead {background-color: #666666; color: white;}
+</style>
+<h1>Awesome Call Center</h1>
+<hr/>
+@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+{
+    <div class="right">
+        <div style="text-align: left; display: inline-block;">
+            <div style="display: inline-block;">
+                Enter number of next caller:
+                <input type="text" id="NextNumber" name="phoneNumber" value=""/>
+                <button type="submit" id="AddNextButton" value="Add">Add</button>
+            </div>
+            <br/>
+            <div style="display: inline-block; border: solid 1px black; padding: 10px; width: 100%; margin-top: 10px;">
+                Sample number to try:
+                <br/>
+                <b>2069735100</b>
+            </div>
+        </div>
+
+    </div>
+}
+<div id="body">
+    <h3>Call Queue</h3>
+    @if ((Model == null) || (!Model.Any()))
+    {
+        <div>There are no calls currently in the queue.</div>
+    }
+    else
+    {
+        int idx = 1;
+        <table>
+            <thead>
+            <tr>
+                <td>#</td>
+                <td>Calling Number</td>
+                <td>Time</td>
+                <td>Prioritization Notes</td>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var call in Model.OrderBy(x=>x.SortOrder))
+            {
+                <tr @{
+                        if ((idx%2) == 0)
+                        {<text>class="alt"</text>} }>
+                    <td>@(idx++)</td>
+                    <td>@call.PhoneNumber
+                    @if (call.IsCallBlocked)
+                    {
+                        <span>&nbsp;<b>CALL BLOCKED</b></span>
+                    }</td>
+                    <td>@call.CallTime.ToString(CultureInfo.CurrentCulture)</td>
+                    <td>
+                        @foreach (var note in call.PrioritizationNotes)
+                        {
+                            <span>@note</span><br/>
+                        }
+                    </td>
+                </tr>
+                
+            }
+            </tbody>
+        </table>
+    }
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function() {
+            // put any initialization code here
+        })
+    </script>
+}
